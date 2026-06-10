@@ -1,0 +1,75 @@
+//------------------------------------------------
+//
+//  色
+//
+//------------------------------------------------
+:root {
+  //  現行サイトの実装は原則 Site theme を使う
+  //  Legacy card palette
+  --color-blue-600: #066ab8;  //  青カードホバー時
+  --color-blue-700: #0061ad;  //  カード影
+
+  //  基本的な白黒
+  --color-trueblack: #000; //  真黒
+  --color-truewhite: #fff; //  真白
+  --color-black: #333333; //  サイトで使用する黒
+  --color-white: #fff;
+  --color-white-01: rgb(255 255 255 / 0.1);
+  --color-white-02: rgb(255 255 255 / 0.2);
+  //--color-white-035: rgb(255 255 255 / 0.35);
+  --color-white-035: #eaebf0;
+  --color-white-04: rgb(255 255 255 / 0.4);
+  --color-white-05: rgb(255 255 255 / 0.5);
+  --color-white-08: rgb(255 255 255 / 0.8);
+
+  //  フォント系
+  --color-font-w: var(--color-white);
+  --color-font-b: var(--color-black);
+
+  //  影
+  --shadow005: rgb(0 0 0 /0.05);
+  --shadow01: rgb(0 0 0 /0.1);
+  --shadow015: rgb(0 0 0 /0.15);
+  --shadow016: rgb(0 0 0 /0.16);
+  --shadow02: rgb(0 0 0 /0.2);
+  --shadow025: rgb(0 0 0 /0.25);
+  --shadow03: rgb(0 0 0 /0.3);
+  --shadow05: rgb(0 0 0 /0.5);
+  --shadow06: rgb(0 0 0 /0.6);
+  --shadow07: rgb(0 0 0 /0.7);
+  --shadow08: rgb(0 0 0 /0.8);
+
+  //  ホバー時の背景色
+  --card-hover-color-background: var(--color-site-surface-soft);
+  --card-blue-hover-color-background: var(--color-blue-600);
+  --card-article-hover-color-bg: var(--color-site-accent);
+  --card-overlay-filter-bottom: linear-gradient(
+        to top,
+        color-mix(in srgb, var(--color-site-accent)  80%, transparent),
+        color-mix(in srgb, var(--color-site-accent)  40%, transparent),
+        transparent 50%
+      );
+  //  カードの影
+  --color-card-shadow: color-mix(in srgb, var(--color-blue-700)  25%, transparent 80%); //  調整
+  --color-card-strong-shadow: color-mix(in srgb, var(--color-blue-700)  40%, transparent 60%); //  outline
+
+  //  Site theme
+  --color-site-bg: #f6f7f4;
+  --color-site-bg-alt: #eef2ec;
+  --color-site-surface: #fff;
+  --color-site-surface-soft: #f8faf7;
+  --color-site-text: #1f2925;
+  --color-site-text-muted: #5e6a64;
+  --color-site-border: #bfc2bf;//#d9dfd8;
+  --color-site-accent: #2f6f5f;
+  --color-site-accent-05: color-mix( in srgb, var(--color-site-accent) 50%, transparent 50% );
+  --color-site-accent-dark: #17211d;
+  --color-site-accent-hover: #1d4232;
+  --color-site-warm: #9b7a35;
+  --color-site-warm-light: #c19c4c;
+  --shadow-site-soft: rgb(23 33 29 / 0.18);
+  --shadow-site-card: rgb(31 41 37 / 0.14);
+  --shadow-site-strong: rgb(31 41 37 / 0.2);
+  //  カードの影：ホバー時
+  --color-card-hover-shadow: color-mix(in srgb, var(--color-blue-700)  30%, transparent 70%);
+}

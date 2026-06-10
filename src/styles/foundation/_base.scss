@@ -1,0 +1,179 @@
+@use "../global" as *;
+
+//------------------------------------------------
+//
+//  ベース
+//
+//
+//------------------------------------------------
+html {
+  font-size: 10px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto;
+  //font-feature-settings: "palt";  //  字詰め、デザインにより使用判断
+  //  scrollbar-gutter領域やダークモード設定のキャンバス色が透けるのを防ぐ
+  background-color: var(--color-white);  
+
+  //  SP時：デザイン幅(375px)基準でvw化
+  @include mq-down() {
+    font-size: vw(10, 375);
+  }
+
+  //  ノートPCで150%時、文字が小さい件の対応
+  //  倍率を125%基準(1536px)にする
+  @include mq-range("m-l") {
+    font-size: vw(10, 1536);
+  }
+
+  //  ノートPCで125%時、文字が大きい件の対応
+  //  倍率をPCデザイン幅基準(1920px)にする
+  @include mq-range("l-ll") {
+    font-size: vw(10, 1920);
+  }
+
+  //  印刷時
+  @media print {
+    font-size: vw(10, 1536);
+  }
+
+}
+
+body {
+  // デフォルトフォント設定
+  color: var(--color-font-b);
+  font-family: var(--baseFont);
+  word-break: break-word;
+  font-optical-sizing: auto;
+  background-color: var(--color-site-bg);
+
+  @include ls(4);
+
+  @include mq-down() {
+    @include fs(14, 24);
+  }
+
+  @include mq-up() {
+    @include fs(16, 28);
+  }
+}
+
+//------------------------------------------------
+//  共通
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  &[href^="tel:"],
+  &[href^="mailto:"] {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+em {
+  font-style: normal;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+button {
+  appearance: none;
+  //outline: none;  //  アクセシビリティのためアウトラインは使用する
+  padding: 0;
+  border: none;
+  background: none;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+@include mq-up() {
+
+  //  PC時電話番号を選択できなくする
+  //  ※CSSでキーフォーカスを止められないため、tel_link.jsでPC時の制限を行っている
+  a[href^="tel:"] {
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+//================================================
+//  追加リセットCSS
+ul,
+ol {
+  // VoiceOver + Safariでリストとして認識されなくなるためlist-style:noneを使用しない
+  // または明示的にrole="list"を指定する
+  list-style-type: "";
+  padding: unset;
+}
+
+//  開閉ボタンの不要な三角形を非表示にする
+summary {
+  display: block;
+  list-style-type: "";
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+//  iOSでダブルタップなど誤動作を起こす追加的なジェスチャーを無効にする
+:where(button, [type="button"], [type="reset"], [type="submit"]) {
+  touch-action: manipulation;
+}
+
+* {
+  //  gridやflexの子要素テキストがオーバーフローするのを防ぐ
+  min-inline-size: 0;
+}
+
+/**
+* スクリーンリーダーにdel, ins, sを伝える
+*/
+:where(del, ins, s)::before,
+:where(del, ins, s)::after {
+  clip-path: inset(100%);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  content: "test";
+}
+
+:where(s)::before {
+  content: "取り消し線付きテキストの開始";
+}
+
+:where(s)::after {
+  content: "取り消し線付きテキストの終了";
+}
+
+:where(del)::before {
+  content: "削除されたテキストの開始";
+}
+
+:where(del)::after {
+  content: "削除されたテキストの終了";
+}
+
+:where(ins)::before {
+  content: "挿入されたテキストの開始";
+}
+
+:where(ins)::after {
+  content: "挿入されたテキストの終了";
+}

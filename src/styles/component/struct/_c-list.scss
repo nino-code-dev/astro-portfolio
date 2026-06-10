@@ -1,0 +1,252 @@
+@use "../../global" as *;
+//------------------------------------------------
+//
+//  リスト
+//
+//  ::marker系はsafari非対応のため使用しない
+//
+//  課題：ドットに対するフォントサイズ差による調整
+//      →first-letterの左に付けてgrid中央寄せといった形で対応できるか？
+//
+//------------------------------------------------
+:where(
+    .c-list,
+    [class*="c-list--"]
+) {
+  display: flex;
+  flex-direction: column;
+  row-gap: unit(var(--_list-gap));
+  @include mq-down() {
+    --_list-gap: 0;
+  }
+  > li {
+    list-style-type: "";
+  }
+
+  //  横並び
+  &.row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: unit(var(--_list-gap));
+  }
+  &.row-sp {
+    @include mq-down() {
+      flex-direction: row;
+      flex-wrap: wrap;
+      column-gap: unit(var(--_list-col-gap, 20));
+    }
+  }
+
+  //--------------------------------
+  //  簡易的な基本指定
+  &.fs16 {
+    > li {
+      @include fs(14, null);
+      @include mq-up() {
+        @include fs(16, null);
+      }
+    }
+  }
+  &.fs18 {
+    > li {
+      @include fs(18, null);
+    }
+  }
+}
+
+
+
+
+//----------------------------------------
+//  ドット（先頭に丸）
+//  径  : --_dot-size（単位なし数値）
+//  位置: baseline 揃え＝font非依存で1行目に自動追従
+//  構造: li 直下に本文要素（複数可）
+//  制限: liの直下をdivなどで囲って一つにすること
+.c-list--dot {
+  > li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: unit(8);
+    align-items: baseline;
+
+    //  本文は2列目に縦積み（先頭行＝ドットの基準）
+    > * { grid-column: 2; }
+
+    //  ドット
+    &::before {
+      content: "";
+      grid-column: 1;
+      grid-row: 1;
+      width: unit(var(--_dot-size, 8));
+      height: unit(var(--_dot-size, 8));
+      border-radius: 50%;
+      background-color: var(--_dot-color, var(--color-site-accent));
+      //  ベースライン基準。50%で径を自己相殺し、中心を字面中央(em)へ。font依存はこの1値だけ
+      translate: 0 calc(50% - var(--_dot-mid, 0.45em));
+      @include mq-up() {
+        translate: 0 calc(50% - var(--_dot-mid, 0.35em));
+      }
+    }
+  }
+  //  色
+  &.gold  { --_dot-color: var(--color-site-warm); }
+  &.muted { --_dot-color: var(--color-site-text-muted); }
+  //  中空（枠丸）
+  &.ring > li::before {
+    background-color: transparent;
+    border: unit(2) solid var(--_dot-color, var(--color-site-accent));
+  }
+  &.dot-6 { --_dot-size: 6; }
+  &.dot-12 { --_dot-size: 12; }
+}
+
+
+//----------------------------------------
+//  HTML上からは数字を省き、olの機能に任せる
+//  whereではなくisで少し詳細度強め
+//  ol 数字： 1 2 3
+:is(.c-list--number) {
+  @include mq-down() {
+    padding-left: unit(16);
+  }
+  @include mq-up() {
+    padding-left: unit(20);
+  }
+  > li {
+    display: list-item;
+    position: relative;
+    margin-left: unit(-8);
+    @include mq-down() {
+      padding-left: unit(16);
+    }
+    @include mq-up() {
+      padding-left: unit(20);
+    }
+    &:before {
+      position: absolute;
+      left: -0.55em;
+      content: counter(list-item);
+    }
+  }
+}
+
+//----------------------------------------
+//  ol 記事用連番： 1-1
+:is(.c-list-serial-number) {
+  display: grid;
+  gap: unit(4);
+  > li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    > .num {
+      color: var(--color-site-accent);
+      @include mq-down() {
+        padding-inline: unit(2);
+      }
+      @include mq-up() {
+        padding-inline: unit(4);
+      }
+    }
+  }
+}
+
+//----------------------------------------
+//  ol 章（chapter）： 1. 2. 3.
+:is(.c-list-chapter, .c-list--decimal) {
+  @include mq-down() {
+    padding-left: unit(16);
+  }
+  @include mq-up() {
+    padding-left: unit(20);
+  }
+  > li {
+    display: list-item;
+    position: relative;
+    @include mq-down() {
+      padding-left: unit(6);
+    }
+    @include mq-up() {
+      padding-left: unit(10);
+    }
+    &:before {
+      position: absolute;
+      left: -1.1em;
+      content: counter(list-item) ".";
+    }
+  }
+}
+
+//----------------------------------------
+//  ol 	節（section）： （1）（2）…
+@counter-style full-width-decimal {
+  system: numeric;
+  symbols: ０ １ ２ ３ ４ ５ ６ ７ ８ ９;
+  // 10以上の場合の処理
+}
+:is(.c-list--section, .c-list--paren-decimal) {
+  @include mq-down() {
+    padding-left: unit(16);
+  }
+  @include mq-up() {
+    padding-left: unit(20);
+  }
+  > li {
+    display: list-item;
+    position: relative;
+    padding-left: unit(28);
+    &:before {
+      position: absolute;
+      left: -1.25em;
+      content: "（" counter(list-item, full-width-decimal) "）";
+    }
+  }
+}
+
+//----------------------------------------
+//  ol 	片側）： 1）2）…
+:is(.c-list--single-paren-decimal) {
+  padding-left: unit(20);
+  > li {
+    display: list-item;
+    position: relative;
+    padding-left: unit(4);
+    &:before {
+      position: absolute;
+      left: -0.9em;
+      content: counter(list-item) ")";
+    }
+  }
+}
+
+//----------------------------------------
+//  〇数字
+@counter-style circled-numbers {
+  system: fixed;
+  symbols: ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯ ⑰ ⑱ ⑲ ⑳;
+  suffix: " "; // 後ろにスペース
+}
+:is(.c-list--circle-numbers) {
+  @include mq-down() {
+    padding-left: unit(18);
+  }
+  @include mq-up() {
+    padding-left: unit(20);
+  }
+  > li {
+    position: relative;
+    // circled-numbersカウンターをbefore疑似要素で表示
+    counter-increment: circled-numbers;
+    @include mq-down() {
+      padding-left: unit(2);
+    }
+    @include mq-up() {
+      padding-left: unit(4);
+    }
+    &:before {
+      position: absolute;
+      left: -1.25em;
+      content: counter(circled-numbers, circled-numbers);
+    }
+  }
+}

@@ -1,0 +1,60 @@
+@use "../../global" as *;
+
+//------------------------------------
+//  フッター
+//------------------------------------
+
+//  フッター全体ラッパー（余白リセット）
+.p-footer {
+  padding: 0;
+}
+
+//  ナビ領域：ロゴ＋リンク群を左右に配置（SPは縦積み）
+.p-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-font-w);
+
+  @include mq-down() {
+    flex-direction: column;
+    padding-block: unit(40) unit(27);
+  }
+
+  @include mq-up() {
+    padding-block: unit(61) unit(40);
+  }
+
+  //  個別リンク（ホバーで不透明度変化）
+  .link-item {
+    width: fit-content;
+    transition: opacity 0.3s ease;
+
+    @include hover {
+      opacity: var(--btn-hover-opacity);
+    }
+  }
+}
+
+//  リンク一覧：複数カラムを横並び（折り返し可）
+.p-footer-nav__link-list {
+  display: flex;
+  width: fit-content;
+
+  .link-list__column ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: unit(20);
+  }
+}
+
+//  フッター下部：コピーライト帯
+.p-footer-bottom {
+  padding-block: unit(40);
+  color: var(--color-font-w);
+}
+
+//  コピーライト文：中央寄せ
+.p-footer-bottom__copyright {
+  margin-inline: auto;
+  text-align: center;
+}

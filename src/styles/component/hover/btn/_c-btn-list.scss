@@ -1,0 +1,51 @@
+@use "../../../global" as *;
+//------------------------------------------------
+//  ボタンリスト（CTA等の並び）
+//------------------------------------------------
+.c-btn-list {
+  display: flex;
+  gap: unit(40);
+
+  &.column {
+    flex-direction: column;
+  }
+
+  &.center {
+    margin-inline: auto;
+    width: fit-content;
+  }
+  @include mq-down() {
+    flex-wrap: wrap;
+  }
+  > li {
+    @include mq-down() {
+      width: 100%;
+    }
+  }
+}
+
+.c-btn-list--col2,
+.c-btn-list--col2-auto {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: unit(40);
+}
+
+.c-btn-list--col2 {
+  &.mv {
+    grid-template-columns: repeat(2, minmax(unit(180), 1fr));
+    width: fit-content;
+    gap: unit(24);
+
+    @include mq-down() {
+      grid-template-columns: minmax(0, 1fr);
+      width: 100%;
+      max-width: unit(320);
+      gap: unit(14);
+    }
+  }
+}
+
+.c-btn-list--col2-auto {
+  width: fit-content;
+}

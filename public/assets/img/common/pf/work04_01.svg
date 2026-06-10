@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-label="Landing page preview">
+  <rect width="1200" height="720" fill="#f4f1ea"/>
+  <rect x="88" y="70" width="1024" height="580" rx="24" fill="#315d4f"/>
+  <rect x="140" y="122" width="180" height="18" rx="9" fill="#e8efe9"/>
+  <rect x="776" y="120" width="76" height="14" rx="7" fill="#c6d2ca"/>
+  <rect x="878" y="120" width="76" height="14" rx="7" fill="#c6d2ca"/>
+  <rect x="980" y="114" width="92" height="26" rx="13" fill="#b9975b"/>
+  <rect x="140" y="218" width="470" height="44" rx="22" fill="#ffffff"/>
+  <rect x="140" y="292" width="390" height="18" rx="9" fill="#d6e0d9"/>
+  <rect x="140" y="326" width="500" height="18" rx="9" fill="#aebfb5"/>
+  <rect x="734" y="214" width="270" height="236" rx="28" fill="#f4f1ea"/>
+  <rect x="140" y="536" width="250" height="54" rx="27" fill="#b9975b"/>
+</svg>

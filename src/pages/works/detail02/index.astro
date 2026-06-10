@@ -1,0 +1,92 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/detail02 : 記事02
+//
+//----------------------------------------------------------------
+import { Layout, PageBreadCrumb, Img, works } from '@components/index';
+
+//  スラッグ
+const slug = 'works-detail02';
+const work = works.find((w) => w.id === 'work-corporate')!;
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: '/works/' },
+  { title: '宿泊施設サイト構築', href: null },
+];
+---
+
+<Layout
+  slug={slug}
+  useSwiper={true}
+  title="宿泊施設サイト構築 | 制作実績 | NINO-CODE"
+  description="宿泊施設サイト構築の実績詳細"
+  breadcrumbItems={breadcrumbItems}
+>
+  <!-- page -->
+  <article class="p-page">
+    <div class="l-inner m0sp">
+      <div class="p-works-detail-mv">
+        <div class="visual__image">
+          <Img src="common/pf/work02_01.svg" alt="" class="js-anim-fade-on" data-delay="200" />
+        </div>
+      </div>
+
+      <PageBreadCrumb items={breadcrumbItems} />
+
+      <div class="p-works-detail__left-column">
+        <!-- header -->
+        <header class="p-works-detail-header">
+          <!-- title -->
+          <h1 class="p-works-detail-title">宿泊施設サイト構築</h1>
+          <p class="c-text u-mt20">公開URL：非公開</p>
+          <ul class="p-works-detail-category-list">
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <dl class="p-works-detail-summary">
+            <div>
+              <dt>時期</dt>
+              <dd>{work.period}</dd>
+            </div>
+            <div>
+              <dt>期間</dt>
+              <dd>1カ月(コーディング：2週間、WordPress機能実装：1週間、その他対応：1～2週間)</dd>
+            </div>
+            <div>
+              <dt>規模</dt>
+              <dd>約14ページ</dd>
+            </div>
+            <div>
+              <dt>担当範囲</dt>
+              <dd>コーディング／WordPressテーマ化／サーバー本番適用</dd>
+            </div>
+            <div>
+              <dt>技術</dt>
+              <dd>WordPress</dd>
+            </div>
+          </dl>
+        </header>
+
+        <!-- 本文 -->
+        <section class="p-works-detail-container">
+          <h2 class="p-works-detail-item__title">案件概要</h2>
+          <div class="p-works-detail-body">
+            <p>事業会社様の公式サイトリューアル案件にて、コーダーとして参加。本番適用まで対応しました。</p>
+
+            <h3>管理画面からページ情報を編集できる機能の追加</h3>
+            <p>「お勧めのプラン」はカスタム投稿として実装。<br>URLを一つ設定しておけば、複数の場所で同じ設定を再利用できるようにしました。</p>
+            <p>固定ページですが「規約」や「よくある質問」も一工夫。ブロックエディタにcssを適用することで、サイトを直接編集しているような感覚で変更できるようにしました。</p>
+            <p>HTMLの知識がなくても一部情報の入れ替えに対応できるようになり、使い勝手が向上しています。</p>
+
+            <h3>実装以外のサポート対応</h3>
+            <ul>
+              <li>WordPress管理画面ご説明書の作成</li>
+              <li>納品後、クライアント様自身のWordPressメール設定などのご説明対応</li>
+              <li>フリーのディレクターの方がトラブルにて連絡が取れなくなった経緯があり、最終的なチェックや本番納品、設定の説明まで行いました。</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,81 @@
+@use "sass:math";
+@use "setting" as *;
+@use "sass:map";
+
+//-------------------------------------------------
+//
+//  letter-spacing : 余白 rem基準
+//
+//-------------------------------------------------
+@mixin ls($i_ls) {
+  letter-spacing: calc($i_ls * $flsunit);
+}
+
+//-----------------------------------------------------------
+//
+// font set
+// フォント関連まとめ指定
+//
+//-----------------------------------------------------------
+//  font版
+//  一般的なrem。16px程度の読ませる一般文章に使用
+//  rrate: 指定したサイズの調整倍率(PC時1、SP時$spr指定等で調整 )
+@mixin fs($size, $height: false, $weight: false, $rrate: false) {
+  @if $rrate {
+    font-size: calc($size * $rrate * $funit);
+  } @else {
+    font-size: calc($size * $funit);
+  }
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $height {
+    line-height: calc($height / $size);
+  }
+}
+
+//  SP版簡易指定
+@mixin fssp($size, $height: false, $weight: false, $rrate: false) {
+  @if $rrate {
+    @include fs($size, $height, $weight, $rrate);
+  } @else {
+    @include fs($size, $height, $weight, $spr);
+  }
+}
+
+//--------------------------------
+//  visual版
+//  - 画像と同じ扱い
+//  - 1280pxまではrem、それ以下はvw化で拡大しなくなる
+//  - ブラウザフォント拡大率の影響を受けない
+//  - セクションタイトルなど改行させたくないもの
+//    24px～32px程度で十分大きいものに使用する
+@mixin fsv($size, $height: false, $weight: false, $i_unit: false) {
+  @if $i_unit {
+    font-size: calc($size * $i_unit);
+  } @else {
+    font-size: calc($size * var(--unit));
+  }
+
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $height {
+    line-height: calc($height / $size);
+  }
+}
+
+@mixin fsvsp($size, $height: false, $weight: false, $i_rrate: false) {
+  @if $i_rrate {
+    font-size: calc($size * $i_rrate * var(--unit));
+  } @else {
+    font-size: calc($size * var(--rrate) * var(--unit));
+  }
+
+  @if $weight {
+    font-weight: $weight;
+  }
+  @if $height {
+    line-height: calc($height / $size);
+  }
+}

@@ -1,0 +1,208 @@
+@use "../global" as *;
+
+//============================================================
+//
+//  パディング
+//
+//  u-pt{数値}     : PC値ベース、SPは$spr倍率
+//  u-pt{数値}pc   : PCのみ
+//  u-pt{数値}sp   : SPのみ
+//
+//  セクション上下はpaddingで余白をとる（背景色あり / ページトップはmargin不可）
+//
+//============================================================
+
+//------------------------------------------------------------
+//  u-pt : padding-top
+//------------------------------------------------------------
+
+//  PC値ベース、SPは$spr倍率（5刻み: 0〜120）
+@for $i from 0 through 24 {
+  .u-pt#{$i * 5} {
+    @include mq-down() {
+      padding-top: unit(#{$i * 5 * $spr}) !important;
+    }
+    @include mq-up() {
+      padding-top: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  PCのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-pt#{$i * 5}pc {
+    @include mq-up() {
+      padding-top: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  SPのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-pt#{$i * 5}sp {
+    @include mq-down() {
+      padding-top: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//------------------------------------------------------------
+//  u-pb : padding-bottom
+//------------------------------------------------------------
+
+//  PC値ベース、SPは$spr倍率（5刻み: 0〜120）
+@for $i from 0 through 24 {
+  .u-pb#{$i * 5} {
+    @include mq-down() {
+      padding-bottom: unit(#{$i * 5 * $spr}) !important;
+    }
+    @include mq-up() {
+      padding-bottom: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  PCのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-pb#{$i * 5}pc {
+    @include mq-up() {
+      padding-bottom: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  SPのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-pb#{$i * 5}sp {
+    @include mq-down() {
+      padding-bottom: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//------------------------------------------------------------
+//  u-pl : padding-left（5刻み: 5〜50）
+//------------------------------------------------------------
+@for $i from 1 through 10 {
+  .u-pl#{$i * 5} {
+    @include mq-down() {
+      padding-left: unit(#{$i * 5 * $spr}) !important;
+    }
+    @include mq-up() {
+      padding-left: unit(#{$i * 5}) !important;
+    }
+  }
+}
+@for $i from 1 through 10 {
+  .u-pl#{$i * 5}pc {
+    @include mq-up() {
+      padding-left: unit(#{$i * 5}) !important;
+    }
+  }
+}
+@for $i from 1 through 10 {
+  .u-pl#{$i * 5}sp {
+    @include mq-down() {
+      padding-left: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//------------------------------------------------------------
+//  u-pr : padding-right（5刻み: 5〜50）
+//------------------------------------------------------------
+@for $i from 1 through 10 {
+  .u-pr#{$i * 5} {
+    @include mq-down() {
+      padding-right: unit(#{$i * 5 * $spr}) !important;
+    }
+    @include mq-up() {
+      padding-right: unit(#{$i * 5}) !important;
+    }
+  }
+}
+@for $i from 1 through 10 {
+  .u-pr#{$i * 5}pc {
+    @include mq-up() {
+      padding-right: unit(#{$i * 5}) !important;
+    }
+  }
+}
+@for $i from 1 through 10 {
+  .u-pr#{$i * 5}sp {
+    @include mq-down() {
+      padding-right: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//============================================================
+//  padding-inline（5刻み: 5〜50）
+//============================================================
+@for $i from 1 through 10 {
+  .u-pil#{$i * 5} {
+    @include mq-down() {
+      padding-inline: unit(#{$i * 5 * $spr});
+    }
+    @include mq-up() {
+      padding-inline: unit(#{$i * 5});
+    }
+  }
+}
+@for $i from 1 through 10 {
+  .u-pil#{$i * 5}pc {
+    @include mq-up() {
+      padding-inline: unit(#{$i * 5});
+    }
+  }
+}
+@for $i from 1 through 10 {
+  .u-pil#{$i * 5}sp {
+    @include mq-down() {
+      padding-inline: unit(#{$i * 5});
+    }
+  }
+}
+.u-pil0 {
+  padding-inline: unset;
+}
+.u-pil0sp {
+  @include mq-down() {
+    padding-inline: unset !important;
+  }
+}
+
+//============================================================
+//  padding-block（5刻み: 5〜100）
+//============================================================
+@for $i from 1 through 20 {
+  .u-pbl#{$i * 5} {
+    @include mq-down() {
+      padding-block: unit(#{$i * 5 * $spr});
+    }
+    @include mq-up() {
+      padding-block: unit(#{$i * 5});
+    }
+  }
+}
+@for $i from 1 through 20 {
+  .u-pbl#{$i * 5}pc {
+    @include mq-up() {
+      padding-block: unit(#{$i * 5});
+    }
+  }
+}
+@for $i from 1 through 20 {
+  .u-pbl#{$i * 5}sp {
+    @include mq-down() {
+      padding-block: unit(#{$i * 5});
+    }
+  }
+}
+
+//  印刷時
+@media print {
+  .u-print-pt60 {
+    padding-top: unit(60) !important;
+  }
+}

@@ -1,0 +1,51 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/ : 制作実績一覧
+//
+//----------------------------------------------------------------
+import {
+  Layout,
+  MVPageFullVisual,
+  PageBreadCrumb,
+  WorksCard
+} from '@components/index';
+import { works } from '@/scripts/astro/site/works-data.js';
+
+//  スラッグ
+const slug = 'works';
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: null },
+];
+---
+
+<Layout slug={slug} useSwiper={true} title="制作実績 | NINO-CODE" description="NINO-CODEの制作実績一覧。WordPress、Astro、LP、既存サイト改修などの対応実績を掲載しています。" breadcrumbItems={breadcrumbItems}>
+  <!-- page -->
+  <article class="p-page">
+    <MVPageFullVisual slug={slug} title="制作実績一覧" useImage={false}></MVPageFullVisual>
+    <PageBreadCrumb items={breadcrumbItems} addclass="p0" />
+
+    <div class="l-inner">
+      {/*
+      <!-- header -->
+      <header class="p-works-header">
+        <h1 class="p-page-title">制作実績</h1>
+      </header>
+      */}
+
+      <div class="c-text fs17 col-muted u-mt30">
+        <p>NDA案件が多いため、公開可能な範囲で一部の制作実績を掲載しています。<br>
+        社名・画像・仕様を伏せたNDA対応版や、公開可能な案件を中心に整理しています。</p>
+      </div>
+      <!-- 一覧 -->
+      <ul class="p-works-card-list u-mt40">
+        {works.map((work) => (
+          <li>
+            <WorksCard work={work} variant="grid" headingLevel={2} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </article>
+</Layout>

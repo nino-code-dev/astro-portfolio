@@ -1,0 +1,17 @@
+@use "../../global" as *;
+//------------------------------------
+//  下層ページ 共通枠
+//  works一覧・works詳細・404 など全下層ページのラッパー(.p-page)に適用
+//------------------------------------
+.p-page {
+  padding-bottom: unit(120);
+  color: var(--color-site-text);
+  background-color: var(--color-site-bg);
+  overflow: clip;
+}
+
+//  下層ページの見出し
+.p-page-title {
+  color: var(--color-site-text);
+  @include fs(32, 40, bold);
+}

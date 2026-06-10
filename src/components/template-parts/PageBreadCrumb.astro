@@ -1,0 +1,62 @@
+---
+export interface Props {
+    slug?: string; // 現在のページ名 (オプション)
+    title?: string; // ページタイトル
+    addclass?: string; // 追加クラス(オプション)
+    items?: Array<{ title: string; href?: string | null }>; // パンくず項目を直接指定(オプション)
+}
+const { slug="", title="", addclass=null, items = [] } = Astro.props;
+
+const hasExplicitItems = Array.isArray(items) && items.length > 0;
+
+//  明示指定が無い場合の最小パンくず（PAGEINFO非依存）
+const pi_title = title && title !== '' ? title : (slug === 'home' ? 'HOME' : slug);
+const fallbackItems = slug === 'home'
+  ? [{ title: 'HOME', href: null }]
+  : [
+      { title: 'HOME', href: '/' },
+      { title: pi_title, href: null },
+    ];
+
+let nav_class = "p-page-breadcrumbs";
+// addclassがnullでなければ追加クラスとして加算
+if (addclass !== null) {
+  nav_class += ` ${addclass}`;
+}
+
+---
+<nav class={nav_class} id="breadcrumbsNav" aria-label="現在位置">
+  {hasExplicitItems ? (
+    <ol class="p-page-breadcrumbs__list">
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1;
+        return (
+          <li class="item">
+            {index > 0 && <span class="separate" role="img" aria-label="の中の"></span>}
+            {!isLast && item.href ? (
+              <a class="link" href={item.href}>{item.title}</a>
+            ) : (
+              <span class="current" aria-current={isLast ? 'page' : undefined}>{item.title}</span>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  ) : (
+    <ol class="p-page-breadcrumbs__list">
+      {fallbackItems.map((item, index) => {
+        const isLast = index === fallbackItems.length - 1;
+        return (
+          <li class="item">
+            {index > 0 && <span class="separate" role="img" aria-label="の中の"></span>}
+            {!isLast && item.href ? (
+              <a class="link" href={item.href}>{item.title}</a>
+            ) : (
+              <span class="current" aria-current={isLast ? 'page' : undefined}>{item.title}</span>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  )}
+</nav>

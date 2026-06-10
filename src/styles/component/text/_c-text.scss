@@ -1,0 +1,193 @@
+@use "../../global" as *;
+//------------------------------------------------
+//
+//  テキスト/タイトル 共通修飾子
+//
+//  c-text : 一般、remを基準とする
+//  ユーザーブラウザ設定を受け付ける、可読性優先
+//
+//  c-title: 太字、pxを基準とする
+//  ユーザーブラウザ設定を受け付けず、デザインバランス優先し画像のように振る舞う
+//
+//  ただし、レスポンシブ等倍(vw)の場合は単位優先のためどちらもvw化
+//  通常/太字の差のみとなる
+//
+//------------------------------------------------
+:is(
+  .c-text, .c-text *,
+  .c-title, .c-title *
+) {
+  //  上下余白削除
+  &.half-leading {
+    margin-block: calc( (0.5lh - 0.5em) * -1 );
+  }
+
+  //----------------
+  //  行間ギャップ
+  //  デフォルトはサイトによって調整
+  > * + * { margin-top: unit(15); }
+  &.gap0 > * + * { margin-top: unit(0); }
+  &.gap20 > * + * { margin-top: unit(20); }
+
+  //----------------
+  //  位置
+  &.center {
+    text-align: center;
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  &.center-pc {
+    @include mq-up() {
+      text-align: center;
+      width: fit-content;
+      margin-inline: auto;
+    }
+  }
+
+  &.left {
+    text-align: left;
+    width: fit-content;
+    margin-right: auto;
+  }
+
+  &.right {
+    width: fit-content;
+    margin-left: auto;
+    //  SP時改行に違和感があるためPCのみ
+    @include mq-up() {
+      text-align: right;
+    }
+  }
+
+  //----------------
+  //  色
+  &.col-white {
+    color: var(--color-font-w);
+  }
+  &.col-water {
+    color: var(--color-site-accent);
+  }
+  &.col-gold {
+    color: var(--color-site-warm);
+  }
+  &.col-muted {
+    color: var(--color-site-text-muted);
+  }
+  //----------------
+  //  サイズ
+  &.fs14 {
+    font-size: unit(14);
+  }
+  &.fs15 {
+    font-size: unit(15);
+  }
+  &.fs16 {
+    font-size: unit(16);
+  }
+  &.fs17 {
+    font-size: unit(17);
+  }
+  &.fs18 {
+    font-size: unit(18);
+  }
+  &.fs20 {
+    font-size: unit(20);
+  }
+  &.fs22 {
+    font-size: unit(22);
+  }
+  &.fs22sp {
+    @include mq-down() {
+      font-size: unit(22);
+    }
+  }
+  &.fs40 {
+    font-size: unit(28);
+    @include mq-up() {
+      font-size: unit(40);
+    }
+  }
+  &.fs40pc {
+    @include mq-up() {
+      font-size: unit(40);
+    }
+  }
+  //----------------
+  //  行高
+  &.lh12 {
+    line-height: 1.2;
+  }
+  &.lh13 {
+    line-height: 1.3;
+  }
+  &.lh14 {
+    line-height: 1.4;
+  }
+  &.lh15 {
+    line-height: 1.5;
+  }
+  //----------------
+  //  太さ
+  &.fw-regular {
+    font-weight: 400;
+  }
+  &.fw-medium {
+    font-weight: 500;
+  }
+  &.bold, &.fw-bold {
+    font-weight: bold;
+  }
+  &.fw-semibold {
+    font-weight: 700;
+  }
+  &.fw-black {
+    font-weight: 900;
+  }
+
+  //----------------
+  //  パターン
+  //  補足ノート系
+  &.note {
+    color: var(--color-site-text-muted);
+    font-size: unit(14);
+  }
+
+  //------------------------
+  //  ラベル系
+  .label {
+    color: var(--color-font-w);
+    background-color: var(--color-site-accent);
+    padding: unit(2) unit(8) unit(3);
+    line-height: 1.28;
+    letter-spacing: unit(1);
+    font-weight: bold;
+
+    @include mq-down() {
+      font-size: unit(16);
+      padding: unit(0) unit(8) unit(2);
+      line-height: 1.7; //  safari・iPhoneでラベル二行以上の時余白がなくなる対策
+    }
+
+    @include mq-up() {
+      font-size: unit(18);
+      display: inline-flex;
+      place-items: center;
+      margin-block: auto;
+    }
+  }
+
+  //  右にlabelがある
+  span:has(+ .label) {
+    margin-right: unit(6);
+  }
+  //  labelの右にspan(label含む)がある
+  .label:has(+ span) {
+    margin-right: unit(6);
+  }
+}
+
+//  タイトルのデフォルト
+:is(.c-title, .c-title *) {
+  font-weight: bold;
+}

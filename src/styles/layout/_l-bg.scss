@@ -1,0 +1,78 @@
+@use "../global" as *;
+//------------------------------------
+//
+//  背景
+//  .l-sectionと.l-innerの間に使用する背景レイアウト
+//
+//------------------------------------
+.l-bg {
+  z-index: -1;
+
+  position: absolute;
+  display: grid;
+
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  &.clip {
+    overflow: clip;
+  }  
+}
+
+
+//----------------------------------------
+//
+//  パターン
+//
+//----------------------------------------
+//  fixed背景
+.l-bg--fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  .bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    animation: opacity-fade-in 1.5s ease 1 forwards;
+  }
+}
+
+
+//----------------------------------------
+//  画像の中央寄せ、カバー表示
+.l-bg--image-cover {
+  width: 100%;
+  @include mq-down() {
+    height: calc(100% + 1px); // 1px伸ばす
+  }
+  .bg-image {
+    place-content: center;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: calc(100% + 1px); // 1px伸ばす
+  }
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: calc(-50% - 1px); //  上に1px隙間ができるためずらす
+    translate: 0 50%;
+    @include mq-down() {
+      aspect-ratio: var(--_background-aspect-sp);
+      object-position: var(--_background-position-sp, unset);
+    }
+    @include mq-up() {
+      aspect-ratio: var(--_background-aspect-pc); // PC画像サイズ
+      object-position: var(--_background-position-pc, unset);
+    }
+  }
+}

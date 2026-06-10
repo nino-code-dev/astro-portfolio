@@ -1,0 +1,133 @@
+---
+//----------------------------------------------------------------
+//
+//  レイアウト大枠
+//  var.jsを使用しないシンプルなもの
+//  主にmainの外、共通項要素全て
+//
+//----------------------------------------------------------------
+import {
+  Footer, HeaderBar,
+
+  //  構造化データ（パンくずのみ）
+  JsonLdBreadcrumbOnly,
+} from '@components/index';
+import '@styles/style.scss';  // CSSの読み込み
+import '@scripts/script.astro'; // javascriptファイルの読み込み
+
+export interface Props {
+  slug?: string;
+  lang?: string;
+  title?: string;
+  description?: string;
+  mainClassName?: string; //  mainに付けるクラス名
+  useSwiper?: boolean;  //  ライブラリ：swiper使用
+  breadcrumbItems?: Array<{ title: string; href?: string | null }>;
+}
+
+const { slug, lang="ja", title, description, mainClassName=null, useSwiper=false, breadcrumbItems = undefined } = Astro.props;
+const swiperPath = import.meta.env.PUBLIC_LIB_PATH+'swiper/';
+
+//  ページ情報の取得
+const og_type = slug == "home" ? 'website' : 'article';
+
+const siteName = title; //  サイト名
+let lang_ogp = "ja_JP"; //  言語
+
+//  head の OGP / canonical 等で使用
+const siteUrl = import.meta.env.SITE ?? '';
+const pagePath = Astro.url.pathname; // 例: '/' や '/404/'
+const pageUrl = siteUrl + pagePath;
+//  カノニカル: トップページのみ末尾/を除去
+const canonicalUrl = pagePath === '/'
+  ? siteUrl                      // 'https://example.com'
+  : pageUrl;                     // それ以外は末尾/を維持
+
+  // URLの階層に基づいて正しいSrcパスを取得する関数
+const getSrcPath = (relativePath) => {
+  const depth = Astro.url.pathname.split('/').length - 2; // URLに基づいて深さを調整
+  return '../'.repeat(depth) + relativePath;
+}
+
+---
+<!DOCTYPE html>
+<html lang={lang} prefix="og: http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="format-detection" content="email=no,telephone=no,address=no">
+
+    <!-- ファビコン -->
+    <link rel="icon" href="/assets/img/common/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/common/favicon/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/common/favicon/favicon-32x32.png">
+    <!-- アップルタッチアイコン画像 -->
+    <link rel="apple-touch-icon" href="/assets/img/common/favicon/apple-touch-icon.png">
+
+
+    <!-- OGP -->
+    <meta property="og:locale" content={lang_ogp} />
+    <meta property="og:type" content={og_type} />
+    <meta property="og:title" content={title} />
+
+    <!-- ※トップページの場合は「website」、それ以外は「article」とする -->
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:url" content={canonicalUrl}>
+    <meta property="og:image" content={'/assets/img/common/ogp/ogp.jpg'} />
+    {/* <meta property="og:image" content={import.meta.env.SITE + '/assets/img/common/ogp/ogp.jpg'} /> */}
+
+    <!-- Twitter共通設定 -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:image" content={ '/assets/img/common/ogp/ogp.jpg'} />
+    {/* <meta name="twitter:image" content={import.meta.env.SITE + '/assets/img/common/ogp/ogp.jpg'} /> */}
+    <meta name="twitter:image:alt" content={title} />
+
+    {/* フォント    */}
+    <link href="https://fonts.googleapis.com/css2?family=Jost&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="noindex,nofollow" />
+
+    {/* 構造化データ（パンくずのみ） */}
+    <JsonLdBreadcrumbOnly slug={slug} items={breadcrumbItems} />
+
+    { useSwiper &&
+      <>
+        <script src={`${swiperPath}swiper-bundle.min.js`} defer></script>
+        <link rel="stylesheet" href={`${swiperPath}swiper-bundle.min.css`} />
+      </>
+    }
+  </head>
+
+  <body>
+    {/* スキップリンク */}
+    <div class="c-skip-link">
+      <a class="u-sr-only" href="#main">メインコンテンツまでスキップ</a>
+    </div>
+
+    {/* Header */}
+    <HeaderBar slug={slug} />
+
+    {/* メインコンテンツ */}
+    <main id="main" class={mainClassName ? mainClassName : undefined}>
+      <slot />
+      {/* ページトップに戻るボタン( main配置時: stickyでフッター手前で止まる ) */}
+      <a href="#" class="c-btn-page-top is-main js-btn-page-top" id="btn-page-top" aria-label="ページトップに戻る">
+        <span class="circle c-icon-img--border-circle-bw size--l" aria-hidden="true">
+          <span class="icon c-icon--arrow-up size--m" aria-hidden="true"></span>
+        </span>
+      </a>
+    </main>
+
+    {/* Footer (language switch)    */}
+    <Footer slug={slug} useCV={true} showPageTopButton={false} />
+  </body>
+</html>

@@ -1,0 +1,190 @@
+@use '../../global' as *;
+
+//------------------------------------
+//
+//  制作実績 - 詳細
+//
+//------------------------------------
+//  メインビジュアル
+.p-works-detail-mv {
+
+  .visual__image {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    max-width: unit(var(--layout-inner));
+    max-height: unit(600);
+    margin-inline: auto;
+    overflow: clip;
+    @include mq-up() {
+      aspect-ratio: 16 / 9;
+      place-content: center;
+    }
+
+    img {
+      object-fit: cover;
+    }
+  }
+}
+
+//  記事カラム(左カラム)
+.p-works-detail__left-column {
+  display: block;
+  max-width: unit(var(--layout-inner));
+  margin-top: unit(20);
+  margin-inline: auto;
+  padding: unit(28) unit(22) unit(48);
+  background-color: var(--color-site-surface);
+
+  @include mq-up() {
+    padding: unit(44) unit(48) unit(64);
+  }
+}
+
+.p-works-detail-header {
+  background-color: var(--color-site-surface);
+}
+
+.p-works-detail-title {
+  margin-top: unit(20);
+  color: var(--color-site-text);
+  @include fs(30, 36, bold);
+}
+
+.p-works-detail-lead {
+  margin-top: unit(20);
+  color: var(--color-site-text-muted);
+  @include fs(17, 28);
+}
+
+.p-works-detail-summary {
+  display: grid;
+  align-items: start;
+  gap: unit(14);
+  margin-top: unit(18);
+  padding: unit(22);
+  background-color: var(--color-site-bg-alt);
+  @include mq-down() {
+    display: flex;
+    flex-wrap: wrap;
+    > div {
+      min-width: 47%;
+    }
+  }
+
+  @include mq-up() {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: unit(18) unit(28);
+    padding: unit(26);
+  }
+
+  > div {
+    display: grid;
+    gap: unit(5);
+    min-width: 0;
+  }
+
+  dt {
+    color: var(--color-site-accent);
+    font-weight: bold;
+    @include fs(13, 18, bold);
+  }
+
+  dd {
+    color: var(--color-site-text);
+    @include fs(15, 24);
+  }
+}
+
+.p-works-detail-item,
+.p-works-detail-link,
+.p-works-detail-info,
+.p-works-detail-note {
+  margin-top: unit(40);
+
+  > * + * {
+    margin-top: unit(10);
+  }
+}
+
+
+.p-works-detail-item__link {
+  display: inline-block;
+  color: var(--color-site-accent);
+  overflow-wrap: anywhere;
+}
+
+.p-works-detail-note {
+  padding: unit(22);
+  background-color: color-mix(in srgb, var(--color-site-bg-alt) 72%, white);
+
+  p {
+    color: var(--color-site-text-muted);
+    @include fs(15, 26);
+  }
+}
+
+.p-works-detail-category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: unit(10);
+  margin-top: unit(20);
+  line-height: 1.2;
+
+  > li {
+    background-color: var(--color-site-bg-alt);
+    color: var(--color-site-accent-dark);
+    padding: unit(4) unit(8);
+    font-size: unit(12);
+  }
+}
+
+.p-works-detail-container {
+  margin-top: unit(42);
+}
+
+.p-works-detail-item__title {
+  margin-block: unit(40) unit(20);
+  width: 100%;
+  padding-left: unit(10);
+  border-left: unit(4) solid var(--color-site-accent);
+  color: var(--color-site-accent);
+  @include fs(22, 24, bold);
+}
+
+.p-works-detail-body {
+  margin-top: unit(14);
+  color: var(--color-site-text);
+  @include fs(16, 30);
+
+  h3 {
+    margin-block: unit(40) unit(20);
+    padding: unit(8) unit(10);
+    background-color: var(--color-site-bg-alt);
+    color: var(--color-site-text);
+    @include fs(18, 24, bold);
+  }
+
+  > p + p {
+    margin-top: unit(20);
+  }
+
+  ul {
+    display: grid;
+    gap: unit(8);
+    margin-top: unit(16);
+    padding-left: unit(22);
+    list-style: disc;
+  }
+
+  .col2 {
+    display: flex;
+    gap: unit(10);
+
+    @include mq-up() {
+      > * {
+        width: 50%;
+      }
+    }
+  }
+}

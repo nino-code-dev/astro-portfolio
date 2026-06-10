@@ -1,0 +1,43 @@
+---
+//----------------------------------------------------------------
+//
+//  /404/ エラーページ
+//
+//----------------------------------------------------------------
+import {
+  Layout,
+  MVPageFullVisual,
+  PageBreadCrumb,
+} from '@components/index';
+
+const slug = '404';
+const css_slug = '404';
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: 'ページが見つかりません', href: null },
+];
+---
+<Layout
+  slug={slug}
+  title="ページが見つかりません | NINO-CODE"
+  description="指定されたページが見つかりませんでした。URLが正しいかご確認ください。"
+  breadcrumbItems={breadcrumbItems}
+>
+  <div class={`p-page p-page-${css_slug}`}>
+    <MVPageFullVisual slug={slug} title="ページが見つかりません" useImage={false} />
+
+    <PageBreadCrumb items={breadcrumbItems} />
+
+    <div class="l-section u-pt95 u-pb120">
+      <div class="l-inner js-anim-fade--up">
+        <div class="c-text center">
+          <p>お探しのページは、移動または削除された可能性があります。</p>
+        </div>
+        <ul class="c-btn-list center u-gap20 u-pt40 u-mta">
+          <li><a href="/" class="c-btn solid green wide">トップページへ</a></li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</Layout>

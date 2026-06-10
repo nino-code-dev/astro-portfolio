@@ -1,0 +1,97 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/detail06 : 記事06
+//
+//----------------------------------------------------------------
+import { Layout, PageBreadCrumb, Img, works } from '@components/index';
+
+//  スラッグ
+const slug = 'works-detail06';
+const work = works.find((w) => w.id === 'work-reservation')!;
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: '/works/' },
+  { title: '予約機能追加', href: null },
+];
+---
+
+<Layout
+  slug={slug}
+  useSwiper={true}
+  title="予約機能追加 | 制作実績 | NINO-CODE"
+  description="Booking Packageを用いた面談予約機能の追加実装。UI改造・表示調整に対応した制作実績です。"
+  breadcrumbItems={breadcrumbItems}
+>
+  <!-- page -->
+  <article class="p-page">
+    <div class="l-inner m0sp">
+      <div class="p-works-detail-mv">
+        <div class="visual__image">
+          <Img src="common/pf/work06_01.svg" alt="" class="js-anim-fade-on" data-delay="200" />
+        </div>
+      </div>
+
+      <PageBreadCrumb items={breadcrumbItems} />
+
+      <div class="p-works-detail__left-column">
+        <!-- header -->
+        <header class="p-works-detail-header">
+          <!-- title -->
+          <h1 class="p-works-detail-title">予約機能追加</h1>
+          <p class="c-text u-mt20">公開URL：非公開</p>
+          <ul class="p-works-detail-category-list">
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <dl class="p-works-detail-summary">
+            <div>
+              <dt>時期</dt>
+              <dd>{work.period}</dd>
+            </div>
+            <div>
+              <dt>期間</dt>
+              <dd>1週間</dd>
+            </div>
+            <div>
+              <dt>規模</dt>
+              <dd>約3ページ</dd>
+            </div>
+            <div>
+              <dt>担当範囲</dt>
+              <dd>コーディング／プラグインUI改造</dd>
+            </div>
+            <div>
+              <dt>技術</dt>
+              <dd>WordPress / Booking Package</dd>
+            </div>
+          </dl>
+        </header>
+
+        <!-- 本文 -->
+        <section class="p-works-detail-container">
+          <h2 class="p-works-detail-item__title">案件概要</h2>
+          <div class="p-works-detail-body">
+            <p>
+              お問い合わせ後に面談実施率を上げるための、面談予約システムを導入。<br>
+              関連する予約・サンクスページと、既存フォーム送信後の動線も調整。
+            </p>
+
+            <h3>プラグインの提案とカスタム実装</h3>
+            <p>
+              WordPress面談予約プラグイン「Booking Package」のUIを改造。<br>
+              jsで要素を取得し、プラグインのhtml/cssを変更。デザイン通りのUIに変更しました。
+            </p>
+            <p>
+              担当の方は他のプラグインを想定されていましたが、<br>
+              技術面の調査をした上で、現実的に実装できる可能性が高いプラグインをこちらから提案。
+            </p>
+            <p>
+              納品時にはBookingPackageの設定説明書をNotionで送付。<br>
+              「画像付きでわかりやすい。これなら誰でも使えそうで、安心しました」と大変好評でした。
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,16 @@
+@use "../global" as *;
+
+//-------------------------------------------
+//
+//  汎用flex枠
+//  1列・1行に対する汎用レイアウト
+//
+//-------------------------------------------
+.l-flex {
+  position: relative;
+  display: flex;
+  flex: var(--_flex, 1 1 auto);
+  flex-flow: var(--_flow, row);
+  flex-wrap: var(--_flex-wrap, wrap);
+  height: fit-content;
+}

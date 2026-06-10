@@ -1,0 +1,104 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/detail07 : 記事07
+//
+//----------------------------------------------------------------
+import { Layout, PageBreadCrumb, Img, works } from '@components/index';
+
+//  スラッグ
+const slug = 'works-detail07';
+const work = works.find((w) => w.id === 'work-renewal')!;
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: '/works/' },
+  { title: 'サービスサイト改修', href: null },
+];
+---
+
+<Layout
+  slug={slug}
+  useSwiper={true}
+  title="サービスサイト改修 | 制作実績 | NINO-CODE"
+  description="WordPress制作実績。スクロールアニメーションの実装に対応しています。"
+  breadcrumbItems={breadcrumbItems}
+>
+  <!-- page -->
+  <article class="p-page">
+    <div class="l-inner m0sp">
+      <div class="p-works-detail-mv">
+        <div class="visual__image">
+          <Img src="common/pf/work07_01.svg" alt="" class="js-anim-fade-on" data-delay="200" />
+        </div>
+      </div>
+
+      <PageBreadCrumb items={breadcrumbItems} />
+
+      <div class="p-works-detail__left-column">
+        <!-- header -->
+        <header class="p-works-detail-header">
+          <!-- title -->
+          <h1 class="p-works-detail-title">サービスサイト改修</h1>
+          <p class="c-text u-mt20">公開URL：非公開</p>
+          <ul class="p-works-detail-category-list">
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <dl class="p-works-detail-summary">
+            <div>
+              <dt>時期</dt>
+              <dd>{work.period}</dd>
+            </div>
+            <div>
+              <dt>期間</dt>
+              <dd>約14日</dd>
+            </div>
+            <div>
+              <dt>規模</dt>
+              <dd>約6ページ</dd>
+            </div>
+            <div>
+              <dt>担当範囲</dt>
+              <dd>コーディング／アニメーション実装</dd>
+            </div>
+            <div>
+              <dt>技術</dt>
+              <dd>PHP / WordPress / webpack / SCSS</dd>
+            </div>
+          </dl>
+        </header>
+
+        <!-- 本文 -->
+        <section class="p-works-detail-container">
+          <h2 class="p-works-detail-item__title">案件概要</h2>
+          <div class="p-works-detail-body">
+            <p>
+              既存サイトのリニューアル案件として対応。<br>テーマは新規作成ですが、CMSデータは再利用しました。
+            </p>
+
+            <h3>複数タイプのアニメーション実装</h3>
+            <p>複数のアニメーション実装があり、いただいた参考サイトを元に実装しました。</p>
+            <ul>
+              <li>ローディング画面</li>
+              <li>背景スクロール連動糸アニメーション</li>
+              <li>ピン止めスクロール文字色変化</li>
+              <li>ピン止めカードスクロール</li>
+            </ul>
+
+            <h3>デザインを考慮した、レスポンシブ仕様の判断</h3>
+            <p>レスポンシブ時、背景アニメーション用の線と周囲の画像の位置ずれが発生。<br>
+              レスポンシブ対応をリキッド(px)にする予定でしたが、「デザインが意図した見栄えと変わってしまう」ため、制作会社様に確認の上、等倍拡大(vw)に変更して対応。</p>
+
+            <h3>WordPress管理画面機能</h3>
+            <p>
+              メンバー紹介はカスタム投稿とACFカスタムフィールドを使用。サイト管理者が後からメンバーを追加できるように作成しています。
+            </p>
+
+            <h3>進捗報告</h3>
+            <p>上記アニメーションのように、ビジュアル問題は言葉のみで説明するのが難しいです。<br>進捗報告の際にはNotionを用いてスクリーンショットを交えたご説明、確認を徹底しました。<br>「とてもわかりやすく安心できた」とご満足いただけました。</p>
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</Layout>

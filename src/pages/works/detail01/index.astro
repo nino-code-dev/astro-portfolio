@@ -1,0 +1,94 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/detail01 : 記事01
+//
+//----------------------------------------------------------------
+import { Layout, PageBreadCrumb, Img, works } from '@components/index';
+
+//  スラッグ
+const slug = 'works-detail01';
+const work = works.find((w) => w.id === 'corporate-nda')!;
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: '/works/' },
+  { title: 'コーポレートサイト(NDA対処版)', href: null },
+];
+---
+
+<Layout
+  slug={slug}
+  useSwiper={true}
+  title="コーポレートサイト(NDA対処版) | 制作実績 | NINO-CODE"
+  description="NDA対処版の中規模コーポレートサイト制作実績。Astroによる共通パーツ化、実務上の対応・工夫について掲載しています。"
+  breadcrumbItems={breadcrumbItems}
+>
+  <!-- page -->
+  <article class="p-page">
+
+    <div class="l-inner m0sp">
+      <div class="p-works-detail-mv">
+        <div class="visual__image">
+          <Img src="common/pf/work01_01.svg" alt="" class="js-anim-fade-on" data-delay="200" />
+        </div>
+      </div>
+      <PageBreadCrumb items={breadcrumbItems} />
+      <div class="p-works-detail__left-column">
+        <!-- header -->
+        <header class="p-works-detail-header">
+          <!-- title -->
+          <h1 class="p-works-detail-title">コーポレートサイト(NDA対処版)</h1>
+          <p class="c-text u-mt20">公開URL：非公開</p>
+          <p class="c-text note">※守秘義務のため、文章・画像・社名はすべて架空に差し替えた再構成版です。レイアウト・コンポーネント設計・実装上の判断は実案件のままです。</p>
+          <ul class="p-works-detail-category-list">
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <dl class="p-works-detail-summary">
+            <div><dt>時期</dt>    <dd>{work.period}</dd></div>
+            <div><dt>期間</dt>    <dd>約1カ月</dd></div>
+            <div><dt>規模</dt>    <dd>約32ページ</dd></div>
+            <div><dt>担当範囲</dt><dd>コーディング</dd></div>
+            <div><dt>技術</dt>    <dd>Astro / gulp / SCSS / FLOCSS</dd></div>        
+          </dl>
+        </header>
+
+        <!-- 本文 -->
+        <section class="p-works-detail-container">
+          <h2 class="p-works-detail-item__title">案件概要</h2>
+          <div class="p-works-detail-body">
+            <p>30ページ規模のコーポレートサイトを制作しました。<br>CMSはMovableTypeですが、対応はコーディング納品までとなります。</p>
+
+            <h3>工夫点 - Astroとgulpの両対応</h3>
+            <p>納期が短い中、仕様が確定しておらず、ヘッダー等の共通要素が後から変更されることが多いという状況。<br>このスケジュールで中規模以上のサイトを作ると、下層が進むほど修正時の工数が増えて危険と判断。</p>
+            <p>
+              制作会社様から頂くテンプレートはgulpでしたが、対策としてAstroを使いコンポーネント化していく事を提案しました。<br>
+              <span class="c-text note">※判断経緯として、この会社様の案件で1度Astro案件の対応があったこともあります</span></p>
+            <p>一方で、元々のgulpテンプレートでないと現場の不安もあります。<br>ディレクターから制作チームへの説明負担が出る可能性を考えました。</p>
+            <p>そのため、Astroビルド時に本来のgulpテンプレート版を自動的に出力する仕組みを作成。<br>
+              ただ新技術を推奨するのではなく、現場の不安も解消しながら効率的に作業を進める事ができました。</p>
+
+            <h3>補足：この公開版について</h3>
+            <p>本案件はNDAのため、文章・画像・社名をすべて架空に差し替えています（構成・設計・実装上の判断は実案件のまま）。<br>
+              差し替えには生成AIを活用し、実在企業との重複チェックやSEO/OGPの整合まで確認しました。</p>
+            <details class="u-mt20">
+              <summary>▼ 参考までに、NDA配慮のための変換フローは以下のとおりです。(開閉)</summary>
+              <div>
+                <ol class="c-list--decimal u-mt20">
+                  <li>サイト構造を記述した情報を渡す</li>
+                  <li>全ページの目的、テキスト、画像の内容をテキストでyaml書き出し</li>
+                  <li>サイトの内容と業界を把握させる</li>
+                  <li>別の業界(建築)を想定し、全てのページの目的に合わせて文章内容を生成。yamlで書き出す</li>
+                  <li>画像内容を説明したテキストを建築業の内容に変える書き出し。このテキストを元にローカルで画像生成</li>
+                  <li>テキストと画像を入れ替える</li>
+                  <li>サイト名などが実在の会社と被らないかリサーチ・チェック</li>
+                  <li>headやogpなどSEO関連のチェック</li>
+                </ol>
+                <p class="u-mt20">このような工程を得て、公開可能な形に仕上げました。<br>コーディングの効率化にも役に立つ学びがあったと考えています。</p>
+              </div>
+            </details>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</Layout>

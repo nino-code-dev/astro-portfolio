@@ -1,0 +1,55 @@
+@use "../global" as *;
+
+//-------------------------------------------
+//
+//  ヘッダーメニュー用枠
+//
+//-------------------------------------------
+//  印刷時は余白削除
+@media print {
+  body:has(.l-header--fixed.is-home.is-scroll-active) {
+    padding-top: unset !important;
+  }
+}
+
+.l-header {
+  display: grid;
+  margin-inline: auto;
+  width: 100%;
+  top: 0;
+
+//  height: unit(var(--header-height));
+  z-index: var(--obj-z-l-header);
+
+  &.is-home {
+    //  印刷時fixed, stickyを止める
+    @media print {
+      position: absolute !important;  //  背景透過の場合
+      height: fit-content !important;
+    }
+  }
+  &.is-page {
+    @media print {
+      position: relative !important;  //  背景塗りつぶしの場合(ページ開始がヘッダーの下)
+      height: fit-content !important;
+    }
+  }
+}
+
+//--------------------------------
+//  ヘッダーは基本的にfixedでよい
+.l-header.l-header--fixed {
+  position: fixed;
+}
+
+//  fixedの場合bodyにヘッダー分のpaddingが必要
+//  homeフラグSP時：下層と同じにする
+body:has(.l-header--fixed.is-home) {
+  @include mq-down() {
+    padding-top: unit(var(--header-height));
+  }
+}
+//  下層フラグがある場合のみ
+body:has(.l-header--fixed.is-page) {
+  padding-top: unit(var(--header-height));
+}

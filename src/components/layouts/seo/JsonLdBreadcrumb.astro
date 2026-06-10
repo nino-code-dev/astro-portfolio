@@ -1,0 +1,61 @@
+---
+// BreadcrumbListのJSON-LDスクリプトを出力する
+// props:
+// - items?: Array<{ name: string, url: string, position?: number }>
+// - slug?: string              // 指定時は簡易配列を内部で構築
+// - articleTitle?: string      // 末端のみ記事タイトルに差し替える
+
+const { items = undefined, slug = undefined, articleTitle = undefined, baseUrl = undefined } = Astro.props;
+
+const resolvedBaseUrl = (typeof baseUrl === 'string' && baseUrl.trim() !== '') ? baseUrl : (import.meta.env.SITE ?? '');
+
+// itemsが渡されなければ、slugから内部生成する
+const buildItemsFromSlug = (i_slug) => {
+	try {
+		const result = [];
+		if (i_slug === 'home') {
+			result.push({ name: 'ホーム', url: resolvedBaseUrl + '/', position: 1 });
+			return result;
+		}
+		const clean = String(i_slug ?? '').replace(/^\/+|\/+$/g, '');
+		result.push({ name: 'ホーム', url: resolvedBaseUrl, position: 1 });
+		const currentName = (articleTitle && articleTitle.trim() !== '') ? articleTitle : clean;
+		if (currentName) {
+			result.push({ name: currentName, url: resolvedBaseUrl + '/' + clean + '/' });
+		}
+		return result;
+	} catch (e) {
+		return [];
+	}
+};
+
+const srcItems = Array.isArray(items) && items.length > 0
+	? items
+	: (slug ? buildItemsFromSlug(slug) : []);
+
+// JSON-LDをこのコンポーネント内で生成する
+let json = '';
+if (Array.isArray(srcItems) && srcItems.length > 0) {
+	const list = [];
+	for (let idx = 0; idx < srcItems.length; idx++) {
+		const it = srcItems[idx];
+		const raw = it?.url || '';
+		// 末尾スラッシュを維持（サイト内統一性のため）
+		// ただしトップページ（baseUrl + '/' のみ）は除去
+		const cleaned = raw === resolvedBaseUrl + '/' ? raw.slice(0, -1) : raw;
+		list.push({
+			'@type': 'ListItem',
+			position: (typeof it.position === 'number' ? it.position : (idx + 1)),
+			name: it.name,
+			item: cleaned,
+		});
+	}
+	const obj = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: list,
+	};
+	json = JSON.stringify(obj);
+}
+---
+{ json && <script type="application/ld+json" set:html={json}></script> }

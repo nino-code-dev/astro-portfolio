@@ -1,0 +1,123 @@
+@use "../../../global" as *;
+//------------------------------------------------
+//
+//    トップに戻るボタン
+//    - .is-main: main要素内配置、stickyでフッター手前で止まる(デフォルト)
+//    - .is-footer: footer要素内配置、fixedで画面下端に固定
+//
+//------------------------------------------------
+//  印刷分断対応
+@media print {
+  .c-btn-page-top {
+    opacity: 1;
+    //  stickyをやめて終点で固定
+    position: relative !important;
+    //  枠の高さを0にして隙間を作らない
+    height: 0 !important;
+    //  スクロール演出を初期化
+    translate: 0 0% !important;
+    margin-bottom: unit(0) !important;
+    bottom: unit(0) !important;
+    //  親の高さは0になるため、子要素を半分ずらす
+    .circle {
+      translate: 0 -50% !important;
+    }
+  }
+}
+
+.c-btn-page-top {
+  --_page-top-bg: var(--color-site-accent);
+  --_page-top-bg-hover: var(--color-site-accent-hover);
+  --_page-top-icon: var(--color-font-w);
+  display: grid;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 1;
+  margin-left: auto;
+  width: fit-content;
+  border-radius: var(--infinity);
+
+  //  ホバー時
+  @include hover {
+    box-shadow: unset;
+    .circle {
+      background-color: var(--_page-top-bg-hover);
+      border-color: var(--_page-top-bg-hover);
+    }
+    .icon {
+      --_icon-active-color: var(--_page-top-icon);
+    }
+  }
+
+  //  共通の配置スタイル
+  @include mq-down() {
+    right: unit(20);
+    margin-right: unit(20);
+  }
+  @include mq-up() {
+    right: unit(30);
+    margin-right: unit(30);
+  }
+
+  //  .is-main の場合(デフォルト): main内配置、sticky
+  &.is-main {
+    position: sticky;
+
+    @include mq-down() {
+      bottom: unit(0);
+      margin-bottom: unit(-60);
+    }
+    @include mq-up() {
+      bottom: unit(0);
+      //  そのままだと下到達時に空の領域ができてしまうので、アイコンサイズ分ネガティブマージンで空間を詰める
+      margin-bottom: unit(-60);
+    }
+  }
+
+  //  .is-footer の場合: footer内配置、fixed
+  &.is-footer {
+    position: fixed;
+
+    @include mq-down() {
+      bottom: unit(20);
+    }
+    @include mq-up() {
+      bottom: unit(30);
+    }
+  }
+
+  //  スクロールフラグなし
+  &:not(.is-scroll-active) {
+    pointer-events: none;
+    translate: 0 calc(-50% + unit(100));
+    transition:
+      opacity 0.5s ease,
+      translate 1s ease,
+      box-shadow 0.3s ease;
+  }
+  //  スクロールフラグあり
+  &.is-scroll-active {
+    opacity: 1;
+    translate: 0 -50%;
+    transition:
+      opacity 1s ease,
+      translate 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .circle {
+    display: grid;
+    place-content: center;
+    background-color: var(--_page-top-bg);
+    border-color: var(--_page-top-bg);
+    box-shadow: 0 unit(10) unit(24) var(--shadow-site-soft);
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .icon {
+    --_icon-default-color: var(--_page-top-icon);
+  }
+}

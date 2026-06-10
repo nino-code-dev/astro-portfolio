@@ -1,0 +1,130 @@
+@use "../../../global" as *;
+//------------------------------------------------
+//  ボタン
+//  treatment : solid / outline / gradient
+//  color     : green / gold（色＋文字色を対で持つ）
+//  dimension : w320 / h60
+//  type      : fs20 / fw800
+//  set       : mv / wide
+//------------------------------------------------
+.c-btn {
+  --c-btn-color: var(--color-site-accent);
+  --c-btn-on-color: var(--color-font-w);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: unit(10) unit(30);
+  border-radius: unit(4);
+  font-weight: bold;
+  transition: background-color 0.3s ease, background-position 0.45s ease, border-color 0.3s ease, color 0.3s ease;
+
+  //----------------------------------------
+  //  色
+  &.green {
+    --c-btn-color: var(--color-site-accent);
+    --c-btn-on-color: var(--color-font-w);
+  }
+  &.gold {
+    --c-btn-color: var(--color-site-warm);
+    --c-btn-on-color: var(--color-font-w);
+  }
+
+  //  グラデーション
+  //  茶色
+  &.grad-warm {
+    background: linear-gradient(
+      135deg,
+      var(--color-site-warm-light) 0%,
+      var(--color-site-warm) 40%,
+      var(--color-site-warm) 60%,
+      var(--color-site-warm-light) 100%
+    );
+    background-size: 200% 100%;
+    background-position: 100% 50%;
+    color: var(--color-font-b);
+    @include hover {
+      background-position: 0% 50%;
+      color: var(--color-font-w);
+    }
+  }
+
+  //----------------------------------------
+  //  形
+  //  塗りつぶし
+  &.solid {
+    border: unit(1) solid var(--c-btn-color);
+    background-color: var(--c-btn-color);
+    color: var(--c-btn-on-color);
+    @include hover {
+      background-color: var(--color-font-w);
+      color: var(--c-btn-color);
+    }
+  }
+  //  枠線のみ
+  &.outline {
+    border: unit(1) solid var(--c-btn-color);
+    background-color: transparent;
+    color: var(--c-btn-color);
+    @include hover {
+      background-color: var(--c-btn-color);
+      color: var(--c-btn-on-color);
+    }
+  }
+
+
+  //----------------------------------------
+  //  サイズ
+  //  幅
+  &.w320 {
+    width: 100%;
+    @include mq-up() { width: unit(320); }
+  }
+  // 高さ
+  &.h60 { height: unit(60); }
+
+  &.size-s {
+    min-height: unit(30);
+    padding: unit(5) unit(16);
+  }
+  
+
+  //----------------------------------------
+  //  文字
+  &.fs20  { font-size: unit(20); }
+  &.fw-bold { font-weight: bold; }
+  &.fw-extrabold { font-weight: 800; }
+  &.fw-black { font-weight: 900; }
+
+  //----------------------------------------
+  //  セットパターン
+  &.mv {
+    min-height: unit(54);
+    padding: unit(12) unit(38);
+    @include fs(17, 20, 800);
+
+    @include mq-down() {
+      width: 100%;
+      min-height: unit(52);
+      padding-inline: unit(22);
+    }
+  }
+
+  //  お問い合わせ
+  &.contact {
+    width: 100%;
+    font-size: unit(20);
+    @include mq-up() {
+      width: unit(320);
+      height: unit(60);
+    }
+  }
+
+  //  小さい丸ピル（外部リンク等）
+  &.pill {
+    min-height: unit(30);
+    padding: unit(5) unit(16);
+    border-radius: var(--infinity);
+    font-size: unit(13);
+  }
+}

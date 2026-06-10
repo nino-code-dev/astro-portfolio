@@ -1,0 +1,74 @@
+---
+//----------------------------------------
+//
+//  imgの簡易記述
+//
+//  width/heightを自動取得
+//
+//----------------------------------------
+import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
+
+//  例:
+//  <Img src="common/banner/itm01_img@2x.png" alt="無料キャンペーン" class="c-pic" />
+export interface Props {
+  src: string;
+  alt?: string;
+  width?: string | number;
+  height?: string | number;
+  loading?: 'lazy' | 'eager';
+  [key: string]: unknown;
+}
+
+const {
+  src,
+  alt = '',
+  width,
+  height,
+  loading = 'lazy',
+  ...attrs
+} = Astro.props as Props;
+
+const publicImagePathRaw = import.meta.env.PUBLIC_IMAGE_PATH ?? '/';
+const publicImagePath = publicImagePathRaw.endsWith('/') ? publicImagePathRaw : `${publicImagePathRaw}/`;
+const isExternalSrc = /^(?:[a-z]+:)?\/\//i.test(src) || src.startsWith('data:');
+const normalizedRelativeSrc = src.replace(/^\/+/, '');
+const resolvedSrc = isExternalSrc || src.startsWith('/')
+  ? src
+  : `${publicImagePath}${normalizedRelativeSrc}`;
+
+//----------------------------------------------------
+//  画像の存在確認と実サイズ取得
+const getImageSize = async (imagePath) => {
+  const fullPath = path.resolve(`public${imagePath}`);
+  if (!fs.existsSync(fullPath)) {
+    console.error('画像が見つかりませんでした:', fullPath);
+    return null;
+  }
+
+  try {
+    const metadata = await sharp(fullPath).metadata();
+    return { width: metadata.width, height: metadata.height };
+  } catch (error) {
+    console.error('画像サイズ取得に失敗しました:', error);
+    return null;
+  }
+};
+
+const localImagePath = !isExternalSrc
+  ? resolvedSrc.split('?')[0].split('#')[0]
+  : null;
+const originalSize = localImagePath ? await getImageSize(localImagePath) : null;
+const isRetinaImage = localImagePath?.includes('@2x.') ?? false;
+const imageSize = originalSize
+  ? {
+      width: isRetinaImage ? originalSize.width / 2 : originalSize.width,
+      height: isRetinaImage ? originalSize.height / 2 : originalSize.height,
+    }
+  : null;
+
+const resolvedWidth = width ?? (imageSize ? Math.round(imageSize.width) : undefined);
+const resolvedHeight = height ?? (imageSize ? Math.round(imageSize.height) : undefined);
+---
+<img src={resolvedSrc} alt={alt} width={resolvedWidth} height={resolvedHeight} loading={loading} {...attrs}>

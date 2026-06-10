@@ -1,0 +1,336 @@
+@use '../../global' as *;
+
+//------------------------------------------------
+//
+//    アイコン
+//    画像版
+//    maskではなくbackground直接使用
+//
+//------------------------------------------------
+[class*='c-icon-img--'] {
+  //  safariバグ対策
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  display: inline flow-root; //  文字と同じ扱い
+  position: relative;
+  transition:
+    background-color 0.3s,
+    opacity 0.3s,
+    box-shadow 0.3s,
+    rotate 0.3s,
+    translate 0.3s,
+    border-color 0.3s;
+
+  //  icon-translate-x,y アニメーション移動量
+  //  単位付き計算後
+  --_u-itx: calc(var(--_itx, 0) * var(--unit));
+  --_u-ity: calc(var(--_ity, 0) * var(--unit));
+
+  width: calc(var(--_iw) * var(--unit));
+  height: calc(var(--_ih) * var(--unit));
+  min-width: calc(var(--_iw) * var(--unit));
+  min-height: calc(var(--_ih) * var(--unit));
+  aspect-ratio: var(--_iw) / var(--_ih);
+  translate: var(--_u-itx) var(--_u-ity); //  数値が付与された場合アニメーション
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+
+  @include mq-down() {
+    --_iw: var(--_iw-sp, var(--_iw-pc, 0));
+    --_ih: var(--_ih-sp, var(--_ih-pc, 0));
+  }
+
+  @include mq-up() {
+    --_iw: var(--_iw-pc, 0);
+    --_ih: var(--_ih-pc, 0);
+  }
+}
+
+//================================================
+// pattern
+//----------------------------------------
+//  矢印
+.c-icon-img--arrow-right {
+  --_iw-pc: 22;
+  --_ih-pc: 22;
+  --_iw-sp: 16;
+  --_ih-sp: 16;
+  background-image: var(--icon-img-arrow-right);
+
+  &.c-icon-img--s {
+    --_iw-sp: 8;
+    --_ih-sp: 8;
+  }
+}
+
+.c-icon-img--arrow-left {
+  --_iw-pc: 22;
+  --_ih-pc: 22;
+  --_iw-sp: 16;
+  --_ih-sp: 16;
+  background-image: var(--icon-img-arrow-right);
+  rotate: 180deg;
+
+  &.c-icon-img--s {
+    --_iw-sp: 8;
+    --_ih-sp: 8;
+  }
+}
+
+//----------------------------------------
+//  >
+.c-icon-img--angle-arrow-right,
+.c-icon-img--angle-arrow-left,
+.c-icon-img--angle-arrow-down {
+  --_iw-pc: 13;
+  --_ih-pc: 13;
+  background-image: var(--icon-angle-arrow-down-b);
+
+  &.c-icon-img--m {
+    --_iw-pc: 11;
+    --_ih-pc: 18;
+  }
+}
+
+.c-icon-img--angle-arrow-right {
+  rotate: -90deg;
+}
+
+.c-icon-img--angle-arrow-left {
+  rotate: 90deg;
+}
+
+.c-icon-img--angle-arrow-down {
+  rotate: 0deg;
+}
+
+//  円アングル矢印: 右 青 小(30px)
+.c-icon-img--circle-angle-arrow-right-b-s {
+  --_iw-pc: 30;
+  --_ih-pc: 30;
+  --_iw-sp: 20;
+  --_ih-sp: 20;
+  background-image: var(--icon-img-circle-angle-arrow-right-b-s);
+}
+
+//  円アングル矢印: 右 青 中(40px)
+.c-icon-img--circle-angle-arrow-right-b-m {
+  --_iw-pc: 40;
+  --_ih-pc: 40;
+  --_iw-sp: 30;
+  --_ih-sp: 30;
+  background-image: var(--icon-img-circle-angle-arrow-right-b-m);
+}
+
+//  外部リンク
+.c-icon-img--external-b {
+  --_iw-pc: 16;
+  --_ih-pc: 17;
+  background-image: url('/assets/img/common/icon/icon-external-b.svg');
+}
+
+//----------------------------------------
+//  □ 外部リンク-□前後
+.c-icon-img--external-box {
+  --_iw-pc: 16;
+  --_ih-pc: 16;
+  --_ity: 1;
+  background-image: url('/assets/img/common/icon/icon-external-box.svg');
+}
+
+//----------------------------------------
+//  □□ 外部リンク-前後チェイン
+.c-icon-img--external-chain {
+  --_iw-pc: 26;
+  --_ih-pc: 26;
+  background-image: url('/assets/img/common/icon/icon-external-box-chain.svg');
+}
+
+//  PDF
+.c-icon-img--pdf {
+  --_iw-pc: 23;
+  --_ih-pc: 24;
+  --_ity: 4;
+  background-image: url('/assets/img/common/icon/icon-pdf.png');
+}
+
+//  y調整ないもの
+.c-icon-img--pdf0 {
+  --_iw-pc: 23;
+  --_ih-pc: 24;
+  background-image: url('/assets/img/common/icon/icon-pdf.png');
+}
+
+//========================================
+//  アイコン円
+//----------------------------------------
+//  塗りつぶし: 白背景
+.c-icon-img--circle-w {
+  display: inline grid;
+  background-color: var(--_icon-img-active-color, var(--color-white));
+  border-radius: var(--infinity);
+  place-content: center;
+
+  &.size--ss {
+    --_iw-pc: 20;
+    --_ih-pc: 20;
+  }
+
+  &.size--s {
+    --_iw-pc: 30;
+    --_ih-pc: 30;
+    --_iw-sp: 25;
+    --_ih-sp: 25;
+  }
+
+  &.size--m {
+    --_iw-pc: 40;
+    --_ih-pc: 40;
+  }
+  &.size--l {
+    --_iw-pc: 50;
+    --_ih-pc: 50;
+  }
+}
+
+.c-icon-img--circle-water {
+  display: inline grid;
+  background-color: var(--_icon-img-active-color, var(--color-site-accent-05));
+  border-radius: var(--infinity);
+  place-content: center;
+
+  &.size--ss {
+    --_iw-pc: 20;
+    --_ih-pc: 20;
+  }
+
+  &.size--s {
+    --_iw-pc: 30;
+    --_ih-pc: 30;
+  }
+
+  &.size--m {
+    --_iw-pc: 40;
+    --_ih-pc: 40;
+  }
+}
+
+//----------------------------------------
+//  塗りつぶし: 青背景
+.c-icon-img--circle-blue {
+  display: inline grid;
+  background-color: var(--_icon-img-active-color, var(--color-site-accent));
+  border-radius: var(--infinity);
+  place-content: center;
+
+  &.size--ss {
+    --_iw-pc: 20;
+    --_ih-pc: 20;
+  }
+
+  &.size--ss-pc {
+    --_iw-pc: 20;
+    --_ih-pc: 20;
+  }
+
+  &.size--ss-sp {
+    --_iw-sp: 15;
+    --_ih-sp: 15;
+  }
+
+  &.size--s {
+    --_iw-pc: 30;
+    --_ih-pc: 30;
+    --_iw-sp: 20;
+    --_ih-sp: 20;
+  }
+
+  &.size--s-pc {
+    --_iw-pc: 30;
+    --_ih-pc: 30;
+  }
+
+  &.size--s-sp {
+    --_iw-sp: 20;
+    --_ih-sp: 20;
+  }
+
+  &.size--m {
+    --_iw-pc: 40;
+    --_ih-pc: 40;
+    --_iw-sp: 30;
+    --_ih-sp: 30;
+  }
+
+  &.size--m-pc {
+    --_iw-pc: 40;
+    --_ih-pc: 40;
+  }
+
+  &.size--m-sp {
+    --_iw-sp: 30;
+    --_ih-sp: 30;
+  }
+
+  &.size--l {
+    --_iw-pc: 50;
+    --_ih-pc: 50;
+    --_iw-sp: 40;
+    --_ih-sp: 40;
+  }
+
+  &.size--l-pc {
+    --_iw-pc: 50;
+    --_ih-pc: 50;
+  }
+
+  &.size--l-sp {
+    --_iw-sp: 40;
+    --_ih-sp: 40;
+  }
+}
+
+//----------------------------------------
+//  ボーダー: 青線、白背景
+.c-icon-img--border-circle-bw {
+  display: inline grid;
+  background-color: var(--color-white);
+  border-radius: var(--infinity);
+  border: unit(2) solid var(--color-site-accent);
+  place-content: center;
+
+  &.size--s {
+    --_iw-pc: 30;
+    --_ih-pc: 30;
+  }
+
+  &.size--m {
+    --_iw-pc: 40;
+    --_ih-pc: 40;
+  }
+
+  &.size--l {
+    --_iw-pc: 60;
+    --_ih-pc: 60;
+  }
+}
+
+//----------------------------------------
+//  塗りつぶし: 三角形 青背景
+.c-icon-img--triangle-right-blue {
+  display: inline grid;
+  background-color: var(--_icon-img-active-color, var(--color-site-accent-dark));
+  place-content: center;
+  align-self: center;
+  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+
+  &.c-icon-img--s {
+    --_iw-pc: 8;
+    --_ih-pc: 14;
+    --_iw-sp: 8;
+    --_ih-sp: 14;
+  }
+}

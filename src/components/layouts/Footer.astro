@@ -1,0 +1,57 @@
+---
+//------------------------------------------------------------------------
+//
+//  フッター
+//
+//------------------------------------------------------------------------
+export interface Props {
+  slug?: string;
+  useCV?: boolean;
+  showPageTopButton?: boolean;
+}
+const { slug, useCV = true, showPageTopButton = false } = Astro.props;
+
+const showFooterCTA = ['service', 'column', 'case', 'bulletin'].some((path) => slug?.includes(path));
+---
+<footer class="l-footer u-print-inside-avoid u-bg-accent-dark">
+  <nav class="p-footer-nav l-inner" aria-label="フッターサイトナビゲーション">
+    <div class="p-footer-nav__info">
+      <div class="p-footer-nav__logo">
+        <a href="/" class="link-item" aria-label="トップページに戻る">
+          <div class="logo-box">
+            NINO-CODE<br>Web制作会社向け コーディングパートナー
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="p-footer-nav__link-list c-link-opacity-area">
+      <div class="link-list__column">
+        <ul>
+          <li><a href="/#solution">対応内容</a></li>
+          <li><a href="/works/">制作実績</a></li>
+          <li><a href="/#price">お見積り</a></li>
+          <li><a href="/#contact">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="p-footer-bottom">
+    <div class="l-inner l-flex">
+      <div class="p-footer-bottom__copyright">
+        <p>&copy; 2026 NINO-CODE</p>
+      </div>
+    </div>
+  </div>
+
+  {
+    showPageTopButton && (
+      <a href="#" class="c-btn-page-top is-footer js-btn-page-top" id="btn-page-top" aria-label="ページトップに戻る">
+        <span class="circle c-icon-img--border-circle-bw size--l" aria-hidden="true">
+          <span class="icon c-icon--arrow-up size--m" aria-hidden="true" />
+        </span>
+      </a>
+    )
+  }
+</footer>

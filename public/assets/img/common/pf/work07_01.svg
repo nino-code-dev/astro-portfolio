@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-label="Renewal project preview">
+  <rect width="1200" height="720" fill="#f7f4ee"/>
+  <rect x="80" y="72" width="1040" height="576" rx="24" fill="#ffffff"/>
+  <rect x="136" y="126" width="220" height="22" rx="11" fill="#315d4f"/>
+  <rect x="818" y="128" width="72" height="14" rx="7" fill="#93a69b"/>
+  <rect x="916" y="128" width="72" height="14" rx="7" fill="#93a69b"/>
+  <rect x="136" y="220" width="480" height="46" rx="23" fill="#315d4f"/>
+  <rect x="136" y="302" width="520" height="16" rx="8" fill="#879a90"/>
+  <rect x="136" y="334" width="390" height="16" rx="8" fill="#b8c5bd"/>
+  <circle cx="864" cy="318" r="124" fill="#dfe8e1"/>
+  <rect x="136" y="520" width="220" height="54" rx="27" fill="#b9975b"/>
+</svg>

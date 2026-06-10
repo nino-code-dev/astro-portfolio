@@ -1,0 +1,23 @@
+@use "../../../global" as *;
+//------------------------------------------------
+//
+//  リンク
+//
+//  シンプルなリンク用の装飾
+//
+//------------------------------------------------
+.c-link {
+  transition: color 0.3s, opacity 0.3s;
+  @include hover {
+    opacity: var(--btn-hover-opacity);
+  }
+}
+//  透過処理のみ
+.c-link-opacity-area {
+  a {
+    transition: color 0.3s, opacity 0.3s;
+    @include hover{
+      opacity: var(--btn-hover-opacity);
+    }
+  }
+}

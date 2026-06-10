@@ -1,0 +1,44 @@
+////////////////////
+/// ホバー
+////////////////////
+//----------------------------------------
+//  ホバー対応していればホバー処理をする
+@mixin hover {
+  &:focus-visible {
+    @content;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+//----------------------------------------
+//  ホバー状態でなければ
+@mixin not-hover {
+  &:not(:focus-visible) {
+    @content;
+  }
+
+  @media (any-hover: hover) {
+    &:not(:hover) {
+      @content;
+    }
+  }
+}
+
+//----------------------------------------
+//  ホバー要素を持っている
+@mixin has-hover($selector) {
+  &:has(#{$selector}:focus-visible) {
+    @content;
+  }
+
+  @media (any-hover: hover) {
+    &:has(#{$selector}:hover) {
+      @content;
+    }
+  }
+}

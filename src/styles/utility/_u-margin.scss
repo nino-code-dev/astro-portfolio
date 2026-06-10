@@ -1,0 +1,139 @@
+@use "../global" as *;
+
+//============================================================
+//
+//  マージン
+//
+//  u-mt{数値}     : PC値ベース、SPは$spr倍率
+//  u-mt{数値}pc   : PCのみ
+//  u-mt{数値}sp   : SPのみ
+//
+//============================================================
+
+//------------------------------------------------------------
+//  u-mt : margin-top
+//------------------------------------------------------------
+
+//  PC値ベース、SPは$spr倍率（5刻み: 0〜100）
+@for $i from 0 through 20 {
+  .u-mt#{$i * 5} {
+    @include mq-down() {
+      margin-top: unit(#{$i * 5 * $spr}) !important;
+    }
+    @include mq-up() {
+      margin-top: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  PCのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-mt#{$i * 5}pc {
+    @include mq-up() {
+      margin-top: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  SPのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-mt#{$i * 5}sp {
+    @include mq-down() {
+      margin-top: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//------------------------------------------------------------
+//  u-mb : margin-bottom
+//------------------------------------------------------------
+
+//  PC値ベース、SPは$spr倍率（5刻み: 0〜75）
+@for $i from 0 through 15 {
+  .u-mb#{$i * 5} {
+    @include mq-down() {
+      margin-bottom: unit(#{$i * 5 * $spr}) !important;
+    }
+    @include mq-up() {
+      margin-bottom: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  PCのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-mb#{$i * 5}pc {
+    @include mq-up() {
+      margin-bottom: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//  SPのみ（5刻み: 5〜50）
+@for $i from 1 through 10 {
+  .u-mb#{$i * 5}sp {
+    @include mq-down() {
+      margin-bottom: unit(#{$i * 5}) !important;
+    }
+  }
+}
+
+//============================================================
+//  auto系・インライン
+//============================================================
+.u-mta {
+  margin-top: auto !important;
+}
+.u-mla {
+  margin-left: auto !important;
+}
+.u-mra {
+  margin-right: auto !important;
+}
+.u-mba {
+  margin-block: auto;
+}
+
+//  余白打消し
+.u-mi-unset {
+  margin-inline: unset !important;
+}
+
+//  余白センター
+.u-mia {
+  margin-inline: auto;
+}
+
+//  余白左寄せ
+.u-mil {
+  margin-inline: 0 auto;
+}
+
+//  余白右寄せ
+.u-mir {
+  margin-inline: auto 0;
+}
+
+//  SP/PC別
+@include mq-down() {
+  .u-mia-sp {
+    margin-inline: auto;
+  }
+  .u-mir-sp {
+    margin-inline: 0 auto;
+  }
+  .u-mil-sp {
+    margin-inline: auto 0;
+  }
+}
+@include mq-up() {
+  .u-mia-pc {
+    margin-inline: auto;
+  }
+  .u-mir-pc {
+    margin-inline: 0 auto;
+  }
+  .u-mil-pc {
+    margin-inline: auto 0;
+  }
+}

@@ -1,0 +1,431 @@
+---
+//----------------------------------------------------------------
+//
+//  / : ホーム
+//
+//----------------------------------------------------------------
+import {
+  Layout, //  大枠
+  Img,
+  WorksCard,
+} from '@components/index';
+import { homeWorks } from '@/scripts/astro/site/works-data.js';
+
+//  スラッグ
+const slug = 'home';
+---
+
+<Layout slug={slug} useSwiper={true} title="ポートフォリオサイト | NINO-CODE" description="webコーダー二宮のポートフォリオ">
+  <!-- page -->
+  <div class="p-home">
+    <section class="l-section p-home-mv js-trigger-mv" aria-labelledby="mv-title">
+      <div class="p-home-mv__container">
+        <div class="l-grid--col2">
+          <div class="p-home-mv__contents">
+            <p class="p-home-mv__subtitle u-mt20" data-delay="800" id="mv-title">Web制作会社向け コーディングパートナー</p>
+            <h2 class="p-home-mv__title">現場を止めない、<br>Webコーダー。</h2>
+            <p class="p-home-mv__text">
+              Web制作の現場では、実装力だけでは進まない場面があります。<br class="u-pc">確認の返し方や既存ルールへの合わせ方で、確認待ちや手戻りは変わります。<br>
+            </p>
+            <div class="c-btn-list--col2 mv u-mt20">
+              <a href="/works/" class="c-btn solid green mv">実績を見る</a>
+              <a href="#contact" class="c-btn outline gold mv">案件の相談をする</a>
+            </div>
+          </div>
+          <div class="l-cell align-content-center">
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- MV END -->
+
+    <!-- section01: Case -->
+    <section class="l-section p80" aria-labelledby="section-case-title">
+      <div class="l-inner js-anim-fade--on">
+        <!-- heading -->
+        <hgroup class="c-heading-section js-anim-stagger-text-group">
+          <p class="c-heading-section__en js-anim-stagger-text--up">◆ 何をしてきたか？</p>
+          <h2 class="c-heading-section__title js-anim-stagger-text--up" data-delay="200" id="section-case-title">制作実績</h2>
+        </hgroup>
+        
+        
+      </div>
+      <div class="l-inner js-anim-fade--on">
+        <!-- card-list -->
+        <div class="js-anim-group-trigger u-mt30">
+          <!-- swiper  -->
+          <div class="p-swiper-card-list-w100p-pc">
+            <div class="swiper js-swiper-default p-swiper-default" id="swiper-case" data-offset-before="0" data-autoplay="false">
+              <!-- トラック -->
+              <div class="swiper-wrapper">
+                {homeWorks.map((work) => (
+                  <div class="swiper-slide">
+                    <WorksCard work={work} variant="slider" />
+                  </div>
+                ))}
+              </div>
+              <!-- /swiper-wrapper -->
+
+              <!-- swiper-controller -->
+              <div class="swiper-controller">
+                <div class="swiper-buttons">
+                  <div class="swiper-pagination"></div>
+                  <!--
+                  <button class="swiper-btn-pause size--sc border-blue" type="button" aria-label="自動再生の停止/開始">
+                    <span class="pause__label--pause">
+                      <span class="pause__icon"><span class="icon c-icon--control-pause size--sc"></span></span>
+                    </span>
+                    <span class="pause__label--play">
+                      <span class="pause__icon"><span class="icon c-icon--control-play size--sc"></span></span>
+                    </span>
+                  </button>
+                  -->
+                </div>
+                <div class="swiper-arrows bottom-sp arrows-inner">
+                  <button class="swiper-button-prev" type="button" aria-label="前へ">
+                    <span class="icon c-icon--arrow-left size--m" aria-hidden="true"></span>
+                  </button>
+                  <button class="swiper-button-next" type="button" aria-label="次へ">
+                    <span class="icon c-icon--arrow-right size--m" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+              <!-- /swiper-controller -->
+            </div>
+          </div>
+        </div>
+        <!-- swiper: END -->
+        <div class="c-text note u-mt20">
+          <p>※公開できる範囲の実績を抜粋しています。NDA案件が中心です。</p>
+        </div>
+      </div>
+      <!-- button -->
+      <ul class="c-btn-list center u-gap20 u-mt40">
+        <li><a href="/works/" class="c-btn outline gold wide">制作実績一覧を見る</a></li>
+      </ul>
+    </section>
+    <!-- section01: END -->
+
+    <!-- section02: solution -->
+    <section class="l-section p80 p-home-solution" id="solution" aria-labelledby="section-solution-title">
+      <div class="l-inner">
+        <!-- heading -->
+        <hgroup class="c-heading-section js-anim-stagger-text-group">
+          <p class="c-heading-section__en js-anim-stagger-text--up">◆ なにができるか？</p>
+          <h2 class="c-heading-section__title js-anim-stagger-text--up" data-delay="200" id="section-solution-title">静的サイト・LP・WordPressのコーディング対応</h2>
+        </hgroup>
+        <div class="p-home-section-lead u-mt30">
+          <p>静的サイト・LPのコーディング、WordPress、既存サイト改修をお受けしています。<br>小規模なスポット修正から、複数ページのサイト構築まで、条件に合わせて対応します。</p>
+        </div>
+        <div class="l-grid--col3 u-gap35 u-mt40">
+          <section class="c-contents-box p40 bd u-bg-surface">
+            <h3 class="c-title fs22 bold col-gold">支給デザインから<br class="u-sp">コーディング</h3>
+            <div class="c-text fs16 lh15 u-mt15">
+              <p>複数ページのコーポレートサイトやLPを、支給デザインデータから実装します。</p>
+              <p>共通パーツ・ページ間の差分を確認しながらCSSを設計。<br>変更や追加が発生したときに扱いやすい構成にします。</p>
+            </div>
+          </section>
+          <section class="c-contents-box p40 bd u-bg-surface">
+            <h3 class="c-title fs22 bold col-gold">WordPress・既存サイト改修</h3>
+            <div class="c-text fs16 lh15 u-mt15">
+              <p>既存テーマ構成、依存関係、コード設計を確認したうえで改修します。</p>
+              <p>差分確認や影響範囲の整理を行い、必要に応じて部分的な再整理も提案。</p>
+              <p>WordPress新規構築は、新規テーマ・指定テーマのどちらでもご相談いただけます。</p>
+            </div>
+          </section>
+          <section class="c-contents-box p40 bd u-bg-surface">
+            <h3 class="c-title fs22 bold col-gold">納品形式に合わせた対応</h3>
+            <div class="c-text fs16 lh15 u-mt15">
+              <p>zip納品、サーバー適用、Git共有、既存サイトへの追加実装など、制作会社側の進行に合わせて納品形式を調整します。</p>
+              <p>引き継ぎ案件で進行に支障が出そうな場合は、勝手に作り替えず、影響範囲と整理案を共有します。</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+    <!-- section02: solution END -->
+
+    <!-- section03: Strength -->
+    <section class="l-section p80 p-home-strength" aria-labelledby="section-strength-title">
+      <div class="l-inner">
+        <!-- heading -->
+        <hgroup class="c-heading-section js-anim-stagger-text-group">
+          <p class="c-heading-section__en js-anim-stagger-text--up">◆ どのように仕事を進めるか？</p>
+          <h2 class="c-heading-section__title js-anim-stagger-text--up" data-delay="200" id="section-strength-title">曖昧なところを、そのままにしない</h2>
+        </hgroup>
+        <div class="p-home-section-lead u-mt30">
+          <p>Web制作のコーディングでは、すべての条件がきれいに揃ってから実装できるとは限りません。</p>
+          <p>デザインの意図、既存サイトの作り方、制作会社ごとのルール、納期との兼ね合い。<br>
+            実装に入ってから、「ここは合わせるべきか」「こちらで補ってよいか」「一度確認した方が安全か」と迷う場面があります。</p>
+          <p>そうした部分を曖昧なまま扱うと、後から確認待ちや手戻りにつながります。<br>
+            そのため、まず前提をそろえ、対応の道筋を立てたうえで、判断しやすい形で共有します。</p>
+        </p>
+        <div class="p-home-strength-list u-mt40">
+          <section class="p-home-strength-item">
+            <span class="item-number">01</span>
+            <div class="item-body">
+              <h3 class="item-title">前提をそろえる</h3>
+              <div class="item-text p-home-section-lead">
+                <p>いただいた情報を見ながら、実装上そのまま対応できるところと、確認した方がよいところを分けます。<br>
+                  不明点をただ拾うのではなく、後から手戻りになりそうな部分を早い段階で見つけるための確認です。</p>
+              </p>
+            </div>
+          </section>
+          <section class="p-home-strength-item">
+            <span class="item-number">02</span>
+            <div class="item-body">
+              <h3 class="item-title">道筋を組み立てる</h3>
+              <div class="item-text p-home-section-lead">
+                <p>確認した内容をもとに、どの順番で着手するか、どこまでこちらで判断できるかを考えます。<br>
+                  見た目、既存仕様、更新のしやすさ、工数への影響を見ながら、無理のない対応方法を組み立てます。</p>
+              </p>
+            </div>
+          </section>
+          <section class="p-home-strength-item">
+            <span class="item-number">03</span>
+            <div class="item-body">
+              <h3 class="item-title">判断しやすく共有する</h3>
+              <div class="item-text p-home-section-lead">
+                <p>確認事項を長く並べるだけでは、確認する側の負担が増えます。<br>
+                  どこを見て、何を判断すればよいかが分かるように、要点を絞って共有します。<br>
+                  必要な場合は、画像・Notion等の補足資料を添え、返信時の齟齬を減らします。</p>
+              </p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+    <!-- section03: solution END -->
+
+    <!-- section04: profile -->
+    <section class="l-section p80 p-home-profile-section" id="profile" aria-labelledby="section-profile-title">
+      <div class="l-inner">
+        <hgroup class="c-heading-section js-anim-stagger-text-group">
+          <p class="c-heading-section__en js-anim-stagger-text--up">◆ 誰が対応するか？</p>
+          <h2 class="c-heading-section__title js-anim-stagger-text--up" data-delay="200" id="section-profile-title">私について</h2>
+        </hgroup>
+
+        <div class="p-home-profile-layout u-mt50">
+          <section class="c-contents-box p40 bd u-bg-surface" aria-labelledby="profile-name">
+            <div class="p-home-profile-summary__head">
+              <div class="p-home-profile-summary__photo" aria-hidden="true">
+                <Img src="common/pf/profile_ninomiya.jpg" alt="" width="176" height="176" />
+              </div>
+              <div class="p-home-profile-summary__identity">
+                  <p class="p-home-profile-summary__meta">Webコーダー</p>
+                <h3 class="p-home-profile-summary__name" id="profile-name">二宮 裕志</h3>
+                <p class="p-home-profile-summary__name-en">Hiroshi Ninomiya</p>
+              </div>
+            </div>
+            <div class="l-cell c-text col-muted u-mt25">
+              <p>前職では建築設備の現場で、職人・職長として図面を読み解き、他業種との取り合いや現場進行を調整してきました。</p>
+              <p>監督や職人とのやり取りの中で、相手がどこで判断に迷うのか、何を整理すれば動きやすくなるのかを考えながら対応してきました。</p>
+              <p>現在はその経験を、Web制作会社向けのコーディングに活かしています。<br>支給データや既存構成を読み解き、ディレクターが判断しやすい形で実装へ落とし込みます。</p>
+              <p class="c-text note">※NINO-CODEは、二宮裕志がWeb制作活動で使用している屋号です。</p>
+            </div>
+            <ul class="c-btn-list u-gap10 u-mt25" aria-label="外部リンク">
+              <li><a href="https://www.lancers.jp/profile/noniii" target="_blank" rel="noopener" class="c-btn solid green pill">ランサーズの実績を見る</a></li>
+              <li><a href="https://github.com/nino-code-dev/astro-portfolio" target="_blank" rel="noopener" class="c-btn solid green pill">GitHub</a></li>
+            </ul>
+          </section>
+
+          <div class="p-home-profile-detail">
+            <section class="p-home-profile-history" aria-labelledby="profile-history-title">
+              <h3 class="c-title fs18 col-gold bold" id="profile-history-title">経歴</h3>
+              <ol class="p-home-profile-history__list">
+                <li>
+                  <span class="p-home-profile-history__year">前職</span>
+                  <div class="p-home-profile-history__body">
+                    <h4 class="c-title fs18">建築設備の現場で職人・職長として勤務</h4>
+                    <p class="c-text fs14 col-muted">図面を読み解き、他業種との取り合いを確認しながら現場進行を調整。</p>
+                  </div>
+                </li>
+                <li>
+                  <time class="p-home-profile-history__year" datetime="2024">2024</time>
+                  <div class="p-home-profile-history__body">
+                    <h4 class="c-title fs18">NINO-CODEとして開業</h4>
+                    <p class="c-text fs14 col-muted">Webコーダーとして独立。インボイス登録済み。</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="p-home-profile-history__year">2024-現在</span>
+                  <div class="p-home-profile-history__body">
+                    <h4 class="c-title fs18">Webコーディング案件を継続して受注</h4>
+                    <p class="c-text fs14 col-muted">静的サイト、WordPress、既存サイト改修などを中心に担当。</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="p-home-profile-history__year">現在</span>
+                  <div class="p-home-profile-history__body">
+                    <h4 class="c-title fs18">制作会社の外部パートナーとして継続</h4>
+                    <p class="c-text fs14 col-muted">確認事項の整理、代案提示、納品前検品まで含めて進行。</p>
+                  </div>
+                </li>
+              </ol>
+            </section>
+
+            <section class="c-contents-box p40 bd u-bg-surface" aria-labelledby="profile-skill-title">
+              <h3 class="c-title fs18 col-gold bold" id="profile-skill-title">使用技術・確認環境</h3>
+
+              <div class="p-home-profile-skill__group">
+                <h4 class="c-text bold">使用技術</h4>
+                <ul class="c-tag-list u-mt10">
+                  <li class="c-tag">HTML / CSS / Sass</li>
+                  <li class="c-tag">JavaScript</li>
+                  <li class="c-tag">PHP / WordPress</li>
+                  <li class="c-tag">Astro</li>
+                  <li class="c-tag">Git</li>
+                  <li class="c-tag">gulp / webpack</li>
+                </ul>
+              </div>
+
+              <div class="p-home-profile-skill__columns">
+                <div class="l-grid">
+                  <h4 class="c-title">確認環境</h4>
+                  <dl class="p-home-profile-skill__env">
+                    <div><dt>Windows 11</dt><dd>Chrome / Firefox / Edge</dd></div>
+                    <div><dt>macOS</dt><dd>Chrome / Firefox / Safari</dd></div>
+                    <div><dt>Android（実機）</dt><dd>Chrome / Firefox / Edge</dd></div>
+                    <div><dt>iPhone（実機）</dt><dd>Chrome / Firefox / Safari</dd></div>
+                  </dl>
+                </div>
+                <div class="l-grid">
+                  <h4 class="c-title">品質確認</h4>
+                  <ul class="p-home-profile-skill__check c-list--dot dot-6">
+                    <li>HTML構文検証（html-validate / Nu Html Checker）</li>
+                    <li><div>アクセシビリティ（WCAG 2.x配慮）<span>aria・見出し階層・キーボード操作・スキップリンク 等</span></div></li>
+                    <li>構造化データ（JSON-LD）パンくず 等</li>
+                    <li>印刷スタイル対応</li>
+                    <li>レスポンシブ表示</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- section04: profile END -->
+
+    <!-- section05: purpose -->
+    <div class="l-section p80">
+      <div class="l-inner">
+        <div class="l-grid--col2 u-gap80">
+          <section class="l-cell align-content-start">
+            <hgroup class="c-heading-section">
+              <p class="c-heading-section__en js-anim-stagger-text--up">◆ コーディング以外に何を見ているか？</p>
+              <h2 class="c-heading-section__title" id="section-purpose-title">見た目の再現だけで<br>終わらせない実装</h2>
+            </hgroup>
+            <div class="p-home-section-lead u-mt30">
+              <p>私の専門はコーディングを中心とした実装です。</p>
+              <p>ただし、Webサイトは公開して終わりではなく、問い合わせ、採用、資料請求、その後の更新運用にもつながる接点です。</p>
+              <p>マーケティングを担当する立場ではありませんが、「この実装で目的に支障が出ないか」「後から更新しやすいか」も確認対象に含めています。</p>
+            </div>
+          </section>
+          <section class="l-cell p-home-profile" aria-labelledby="section-ai-title">
+            <div class="l-cell">
+              <!-- left -->
+              <div class="l-cell align-content-start">
+                <!-- heading -->
+                <hgroup class="c-heading-section">
+                  <p class="c-heading-section__en js-anim-stagger-text--up">◆ AI時代にどう考えるか？</p>
+                  <h2 class="c-heading-section__title" id="section-ai-title">生成AIも使い、<br>実務で使えるコードへ</h2>
+                </hgroup>
+                <div class="p-home-section-lead u-mt30">
+                  <p>HTML/CSS/JSのたたき台作成や反復作業には、AIも活用しています。</p>
+                  <p>一方で、既存コードとの整合、CMS組み込み、ブラウザ差分、アクセシビリティ、納品前の表示・構造確認まではAI任せにできません。</p>
+                  <p>生成物をそのまま納品するのではなく、実務経験を元に制作現場で扱える形に整えます。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <!-- section05: purpose END -->
+
+
+    <!-- section06: price -->
+    <section class="l-section p80 p-home-price" id="price" aria-labelledby="section-price-title">
+      <div class="l-inner">
+        <hgroup class="c-heading-section">
+          <p class="c-heading-section__en js-anim-stagger-text--up">◆ 相談から納品まで</p>
+          <h2 class="c-heading-section__title" id="section-price-title">見積もりと進行の流れ</h2>
+        </hgroup>
+        <div class="p-home-section-lead u-mt30">
+          <p>見積もりは、ページ数だけでなく、支給データ、共通パーツ、既存環境、納品形式によって変わります。<br>ご予算・希望納期・支給データの有無が分かる範囲で共有いただけると、確認しやすくなります。</p>
+        </div>
+
+        <div class="p-home-price-layout u-mt40">
+          <section class="c-contents-box p40 bd u-bg-surface" aria-labelledby="price-check-title">
+            <h3 class="c-title fs22 bold" id="price-check-title">見積もりで確認すること</h3>
+            <ul class="p-home-price-check__list c-list--dot ring dot-12">
+              <li>
+                <h4 class="c-title fs17 col-gold">支給データ</h4>
+                <p class="c-text fs15 col-muted">Figma、XD、PSD、PDF、画像カンプ、サイトマップ表など</p>
+              </li>
+              <li>
+                <h4 class="c-title fs17 col-gold">ページ数・共通パーツ</h4>
+                <p class="c-text fs15 col-muted">ページ数、共通パーツ、機能、ページごとの差分</p>
+              </li>
+              <li>
+                <h4 class="c-title fs17 col-gold">既存環境・納品形式</h4>
+                <p class="c-text fs15 col-muted">WordPress、既存サイト改修、gulp納品、Git共有、公開作業の有無</p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="u-mt5" aria-labelledby="price-flow-title">
+            <h3 class="c-title fs22 bold" id="price-flow-title">相談後の流れ</h3>
+            <ol class="p-home-price-flow__list">
+              <li>
+                <span class="p-home-price-flow__number">01</span>
+                <div class="p-home-price-flow__body">
+                  <h4 class="c-title fs18">相談</h4>
+                  <p class="c-text fs15 col-muted">内容、希望納期、支給データの有無を確認します。</p>
+                </div>
+              </li>
+              <li>
+                <span class="p-home-price-flow__number">02</span>
+                <div class="p-home-price-flow__body">
+                  <h4 class="c-title fs18">確認・見積もり・ご契約</h4>
+                  <p class="c-text fs15 col-muted">ページ数、既存環境、納品形式を確認し、見積もりを出します。</p>
+                </div>
+              </li>
+              <li>
+                <span class="p-home-price-flow__number">03</span>
+                <div class="p-home-price-flow__body">
+                  <h4 class="c-title fs18">実装</h4>
+                  <p class="c-text fs15 col-muted">不明点が出た場合は、確認事項を整理して対応します。</p>
+                </div>
+              </li>
+              <li>
+                <span class="p-home-price-flow__number">04</span>
+                <div class="p-home-price-flow__body">
+                  <h4 class="c-title fs18">初稿・修正・納品</h4>
+                  <p class="c-text fs15 col-muted">初稿提出後、フィードバックを反映し、指定形式で納品します。</p>
+                </div>
+              </li>
+            </ol>
+          </section>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- section07: contact -->
+    <section class="l-section p80 p-home-profile" id="contact" aria-labelledby="section-contact-title">
+      <div class="l-inner">
+        <div class="c-contents-box pil40 pbl80 u-bg-accent-dark">
+          <!-- heading -->
+          <h2 class="c-title fs40pc fs22sp lh12 center col-white" id="section-contact-title">まずは小規模案件や<br>改修からご相談ください。</h2>
+          <ul class="c-btn-list center u-gap20 u-mt40">
+            <li><a href="mailto:contact@nino-code.com" class="c-btn grad-warm contact">メールで相談する</a></li>
+            <li><a href="https://www.lancers.jp/profile/noniii" target="_blank" rel="noopener" class="c-btn outline gold contact">ランサーズで相談する</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <!-- section05: contact END -->
+  </div>
+</Layout>

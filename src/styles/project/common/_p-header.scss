@@ -1,0 +1,1017 @@
+@use '../../global' as *;
+//------------------------------------
+//
+//  ヘッダーバー
+//
+//------------------------------------
+//  javascript無効時、設定を固定する
+@media (scripting: none) {
+  .p-header {
+    //background-color: var(--color-white-09);
+    //box-shadow: 0 0 unit(40) 0 var(--shadow02);
+  }
+}
+
+//  印刷時
+@media print {
+  .p-header {
+    translate: 0 0 !important; //  スクロール隠しを解除
+    box-shadow: 0 unit(20) unit(20) 0 var(--color-card-shadow); // 下層ではシャドウの上部が見えてしまうため下にずらす
+
+    //  ホームの場合は背景透過
+    &.is-home {
+      //  ハンバーガー
+      --_hamburger-color-bg: transparent;
+      --_hamburger-color-bar: var(--color-site-accent);
+      //  ヘッダーバー
+      --_header-color-icon: var(--color-font-w);
+      --_header-color-bg: transparent;
+      --_header-color-hover-font: var(--color-font-w);
+      background-color: transparent;
+      box-shadow: unset; //  トップ印刷時はMVのためシャドウなし
+      color: var(--color-font-w);
+    }
+  }
+}
+
+//----------------------------------------
+//  ヘッダーバーの枠
+.p-header {
+  display: flex;
+  width: 100%;
+  height: fit-content;
+
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    translate 0.5s ease;
+  box-shadow: 0 0 unit(20) 0 var(--color-card-shadow);
+  backdrop-filter: blur(10px);
+  background-color: var(--color-white-05);
+
+  @include mq-down() {
+    //  iPhoneのちらつき対策
+    will-change: transform;
+  }
+  //  下層 + ヘッダーの高さを超えていない
+  //  ホーム + スクロールしていない場合は背景透過
+  &.is-home:not(.is-scroll-active):not(.is-open):not(:has([data-has-open='true'])) {
+    @include mq-up() {
+      //  ハンバーガー
+      --_hamburger-color-bg: transparent;
+      --_hamburger-color-bar: var(--color-site-accent);
+      //  ヘッダーバー
+      --_header-color-icon: var(--color-site-text);
+      --_header-color-bg: transparent;
+      --_header-color-hover-font: var(--color-site-accent);
+      background-color: transparent;
+      box-shadow: unset;
+      color: var(--color-site-text);
+      //  各種色変数の調整
+    }
+  }
+
+  //  下スクロール中
+  &.is-scroll-down {
+    //  トップページのMVではない
+    &:not(.is-home:not(.is-scroll-mv-over)):not(.is-page:not(.is-scroll-mv-over)) {
+      translate: 0 -100%;
+    }
+  }
+}
+
+//----------------------------------------
+//  背景( SP時使用 )
+.p-header__bg {
+  position: absolute;
+  width: 100vi;
+  height: 100vb;
+  background-color: var(--shadow03);
+  opacity: 0;
+  z-index: -1;
+  transition:
+    visibility 0.3s ease,
+    opacity 0.3s ease;
+
+  @include mq-up() {
+    display: none;
+  }
+
+  //  普段
+  &:not(.is-open) {
+    pointer-events: none;
+  }
+
+  //  モバイルメニューを開いている
+  &.is-open {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+
+//----------------------------------------
+//  メニュー
+.p-header__nav {
+  width: 100%;
+  height: fit-content;
+  transition:
+    height 0.3s ease-in-out,
+    max-height 0.3s ease-in-out;
+
+  @include mq-down() {
+    display: grid;
+    background-color: var(--_header-color-bg, var(--color-white));
+    transition: background-color 0.3s ease;
+    will-change: transform;
+  }
+  @include mq-up() {
+  display: flex;
+  justify-content: space-between;
+  }
+}
+
+//----------------------------------------
+//  1列目
+.p-header__menu-row01 {
+  width: 100%;
+  z-index: 10;
+
+  @include mq-down() {
+    display: grid;
+  }
+
+  @include mq-up() {
+    min-height: unit(50);
+    background-color: color-mix(in srgb, var(--color-site-accent) 20%, transparent);
+  }
+}
+
+//----------------------------------------
+//  2列目
+.p-header__menu-row02 {
+  z-index: 0;
+  display: flex;
+  flex: 1;
+  justify-content: end;
+}
+
+//----------------------------------------
+//  インナー
+.p-header__inner {
+  display: grid;
+  align-items: center;
+  grid-auto-flow: column; //  横並び
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+
+  @include mq-up() {
+    padding-inline: 0 unit(64);
+  }
+}
+
+.p-header.is-page {
+  background-color: color-mix(in srgb, var(--color-site-bg) 92%, transparent);
+  color: var(--color-site-text);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--color-site-text) 8%, transparent);
+  .p-header__logo,
+  .p-header__menu-title {
+    color: var(--color-site-text);
+  }
+  .p-header__menu-title {
+    @include hover {
+      color: var(--color-site-accent);
+    }
+  }
+  .p-header__inner {
+    @include mq-up() {
+      padding-inline: 0 unit(42);
+    }
+  }
+}
+
+.p-header__inner--row01 {
+  width: fit-content;
+  @include mq-down() {
+    display: contents;
+  }
+}
+
+//----------------------------------------
+//  SP時のバー
+.p-header__sp-bar {
+  @include mq-down() {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: center;
+    min-height: unit(68);
+    width: 100%;
+    padding-left: unit(20);
+  }
+
+  @include mq-up() {
+    display: contents;
+  }
+}
+
+//----------------------------------------
+//  フォーカストラップ
+.p-header__focustrap {
+  width: 0;
+}
+
+//----------------------------------------
+//  ロゴ枠: 内容は浮かすが、枠は行の範囲内に確保
+.p-header__logo {
+  display: grid;
+  place-content: center;
+  z-index: 10;
+  color: var(--color-font-b);
+  @include mq-down() {
+    width: unit(200);
+  }
+
+  @include mq-up() {
+    height: unit(100);
+    width: unit(365);
+  }
+
+  //  枠だけ浮かす
+  .logo-link {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    @include fs(24,null);
+
+    @include mq-down() {
+      margin-right: auto;
+      @include fs(20,null);
+    }
+
+    @include mq-up() {
+      top: 0;
+      width: fit-content;
+      height: fit-content;
+      transition:
+        background-color 0.3s ease;
+    }
+
+    img {
+      margin-block: auto;
+      transition:
+        opacity 0.3s ease;
+    }
+  }
+
+  .logo {
+    transition: margin 0.3s ease;
+
+    @include mq-down() {
+      margin: auto;
+    }
+
+    @include mq-up() {
+      margin: auto auto auto 10%;
+    }
+  }
+
+  //  サイトタイトル
+  .site-title {
+    position: relative;
+    bottom: unit(0);
+  }
+}
+
+.p-header.is-home:not(.is-scroll-active):not(.is-open):not(:has([data-has-open='true'])) {
+  --_hamburger-color-bg: var(--color-site-accent);
+  --_hamburger-color-bar: var(--color-font-w);
+  .p-header__logo,
+  .p-header__menu-title {
+    color: var(--color-site-text);
+  }
+}
+
+.p-header.is-home {
+  --_hamburger-color-bg: var(--color-site-accent);
+  --_hamburger-color-bar: var(--color-font-w);
+  --_header-color-hover-font: var(--color-site-accent);
+}
+
+//  Web時：スクロールしていない / ホームのMVにいる時
+@media screen {
+  .p-header.is-home:not(.is-scroll-active):not(:has([data-has-open='true'])) {
+    .p-header__logo {
+      .logo-link {
+        @include mq-down() {
+          background-color: transparent;
+        }
+      }
+
+      .logo {
+        @include mq-down() {
+          margin: auto;
+        }
+      }
+    }
+  }
+
+  //  ホームスクロール
+  //.p-header.is-home.is-scroll-active, //  デザインにずれがあっても動かない方がよい
+  //  下層
+  .p-header.is-page {
+    .logo-link {
+      img {
+        @include mq-up() {
+          width: unit(268);
+        }
+      }
+    }
+  }
+}
+
+//  印刷時: ホームなら無条件で適用
+@media print {
+  .p-header.is-home {
+    .p-header__logo {
+      .logo-link {
+        @include mq-down() {
+          background-color: transparent !important;
+        }
+
+        @include mq-up() {
+          width: unit(365) !important;
+          height: unit(100) !important;
+          border-bottom-right-radius: unit(56) !important;
+        }
+      }
+
+      .logo {
+        @include mq-down() {
+          margin: auto !important;
+        }
+      }
+    }
+  }
+}
+
+//----------------------------------------
+//  ハンバーガー
+.p-header__hamburger {
+  @include mq-down() {
+    display: grid;
+    justify-self: end;
+  }
+
+  @include mq-up() {
+    display: none;
+  }
+}
+
+//----------------------------------------
+//  SP時のハンバーガーメニューの大枠
+.p-header__sp-menu {
+
+  //  PC時はなし
+  @include mq-up() {
+    display: contents;
+  }
+}
+
+//  開いていない
+.p-header:not(.is-open) {
+  .p-header__sp-menu {
+    @include mq-down() {
+      max-height: 0; //  1px白い線が見えてしまうため隠す
+    }
+  }
+}
+
+//  開いている
+.p-header.is-open {
+  .p-header__sp-menu {
+    display: grid;
+    max-height: calc(100dvh - unit(var(--header-height)));
+    overflow-y: auto;
+  }
+}
+
+//----------------------------------------
+//  SP時のハンバーガーメニューの中身
+.p-header__sp-menu-content {
+
+  //  PC時はなし
+  @include mq-down() {
+    border-top: unit(1) solid var(--color-site-border);
+  }
+
+  @include mq-up() {
+    display: contents;
+  }
+}
+
+//  SP時：開いていない
+.p-header:not(.is-open) {
+  .p-header__sp-menu-content {
+    @include mq-down() {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: -1;
+    }
+  }
+}
+
+//  SP時：開いている
+.p-header.is-open {
+  .p-header__sp-menu-content {
+    @include mq-down() {
+      display: grid;
+      will-change: transform;
+    }
+  }
+}
+
+//----------------------------------------
+//  メニュー
+.p-header__menu-list {
+  width: 100%;
+  transition: height 0.3s ease;
+
+  @include mq-down() {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  @include mq-up() {
+    margin-left: auto;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    //  リスト全体かliに付けるフラグ
+    .gap20,
+    &.gap20 {
+      gap: unit(20);
+    }
+
+    .gap30,
+    &.gap30 {
+      gap: unit(30);
+    }
+
+    .gap40,
+    &.gap40 {
+      gap: unit(40);
+    }
+
+    .gap50,
+    &.gap50 {
+      gap: unit(50);
+    }
+
+    &.gap--row2 {
+      gap: 1.9%; // 固定値ではなく割合でなるべく貫通しないように
+    }
+  }
+
+  //  開閉反応(<details>)
+  //  リストの中に一つでもメガメニューopenがある場合、
+  //  js-details-wrap に data-has-open="true" が付与される
+  &[data-has-open='true'] {
+    .p-header__mega-menu-content {
+      @include mq-up() {
+        margin-top: unit(0) !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  //  一つも開いていない
+  &:not([data-has-open='true']) {
+    .p-header__mega-menu-content {
+      @include mq-up() {
+        opacity: 0 !important;
+      }
+    }
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+
+    @include mq-down() {
+      width: 100%;
+    }
+
+    &.box {
+      @include mq-down() {
+        width: 100%;
+        min-height: unit(60);
+      }
+    }
+
+    &.link {
+      @include mq-up() {
+        min-height: unit(100);
+      }
+    }
+  }
+}
+
+.p-header.is-open {
+  .p-header__menu-list {
+    @include mq-down() {
+      height: 100%;
+    }
+  }
+}
+
+//----------------------------------------
+//  メガメニュー
+.p-header__mega-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+
+  @include mq-down() {
+    min-height: unit(60);
+    width: 100%;
+    background-color: var(--color-white);
+  }
+
+  @include mq-up() {
+    min-height: unit(60);
+  }
+
+  //  アイコン
+  .icon {
+    @include mq-down() {
+      margin-inline: auto unit(4);
+      margin-top: unit(2);
+    }
+  }
+
+  //  開閉反応(<details>)
+  &[data-open] {
+    .icon {
+      @include mq-down() {
+        rotate: -180deg;
+      }
+    }
+  }
+}
+
+//- - - - - - - - - - - - - - - - - - - -
+//  JavaScript無効時のメガメニュー展開
+@media (scripting: none) {
+  .p-header__mega-menu {
+    //  開閉反応(<details>本来のopen)
+    &[open] {
+      .icon {
+        @include mq-down() {
+          rotate: -180deg;
+        }
+      }
+    }
+  }
+}
+
+//  ホバー反応(<div>)
+.p-header__mega-menu--hover {
+  .p-header__mega-menu-content {
+    @include mq-up() {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  @include hover {
+    .p-header__mega-menu-content {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+//  タイトル
+.p-header__menu-title {
+  display: flex;
+  flex-grow: 1; //  縦のばし
+  justify-items: center;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: pointer;
+  overflow: clip;
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease;
+  will-change: transform;
+  transform: translateZ(0);
+  color: var(--color-font-b);
+  @include fs(16, 20, var(--fw-bold));
+  @include ls(50);
+
+  @include mq-down() {
+    padding-inline: unit(20);
+    min-height: unit(60);
+    border-bottom: unit(1) solid var(--color-site-border);
+  }
+
+  @include mq-up() {
+    min-height: unit(40);
+    margin-block: unit(15);
+  }
+
+  @include hover {
+    //  SP時のホバー
+    color: var(--_header-color-hover-font, var(--color-site-accent));
+
+    .icon {
+      translate: 0 unit(1);
+    }
+  }
+
+  //  開閉アニメーション
+  &[aria-expanded='true'] {
+    .icon {
+      @include mq-down() {
+        rotate: -180deg;
+      }
+    }
+  }
+
+  //  スライドアニメーション用
+  .slide {
+    --_anim-slide-y: calc(5 * var(--unit));
+    display: block;
+    height: fit-content;
+    transition: color 0.6s ease;
+  }
+
+  //  アイコン
+  .icon {
+    will-change: transform;
+    background-color: var(--_header-color-icon, var(--color-site-accent));
+
+    @include mq-up() {
+      margin-left: unit(5);
+      //margin-right: unit(8); //  あった方がoutlineは自然
+      margin-top: unit(4);
+    }
+  }
+}
+
+//  抜けた時
+.p-header__menu-title.is-leave {
+  .slide {
+    @include mq-up() {
+      animation: anim-leave-down 0.3s ease-in-out both;
+    }
+  }
+}
+
+.p-header__menu-title.is-hover {
+  .slide {
+    @include mq-up() {
+      animation: anim-re-enter-up 0.3s ease-in-out both;
+      color: var(--color-site-accent);
+    }
+  }
+}
+
+//----------------------------------------
+//  開閉コンテンツ
+.p-header__mega-menu-content {
+  display: flex;
+  width: 100%;
+  transition:
+    margin-top 0.3s ease,
+    opacity 0.3s ease !important;
+
+  @media print {
+    display: none;
+  }
+
+  //  SP時アコーディオン
+  @include mq-down() {
+    color: var(--color-font-b);
+  }
+
+  //  PC時メガメニュー
+  @include mq-up() {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: -1; //  ロゴより下
+    background-color: var(--color-white);
+    color: var(--color-font-b);
+    border-top: unit(1) solid var(--color-site-border);
+    box-shadow: 0 unit(10) unit(10) 0 var(--color-card-shadow);
+    width: 100vw; //safari対策
+    //  detailsの開閉アニメーションをしない場合の固定
+    max-height: unset !important;
+    //    height: fit-content;
+  }
+
+  .inner {
+    position: relative;
+    width: 100%;
+
+    @include mq-down() {
+      display: grid;
+    }
+
+    @include mq-up() {
+      justify-content: start;
+      max-width: unit(1316);
+      margin-inline: auto;
+      padding-inline: unit(20);
+      padding-block: unit(39) unit(41);
+    }
+
+    //  リンク全般
+    a {
+      display: block;
+      position: relative;
+      transition:
+        color 0.3s ease,
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+
+      @include mq-down() {
+        display: flex;
+        width: 100%;
+        padding-inline: unit(30);
+        padding-block: unit(10);
+        border-bottom: unit(1) solid var(--color-site-border);
+        align-items: center;
+      }
+
+      @include hover {
+        color: var(--color-site-accent);
+
+        .icon {
+          --_icon-circle-active-color: var(--color-site-accent);
+          --_icon-arrow-active-color: var(--color-white);
+        }
+      }
+
+      //  右矢印
+      &:after {
+        position: absolute;
+        top: 50%;
+        right: unit(24);
+        width: unit(13);
+        height: unit(8);
+        translate: 0% -50%;
+        background-size: 100% 100%;
+        align-self: center;
+        background-image: var(--icon-angle-arrow-down-b);
+        rotate: -90deg;
+
+        @include mq-down() {
+          content: '';
+        }
+      }
+    }
+
+    //  タイトルリンク
+    .row-title {
+      @include ls(0);
+
+      @include mq-down() {
+        @include fs(16, 32, var(--fw-bold));
+      }
+
+      @include mq-up() {
+        width: fit-content;
+        @include fs(22, 40, var(--fw-bold));
+      }
+    }
+
+    //  リストリンク(ul)
+    .row-list {
+      --_col-count: 3; //  4列
+      --_col-item-per: calc(100% / var(--_col-count)); //  1項目の幅
+      --_col-item-gap: (100 / var(--_col-count)) * (var(--_col-count) - 1) / var(--_col-count) * var(--unit); //  1項目のギャップ
+      //  1項目の計算幅
+      --_item-width: calc(var(--_col-item-per) - var(--_col-item-gap));
+      display: flex;
+      flex-wrap: wrap;
+
+      @include ls(0);
+
+      @include mq-down() {
+        display: grid;
+        @include fs(16, 30, var(--fw-regular));
+      }
+
+      @include mq-up() {
+        display: grid;
+        //  テキスト1列、画像2列にするため、6分割で
+        //  項目種類ごとにグリッドやら割り振る
+        grid-template-columns: repeat(6, 1fr);
+
+        gap: unit(18) min(2%, unit(25)); // 2%の最大値を25pxに制限
+        @include fs(16, 40, var(--fw-bold));
+      }
+
+      //  1項目
+      li {
+        //  パターン：通常
+        @include mq-up() {
+          grid-column: span 2;
+        }
+
+        //  パターン：タイトル用
+        &.group-title {
+          @include mq-up() {
+            grid-column: 1 / -1;
+            width: 100%; //  liは100%
+            background-color: unset;
+            margin-bottom: unit(4);
+
+            a {
+              @include fs(24, 32, var(--fw-bold));
+              padding-block: unit(10);
+              width: fit-content; //  内容は左詰め
+            }
+
+            // 左にアイコン、右に余白
+            .icon.circle {
+              margin-right: unit(10);
+              background-color: var(--_icon-circle-active-color, var(--color-site-accent));
+              top: unit(2);
+
+              &:after {
+                background-color: var(--_icon-arrow-active-color, var(--color-white));
+              }
+            }
+          }
+
+          @include hover {
+            .icon {
+              @include mq-up() {
+                --_icon-arrow-active-color: var(--color-white);
+              }
+            }
+          }
+        }
+      }
+
+      // li
+
+      .child {
+        //  画像ある場合は全幅確保する
+        &:has(img) {
+          @include mq-up() {
+            grid-column: span 3;
+          }
+        }
+      }
+
+      //  項目内のリンク
+      .child a {
+        @include mq-up() {
+          padding-inline: unit(26) unit(17);
+          padding-block: unit(15);
+          border-radius: unit(5);
+          background-color: var(--color-site-surface-soft);
+          height: 100%;
+        }
+
+        //  画像ある場合に左余白を詰める
+        &:has(img) {
+          @include mq-up() {
+            padding-inline: unit(10) unit(15);
+            padding-block: unit(10);
+          }
+        }
+
+        img {
+          border-radius: unit(5);
+
+          @include mq-down() {
+            margin-right: unit(15);
+            width: unit(70);
+            height: unit(70);
+          }
+
+          @include mq-up() {
+            margin-right: unit(20);
+            width: unit(120);
+            height: unit(120);
+          }
+        }
+
+        @include hover {
+          @include mq-up() {
+            color: var(--color-font-w);
+            background-color: var(--color-site-accent);
+          }
+
+          .icon {
+            @include mq-up() {
+              --_icon-arrow-active-color: var(--color-white);
+            }
+          }
+
+          &:not([target='_blank']) {
+            .icon {
+              overflow: clip;
+
+              @include mq-up() {
+                --_anim-arrow-slide-x: calc(25 * var(--unit));
+                --_icon-animation-hover: anim-icon-arrow-re-enter-right 0.4s var(--ease-icon) both;
+
+                &:after {
+                  animation: var(--_icon-animation-hover);
+                }
+              }
+            }
+          }
+
+        }
+      }
+
+      //  aの共通処理
+      a {
+        @include mq-up() {
+          display: flex;
+          position: relative;
+          width: 100%;
+          align-items: center;
+        }
+      }
+
+      //------------------------------------
+      //  アイコン
+      a[target='_blank'] {
+        .icon {
+          --_icon-image: url('/assets/img/common/icon/icon-external-b.svg');
+
+          &:after {
+            width: unit(16);
+            height: unit(16);
+            rotate: 0deg;
+          }
+        }
+      }
+
+      a:has(img) {
+        .icon {
+          &:after {
+            width: unit(24);
+            height: unit(14);
+          }
+        }
+      }
+
+      //  「＞」(PC時のみ)
+      //  固有のアイコン表示
+      .icon {
+        @include mq-down() {
+          display: none;
+        }
+
+        @include mq-up() {
+          margin-left: auto;
+          display: grid;
+          place-content: center;
+          place-items: center;
+          position: relative;
+          width: unit(30);
+          height: unit(30);
+          border-radius: var(--infinity);
+          transition: background-color 0.3s ease;
+
+          //  右矢印（三角形）
+          &:after {
+            content: '';
+            position: absolute;
+            display: grid;
+            //left: 0;
+            width: unit(11);
+            height: unit(7);
+            align-self: center;
+            background-color: var(--_icon-arrow-active-color, var(--color-site-accent));
+            mask-image: var(--_icon-image, var(--icon-angle-arrow-down-b));
+            mask-size: 100% 100%;
+            rotate: -90deg;
+            transition: background-color 0.3s ease;
+          }
+        }
+      }
+
+      // .icon.circle
+    }
+
+    // .row-list
+  }
+
+  // inner
+}

@@ -1,0 +1,455 @@
+@use "../../global" as *;
+
+//------------------------------------
+//
+//  javascript関連アニメーションパーツ
+//
+//  基本アニメーション
+//
+//  - jsとcssの責務は分けるべきなので、
+//    jsが関与するパーツはできる限りトリガーのjs-と、デザインのp-に分けている。
+//
+//  - 汎用アニメーションはデザインCSSと目的が違う点や
+//    jsトリガーとセットで使用するのが基本のため、接頭辞をjs-にしている。
+//
+//  - js-scroll-anim js-anim-fade--upのように
+//    分離してしまうと逆に管理が煩雑になり記述ミスも増えるため、一体化した方が合理的である。
+//
+//  - jsを使用するアニメーションは基本スクロールトリガーなのでscrollを省く
+//    結果的にjs-anim-fade--upのようになっている。
+//
+//------------------------------------
+//  印刷時
+@media print {
+  [class*="js-anim-"] {
+    opacity: 1 !important; //  透過解除
+    translate: 0 !important; //  位置固定
+    scale: var(--_end-scale, 1) !important; // スケール固定
+  }
+}
+
+//  (prefers-reduced-motion: no-preference) アニメーションの削減を希望していない場合
+//  (scripting: enabled) JavaScriptが有効な場合
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  //  js-anim-activeはフラグのみなのでtransitionを使用しない( 相手の演出側で指定する )
+  [class*="js-anim-"] {
+    //  transition : opacity 0.3s の個別設定
+    &:not(.is-anim-active):not(.is-active) {
+      transition-property: var(--_property);
+      transition-timing-function: var(--_easing);
+    }
+    //  フォーカスがなければ
+    &:not(:focus-within) {
+      transition-duration: var(--_duration);
+    }
+    //  待機、アニメーション中は判定を無効にする
+    //  ホバーアニメーションとの競合回避
+    //  上記だとホバー処理がある要素で、画面に入って付与されるまでの1フレームにカーソルが乗っているとアニメーションが中断されてしまう
+    //  そのためend以外は判定を無効にする
+    &:not(.is-anim-active):not(.is-active) {
+      pointer-events: none !important;
+    }
+  }
+
+  //  命名規則
+  //  パターン--バリエーション
+  //  と省略名を用意せず"clip--"までを真名とする。
+  //  "--"で分けることでパターン名が被る場合に不要な処理が発生しないようにする。
+  // ======================================================
+  // クリップパス系
+  // ------------------------------------------------------
+  //  clipで始まる値がセットされている場合( clip-with..等 )
+  [class*="js-anim-clip--"] {
+    --_property: clip-path;
+    --_easing: cubic-bezier(0.19, 1, 0.22, 1);
+    --_duration: 1s;
+
+    --_start-opacity: 0;
+    --_starting-path: inset(0% 100% 0% 0%);
+    --_end-path: inset(0 0 0 0);
+
+    //  アニメーション開始前
+    &:not(.is-anim-active) {
+      opacity: var(--_start-opacity);
+      clip-path: var(--_starting-path);
+      transition: none; //  最初はアニメーションさせない
+    }
+    &.is-anim-active {
+      clip-path: var(--_end-path);
+    }
+  }
+
+  //  上
+  .js-anim-clip--up {
+    --_starting-path: inset(100% 0 0% 0);
+  }
+  //  下へ
+  .js-anim-clip--down {
+    --_starting-path: inset(0 0 100% 0);
+  }
+  //  右
+  .js-anim-clip--right {
+    --_starting-path: inset(0 100% 0 0);
+  }
+  //  左へ
+  .js-anim-clip--left {
+    --_starting-path: inset(0 0 0% 100%);
+  }
+
+  // ======================================================
+  // クリップパス-スライド系
+  //  区切られた枠の中でスライダーのようなスライドをする
+  //  ※これは枠を設けてoverflow:clipとスライドした方が良いと思われる
+  // ------------------------------------------------------
+  [class*="js-anim-clip-slide--"] {
+    --_property: clip-path, translate;
+    --_easing: cubic-bezier(0.19, 1, 0.22, 1);
+    --_duration: 1s;
+
+    --_starting-path: inset(0% 100% 0% 0%);
+    --_end-path: inset(0 0 0 0);
+
+    --_delay: 0;
+    --_start-x: 0;
+    --_start-y: 0;
+    --_end-x: 0;
+    --_end-y: 0;
+
+    transition-delay: var(--_delay);
+
+    //  アニメーション開始前
+    &:not(.is-anim-active) {
+      translate: var(--_start-x) var(--_start-y);
+      clip-path: var(--_starting-path);
+      translate: var(--_start-x) var(--_start-y);
+    }
+    &.is-anim-active {
+      clip-path: var(--_end-path);
+      translate: var(--_end-x) var(--_end-y);
+    }
+  }
+
+  //  上
+  .js-anim-clip-slide--up {
+    --_starting-path: inset(0 0 100% 0); //  アニメーションを上下逆に
+    --_start-y: 100%;
+  }
+  //  下へ
+  .js-anim-clip-slide--down {
+    --_starting-path: inset(100% 0 0% 0);
+    --_start-y: -100%;
+  }
+  //  右
+  .js-anim-clip-slide--right {
+    --_starting-path: inset(0 0 0% 100%);
+    --_start-x: -100%;
+  }
+  //  左へ
+  .js-anim-clip-slide--left {
+    --_starting-path: inset(0 100% 0 0);
+    --_start-x: 100%;
+  }
+
+  // ======================================================
+  // クリップパス-スライド-フェード系
+  // ------------------------------------------------------
+  [class*="js-anim-clip-slide-fade--"] {
+    --_property: clip-path, opacity, translate;
+    --_easing: cubic-bezier(0.19, 1, 0.22, 1);
+    --_duration: 1s;
+
+    --_start-opacity: 0;
+    --_starting-path: inset(0% 100% 0% 0%);
+    --_end-path: inset(0 0 0 0);
+
+    --_delay: 0;
+    --_start-x: 0;
+    --_start-y: 0;
+    --_end-x: 0;
+    --_end-y: 0;
+
+    transition-delay: var(--_delay);
+
+    //  アニメーション開始前
+    &:not(.is-anim-active) {
+      clip-path: var(--_starting-path);
+      translate: var(--_start-x) var(--_start-y);
+      opacity: var(--_start-opacity);
+      transition: none; //  最初はアニメーションさせない
+    }
+    &.is-anim-active {
+      clip-path: var(--_end-path);
+      translate: var(--_end-x) var(--_end-y);
+      opacity: 1;
+    }
+  }
+
+  //  上
+  .js-anim-clip-slide-fade--up {
+    --_starting-path: inset(0 0 100% 0); //  アニメーションを上下逆に
+    --_start-y: 100%; //calc( 40 * var(--unit) );
+  }
+  //  下へ
+  .js-anim-clip-slide-fade--down {
+    --_starting-path: inset(100% 0 0% 0);
+    --_start-y: -100%; //calc( -40 * var(--unit) );
+  }
+  //  右
+  .js-anim-clip-slide-fade--right {
+    --_starting-path: inset(0 0 0% 100%);
+    --_start-x: -100%; //calc( -40 * var(--unit) );
+  }
+  //  左へ
+  .js-anim-clip-slide-fade--left {
+    --_starting-path: inset(0 100% 0 0);
+    --_start-x: 100%; //calc( 40 * var(--unit) );
+  }
+
+  // ======================================================
+  // オーバーレイ
+  // ------------------------------------------------------
+  [class*="js-anim-clip-overlay--"] {
+    --_property: opacity, translate, clip-path, inset;
+    --_easing: cubic-bezier(0.19, 1, 0.22, 1);
+    --_duration: 1s; //  デフォルトの秒数
+
+    --_start-opacity: 0;
+    --_starting-path: inset(0% 100% 0% 0%);
+    --_end-path: inset(0 0 0 0);
+
+    --_after-starting-path: var(--_starting-path);
+    --_after-end-path: var(--_end-path);
+
+    --_overlay-color: var(--color-black);
+    --_overlay-duration: var(--_duration);
+    --_overlay-delay: calc(var(--_overlay-duration) / 2);
+
+    position: relative;
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background-color: var(--_overlay-color);
+      transition-timing-function: var(--_easing);
+      transition-property: var(--_property);
+      //  アニメーションをvar(--starting-path)のみで完結させるために疑似要素を180度回転
+      //  本体の逆の動きをする
+      rotate: 180deg;
+    }
+
+    &:not(:focus-within)::after {
+      transition-duration: var(--_duration);
+      transition-delay: calc(var(--_duration) / 2);
+    }
+
+    //  アニメーション開始前
+    &:not(.is-anim-active) {
+      transition: none; //  最初はアニメーションさせない
+      clip-path: var(--_starting-path);
+      &::after {
+        clip-path: var(--_after-end-path);
+      }
+    }
+    &.is-anim-active {
+      clip-path: var(--_end-path);
+      &::after {
+        clip-path: var(--_after-starting-path);
+      }
+    }
+  }
+  //  上
+  .js-anim-clip-overlay--up {
+    --_starting-path: inset(100% 0 0% 0);
+  }
+  //  下へ
+  .js-anim-clip-overlay--down {
+    --_starting-path: inset(0 0 100% 0);
+  }
+  //  右
+  .js-anim-clip-overlay--right {
+    --_starting-path: inset(0 100% 0 0);
+  }
+  //  左へ
+  .js-anim-clip-overlay--left {
+    --_starting-path: inset(0 0 0% 100%);
+  }
+  .js-anim-clip-overlay--on {
+    --_starting-path: inset(100%);
+    --_duration: 1.5s;
+    z-index: 1;
+  }
+
+  // ======================================================
+  // フェードイン系
+  //  fadeは基本inなので、fade-inは省く
+  // ------------------------------------------------------
+  [class*="js-anim-fade--"] {
+    --_property: opacity, translate;
+    --_easing: ease; //-in-out;
+    --_duration: 0.7s; //  デフォルトの秒数
+    --_delay: 0;
+    --_start-x: 0;
+    --_start-y: 0;
+    --_end-x: 0;
+    --_end-y: 0;
+
+    transition-delay: var(--_delay);
+    //  アニメーション開始前
+    &:not(.is-anim-active) {
+      opacity: 0;
+      translate: var(--_start-x) var(--_start-y);
+    }
+    &.is-anim-active {
+      translate: var(--_end-x) var(--_end-y);
+    }
+  }
+
+  // フェード : その場
+  .js-anim-fade--on {
+    --_duration: 1.2s; //  少しゆっくり
+  }
+  // フェード : アップ
+  .js-anim-fade--up {
+    --_start-y: calc(20 * var(--unit));
+  }
+  // フェード : ダウン
+  .js-anim-fade--down {
+    --_start-y: calc(-20 * var(--unit));
+  }
+  // フェード : 左
+  .js-anim-fade--left {
+    --_start-x: calc(20 * var(--unit));
+  }
+  .js-anim-fade--left-pc-on-sp {
+    @include mq-up() {
+      --_start-x: calc(20 * var(--unit));
+    }
+  }
+  // フェード : 右
+  .js-anim-fade--right {
+    --_start-x: calc(-20 * var(--unit));
+  }
+  .js-anim-fade--right-pc-on-sp {
+    @include mq-up() {
+      --_start-x: calc(-20 * var(--unit));
+    }
+  }
+
+  // フェード : 左下
+  .js-anim-fade--left-down {
+    --_start-x: calc(30 * var(--unit));
+    --_start-y: calc(-30 * var(--unit));
+  }
+
+  // ======================================================
+  //  ムーブ系
+  //  透過なしで移動のみ
+  // ------------------------------------------------------
+  [class*="js-anim-move--"] {
+    --_property: opacity, translate;
+    --_easing: ease-in-out;
+    --_duration: 1.5s; //  デフォルトの秒数
+    --_delay: 0;
+    --_start-x: 0;
+    --_start-y: 0;
+    --_end-x: 0;
+    --_end-y: 0;
+
+    transition-delay: var(--_delay);
+    //  アニメーション開始前
+    &:not(.is-anim-active) {
+      opacity: 1;
+      translate: var(--_start-x) var(--_start-y);
+    }
+    &.is-anim-active {
+      translate: var(--_end-x) var(--_end-y);
+    }
+  }
+
+  // ムーブ : その場
+  .js-anim-move--on {
+  }
+  // ムーブ : アップ
+  .js-anim-move--up {
+    --_start-y: calc(20 * var(--unit));
+  }
+  // ムーブ : ダウン
+  .js-anim-move--down {
+    --_start-y: calc(-20 * var(--unit));
+  }
+  // ムーブ : 左
+  .js-anim-move--left {
+    --_start-x: calc(20 * var(--unit));
+  }
+  // ムーブ : 右
+  .js-anim-move--right {
+    --_start-x: calc(-20 * var(--unit));
+  }
+
+  // ======================================================
+  // スケールイン
+  //  通常名--inが拡大から通常へとする
+  // ------------------------------------------------------
+  [class*="js-anim-scale-in"] {
+    --_property: scale, opacity;
+    --_easing: var(--ease-default);
+    --_duration: 2s;
+    --_starting-scale: 1.1;
+    --_end-scale: 1;
+    --_start-opacity: 0;
+    --_end-opacity: 1;
+
+    transition-delay: var(--_delay, 0);
+    //  アニメーション開始前
+    &:not(.is-anim-active) {
+//      transition: none;
+      //  最初はアニメーションさせない
+      scale: var(--_starting-scale);
+      opacity: var(--_start-opacity);
+    }
+    &.is-anim-active {
+      scale: var(--_end-scale);
+    }
+  }
+
+  //  縮小→通常
+  .js-anim-scale-in--s {
+    --_start-opacity: 0;
+    --_starting-scale: 0.7;
+    --_duration: 0.5s;
+    --_easing: none;
+  }
+  .js-anim-scale-in--s-slow {
+    --_start-opacity: 0;
+    --_starting-scale: 0.7;
+    --_duration: 1s;
+    --_easing: none;
+  }
+
+  //  ゆっくり
+  .js-anim-scale-in--slow {
+    --_start-opacity: 0;
+    --_starting-scale: 1.05;
+    --_duration: 5s;
+  }
+
+  //  1.2
+  .js-anim-scale-in--m {
+    --_start-opacity: 0;
+    --_starting-scale: 1.2;
+  }
+
+  // ======================================================
+  // 回転系
+  //  円パーツで使用したりする
+  // ------------------------------------------------------
+  [class*="before-rotate--"] {
+  }
+  // 右回転
+  .js-before-rotate--right {
+  }
+  // 左回転
+  .js-before-rotate--left {
+  }
+} // @media (prefers-reduced-motion: no-preference) and (scripting: enabled)

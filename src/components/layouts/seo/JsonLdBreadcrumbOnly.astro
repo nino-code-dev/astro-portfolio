@@ -1,0 +1,22 @@
+---
+//------------------------------------------------------------------------
+//
+//  JSON-LD（パンくず専用ラッパー）
+//  Simple Layout などで「パンくずだけ欲しい」場合に使用。
+//
+//------------------------------------------------------------------------
+import JsonLdBreadcrumb from './JsonLdBreadcrumb.astro';
+
+const {
+  slug,
+  items = undefined,
+  // 末端だけ記事タイトルにしたい場合に使用（任意）
+  articleTitle = undefined,
+  // 明示的にベースURLを渡したい場合（省略時は JsonLdBreadcrumb 側で GET_SITEINFO を使用）
+  baseUrl = undefined,
+} = Astro.props;
+---
+{(slug || (Array.isArray(items) && items.length > 0)) && (
+  <JsonLdBreadcrumb items={items} slug={slug} articleTitle={articleTitle} baseUrl={baseUrl} />
+)}
+

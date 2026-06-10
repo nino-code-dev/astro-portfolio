@@ -1,0 +1,89 @@
+---
+//------------------------------------------------------------------------
+//
+//  メインビジュアル
+//  ページ
+//  背景に幅一杯のイメージ画像を扱うもの
+//
+//------------------------------------------------------------------------
+import { Img } from '@components/index';
+
+
+export interface Props {
+    slug?: string; // 現在のページ名
+    isArticle?: boolean; // 記事か
+    mvclass?: string; //  mv追加クラス
+    title?: string; // 指定タイトル
+    lang?: string; // 言語
+    desc?: string;  //  指定文言
+    useSlug?: boolean;  //  スラッグ表示を使用するか
+    useFilter?: boolean; // フィルタ使用するか
+    useImage?: boolean; // 背景画像を使用するか
+    useDefault?: boolean; // 画像がない場合に使用。デフォルトMV画像を使用するか(section/mv/mv_bg_default@2.jpg)
+    suben?: string; // 英語サブタイトルを直接指定
+    imageFolder?: string; // 画像フォルダを直接指定
+    imageName?: string; // 画像名を直接指定
+}
+const { slug="service", isArticle=false, mvclass=null, title=null, lang="ja", useSlug=true, useFilter=false, useImage=true, useDefault=false, suben=null, imageFolder=null, imageName=null } = Astro.props;
+//console.log(`[page data]${slug}`);
+//console.log(pagedata);
+
+//  mv用のテキストがあれば優先使用、なければページタイトルを使用
+//  タイトルはprops.titleがあれば最優先で使用、なければmvtitle→titleの順で使用
+const pi_title = title && title !== ''
+  ? title
+  : slug;
+const pi_slug = slug;
+//  mv用のテキストがあれば優先使用、なければページタイトルを使用
+const pi_sub_en = suben && suben !== ''
+  ? suben
+  : pi_slug;
+// 画像パスの設定: useDefaultがtrueの場合は固定のデフォルト画像を使用
+let img_f = imageFolder ? imageFolder : (useDefault ? "section/mv" : `page/${slug}`);
+let img_n = imageName ? imageName : (useDefault ? "mv_bg_default" : "mv_bg");
+let mv_class = "mv"+(mvclass? " "+mvclass: "" )+(useImage ? "" : " is-no-image");
+// ランドマークのユニーク性を保証: slug をベースにした固有 ID 生成
+const uniqueTitleId = `${slug}-mv-title`;
+
+const WrapperTag = 'section';
+const TitleTag = isArticle ? 'p' : 'h1';  //  記事の場合はp、そうでない場合はh1
+const wrapperAttrs = !isArticle ? { 'aria-labelledby': uniqueTitleId } : {};
+const titleId = !isArticle ? uniqueTitleId : undefined;
+---
+<WrapperTag class={`l-section p-mv-page-full-visual js-trigger-mv ${mv_class}`} {...wrapperAttrs}>
+  {useImage ? (
+    <div class="bg l-bg l-bg--image-cover" aria-hidden="true">
+      <figure class="b-image">
+        <Img src={`${img_f}/${img_n}@2x.jpg`} alt="" loading="eager" />
+      </figure>
+    </div>
+  ) : null}
+  {useFilter ? (
+    // useFilterがtrueの場合のみフィルター画像を重ねる
+    <div class="bg l-bg l-bg--image-cover" aria-hidden="true">
+      <figure class="bg-image">
+        <Img src="section/mv/mv_bg_filter@2x.png" alt="" loading="eager" />
+      </figure>
+    </div>
+  ) : null}
+  <div class="l-inner p-mv-page-full-visual__layout">
+    {useSlug ? (
+      // useSlugがtrueの場合のみスラッグ（英語サブタイトル）を表示
+      <p class="mv-sub js-anim-stagger-text--up" data-step-delay="20" set:html={pi_sub_en} lang="en"></p>
+    ) : null}
+    <TitleTag class={`mv-title js-anim-stagger-text--up ${lang === "en" ? " en" : ""}`} id={titleId} data-delay="100" data-step-delay="20" set:html={pi_title}></TitleTag>
+    {Astro.slots.default ? (
+      // slotが存在する場合のみmv-descを表示
+        <slot />
+    ) : (
+      //  空間の調整
+      <div class="mv-desc"></div>
+    )
+    }
+  </div>
+</WrapperTag>
+      {/*
+        <div class="mv-desc c-read js-anim-fade--right" data-delay="200">
+          <slot />
+        </div>
+        */}

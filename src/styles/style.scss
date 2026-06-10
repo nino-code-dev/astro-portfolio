@@ -1,0 +1,10 @@
+// globalは、global>_index.scssで定義
+@charset 'utf-8';
+
+@use "global" as *;
+@use "foundation" as *;
+@use "utility" as *;
+@use "layout" as *;
+@use "component" as *;
+@use "project" as *;
+

@@ -1,0 +1,86 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/detail05 : 記事05
+//
+//----------------------------------------------------------------
+import { Layout, PageBreadCrumb, Img, works } from '@components/index';
+
+//  スラッグ
+const slug = 'works-detail05';
+const work = works.find((w) => w.id === 'work-theme')!;
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: '/works/' },
+  { title: 'WordPressサイト構築', href: null },
+];
+---
+
+<Layout
+  slug={slug}
+  useSwiper={true}
+  title="WordPressサイト構築 | 制作実績 | NINO-CODE"
+  description="WordPressサイト構築の詳細"
+  breadcrumbItems={breadcrumbItems}
+>
+  <!-- page -->
+  <article class="p-page">
+    <div class="l-inner m0sp">
+      <div class="p-works-detail-mv">
+        <div class="visual__image">
+          <Img src="common/pf/work05_01.svg" alt="" class="js-anim-fade-on" data-delay="200" />
+        </div>
+      </div>
+
+      <PageBreadCrumb items={breadcrumbItems} />
+
+      <div class="p-works-detail__left-column">
+        <!-- header -->
+        <header class="p-works-detail-header">
+          <!-- title -->
+          <h1 class="p-works-detail-title">WordPressサイト構築</h1>
+          <p class="c-text u-mt20">公式サイト：<a href="https://www.nexteyes.co.jp/" target="_blank" rel="noopener" class="c-link-text-underline">https://www.nexteyes.co.jp/</a></p>
+          <ul class="p-works-detail-category-list">
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <dl class="p-works-detail-summary">
+            <div>
+              <dt>時期</dt>
+              <dd>{work.period}</dd>
+            </div>
+            <div>
+              <dt>期間</dt>
+              <dd>3週間</dd>
+            </div>
+            <div>
+              <dt>規模</dt>
+              <dd>約15ページ</dd>
+            </div>
+            <div>
+              <dt>担当範囲</dt>
+              <dd>コーディング／一部PHP・WordPress設定</dd>
+            </div>
+            <div>
+              <dt>技術</dt>
+              <dd>HTML / CSS / WordPress / Git</dd>
+            </div>
+          </dl>
+        </header>
+
+        <!-- 本文 -->
+        <section class="p-works-detail-container">
+          <h2 class="p-works-detail-item__title">案件概要</h2>
+          <div class="p-works-detail-body">
+            <p>納品形態として、gitにてコードを共有。テーマはAstraベース。</p>
+            <h3>依頼後の状況に応じた柔軟な対応</h3>
+            <p>ご依頼は「WordPressではあるが、静的コーディングのみ」ということでしたが、記事・一覧等でCMSの機能が絡むため、それをお伝えした上で一部の設定とPHPまで対応。</p>
+            <p>デザインはwebのfigmaで共有されており、ご依頼のディレクター様とエンドクライアントのやりとりで日々調整されていくデザインに対応。<br>随時進捗報告を行いました。</p>
+            <p>
+              なお、納品後も調整が行われていたため、制作時とは一部形が変わっています。
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</Layout>

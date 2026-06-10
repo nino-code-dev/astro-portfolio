@@ -1,0 +1,91 @@
+@use '../../global' as *;
+//------------------------------------
+//
+//  下層ページ
+//  メインビジュアル
+//
+//------------------------------------
+
+//
+//  フルビジュアルMV
+//
+.p-mv-page-full-visual {
+  background-color: var(--color-site-bg-alt);
+
+  &.is-no-image {
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--color-site-accent) 18%, var(--color-site-bg-alt)),
+        color-mix(in srgb, var(--color-site-accent) 8%, var(--color-site-bg))
+      );
+
+    .p-mv-page-full-visual__layout {
+      color: var(--color-site-text);
+    }
+  }
+
+  @include mq-down() {
+    min-height: unit(100);
+  }
+  @include mq-up() {
+    min-height: unit(301);
+  }
+}
+
+.p-mv-page-full-visual__layout {
+  justify-content: start;
+  justify-items: start;
+  align-content: center;
+  color: var(--color-font-b);
+  @include mq-down() {
+    padding-block: unit(40);
+  }
+  //  基本のタイトル
+  .mv-title {
+    position: relative;
+    width: fit-content;
+    @include ls(100);
+    @include mq-down() {
+      @include fsv(28, 40, bold);
+    }
+    @include mq-up() {
+      @include fsv(50, 60, bold);
+    }
+    //  center所持
+    &:has(.center) {
+      text-align: center;
+    }
+    //  英語版
+    &.en {
+      text-transform: uppercase; //  英語の大文字化
+    }
+  }
+  //  スラッグ・英字
+  .mv-sub {
+    text-transform: uppercase;
+    font-family: var(--Font-Jost);
+    color: var(--color-site-accent);
+    @include ls(0);
+    @include mq-down() {
+      padding-bottom: unit(8);
+      @include fs(12, 12, var(--fw-medium));
+    }
+    @include mq-up() {
+      padding-bottom: unit(25);
+      @include fs(22, 22, var(--fw-medium));
+    }
+  }
+  //  説明文
+  .mv-desc {
+    @include mq-down() {
+      padding-top: unit(8);
+    }
+    @include mq-up() {
+      padding-top: unit(25);
+      max-width: unit(580);
+      @include fs(18, 36);
+      @include ls(0);
+    }
+  }
+}

@@ -1,0 +1,487 @@
+@use '../../global' as *;
+//------------------------------------
+//
+//  トップページ
+//
+//------------------------------------
+//  ページ最上位ラッパー
+.p-home {
+  overflow: clip;
+
+  //  （直下セクションを交互背景にする）
+  > *:nth-child(odd) {
+    background-color: var(--color-site-bg);
+  }
+  > *:nth-child(even) {
+    background-color: var(--color-site-bg-alt);
+  }
+}
+
+//========================================
+//  MV（メインビジュアル）
+//========================================
+//  MV領域（高さ・中央寄せ）
+.p-home-mv {
+  display: grid;
+  align-content: center;
+  width: 100%;
+  height: 55dvh;
+  min-height: unit(580);
+  //max-height: unit(600);
+  row-gap: unit(60);
+  overflow: clip;
+
+  @include mq-up() {
+    row-gap: unit(75);
+  }
+
+  @include mq-down() {
+    min-height: auto;
+    height: auto;
+    padding-block: unit(120) unit(72);
+  }
+}
+
+//  MV内側：最大幅・左右余白
+.p-home-mv__container {
+  display: grid;
+  align-items: center;
+  gap: unit(60);
+  width: 100%;
+  max-width: unit(1600);
+  height: fit-content;
+  margin-inline: auto;
+  padding-inline: unit(64);
+
+  @include mq-up() {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @include mq-down() {
+    padding-inline: unit(20);
+  }
+}
+
+//  MVテキスト塊
+.p-home-mv__contents {
+  display: grid;
+  width: 100%;
+  max-width: unit(880);
+  height: fit-content;
+  margin-block: auto;
+  color: var(--color-site-text);
+}
+
+//  MV小見出し（アクセント色）
+.p-home-mv__subtitle {
+  color: var(--color-site-accent);
+  @include fsv(16, 16, bold);
+}
+
+//  MV大見出し
+.p-home-mv__title {
+  margin-top: unit(20);
+  color: var(--color-site-text);
+  @include fsv(72, 86, bold);
+  @include ls(0);
+
+  @include mq-down() {
+    font-size: unit(39);
+    line-height: 1.15;
+  }
+}
+
+//  MVリード文
+.p-home-mv__text {
+  max-width: unit(760);
+  margin-top: unit(20);
+  color: var(--color-site-text-muted);
+  @include fsv(20, 32);
+
+  @include mq-down() {
+    font-size: unit(17);
+    line-height: 1.8;
+  }
+}
+
+//========================================
+//  セクション共通
+//========================================
+//  各セクション見出し下のリード文（全セクション共通）
+.p-home-section-lead {
+  color: var(--color-site-text-muted);
+  @include fs(17, 30);
+  > * + * {
+    margin-top: unit(15);
+  }
+}
+
+//========================================
+//  進め方の3ステップ（strength）
+//========================================
+//  ステップ一覧（上下罫線区切り）
+.p-home-strength-list {
+  display: grid;
+  width: 100%;
+  border-top: unit(1) solid var(--color-site-border);
+}
+
+//  各ステップ（番号＋タイトル＋本文）
+.p-home-strength-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: unit(30);
+  width: 100%;
+  padding-block: unit(32);
+  padding-inline: unit(20);
+  border-bottom: unit(1) solid var(--color-site-border);
+
+  @include mq-up() {
+    grid-template-columns: unit(72) 1fr;
+  }
+
+  .item-number {
+    color: var(--color-site-warm);
+    @include fs(32, 36, bold);
+    margin-top: -0.1em;
+  }
+
+  .item-title {
+    color: var(--color-site-text);
+    @include fs(24, 32, bold);
+  }
+
+  .item-text {
+    margin-top: unit(8);
+    color: var(--color-site-text-muted);
+    @include fs(17, 28);
+  }
+}
+
+
+//========================================
+//  対応者（profile）
+//========================================
+//  対応者セクション背景
+.p-home-profile-section {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-site-bg-alt) 82%, white), var(--color-site-bg));
+}
+
+//  プロフィール2カラム（左:サマリ｜右:詳細）
+.p-home-profile-layout {
+  display: grid;
+  gap: unit(32);
+  align-items: start;
+
+  @include mq-up() {
+    grid-template-columns: minmax(unit(280), unit(400)) minmax(0, 1fr);
+    gap: clamp(unit(40), 6vw, unit(96));
+  }
+}
+
+//  カード上部：写真＋名前
+.p-home-profile-summary__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: unit(16);
+  align-items: center;
+  padding-bottom: unit(24);
+  border-bottom: unit(1) solid var(--color-site-border);
+
+  @include mq-up() {
+    gap: unit(20);
+  }
+}
+
+//  プロフィール写真（丸）
+.p-home-profile-summary__photo {
+  width: unit(104);
+  height: unit(104);
+  border: unit(1) solid color-mix(in srgb, var(--color-site-warm) 72%, white);
+  border-radius: 50%;
+  overflow: clip;
+  background-color: var(--color-site-bg-alt);
+
+  @include mq-up() {
+    width: unit(124*1.1);
+    height: unit(124*1.1);
+  }
+
+  :where(picture, img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: 50% 28%;
+    rotate: 2deg;
+  }
+}
+
+//  名前・肩書きブロック
+.p-home-profile-summary__identity {
+  display: grid;
+  gap: unit(5);
+  min-width: 0;
+}
+
+//  肩書き（Webコーダー）
+.p-home-profile-summary__meta {
+  color: var(--color-site-accent);
+  word-break: keep-all;
+  @include fs(13, 18, bold);
+}
+
+//  氏名
+.p-home-profile-summary__name {
+  color: var(--color-site-text);
+  @include fs(27, 34, bold);
+
+  @include mq-up() {
+    @include fs(30, 36, bold);
+  }
+}
+//  氏名: ローマ字
+.p-home-profile-summary__name-en {
+  margin-top: unit(0);
+  @include fs(15);
+  @include ls(4);
+  color: var(--color-site-text-muted);
+}
+
+//----------------------------------------
+//  右：詳細（経歴＋スキル）
+.p-home-profile-detail {
+  display: grid;
+  gap: unit(36);
+  min-width: 0;
+}
+
+//  経歴：縦タイムライン（左に縦線とドット）
+.p-home-profile-history__list {
+  position: relative;
+  display: grid;
+  gap: unit(18);
+  margin-top: unit(16);
+
+  @include mq-up() {
+    gap: unit(20);
+  }
+
+  &::before {
+    position: absolute;
+    top: unit(10);
+    bottom: unit(6);
+    left: unit(5);
+    width: unit(1);
+    background-color: var(--color-site-border);
+    content: "";
+  }
+
+  > li {
+    position: relative;
+    display: grid;
+    grid-template-columns: unit(76) minmax(0, 1fr);
+    gap: unit(14);
+    min-width: 0;
+    padding-left: unit(30);
+    align-items: start;
+
+    @include mq-up() {
+      grid-template-columns: unit(104) minmax(0, 1fr);
+      gap: unit(18);
+      padding-left: unit(36);
+    }
+
+    &::before {
+      position: absolute;
+      top: unit(8);
+      left: 0;
+      width: unit(11);
+      height: unit(11);
+      border-radius: 50%;
+      background-color: var(--color-site-accent);
+      content: "";
+      @include mq-up() {
+        top: unit(9);
+      }
+    }
+
+    &:nth-child(even)::before {
+      background-color: var(--color-site-warm);
+    }
+  }
+}
+
+//  経歴：年表示
+.p-home-profile-history__year {
+  color: var(--color-site-text-muted);
+  padding-top: unit(3);
+  @include fs(13, 20, bold);
+
+  @include mq-up() {
+    @include fs(14, 22, bold);
+  }
+}
+
+//  経歴：本文（見出し＋説明）
+.p-home-profile-history__body {
+  display: grid;
+  gap: unit(4);
+  min-width: 0;
+}
+
+//  確認環境/品質確認の2カラム
+.p-home-profile-skill__columns {
+  display: grid;
+  gap: unit(22);
+  margin-top: unit(18);
+
+  @include mq-up() {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: unit(28);
+  }
+}
+
+//----------------------------------------
+//  使用技術ブロック（上段・全幅）
+.p-home-profile-skill__group {
+  margin-top: unit(18);
+}
+
+//  確認環境: 端末 → 対応ブラウザ のマトリクス
+.p-home-profile-skill__env {
+  display: grid;
+  gap: unit(8);
+  margin-top: unit(12);
+
+  > div {
+    display: grid;
+    gap: unit(2);
+
+    @include mq-up() {
+      grid-template-columns: unit(120) 1fr;
+      gap: unit(12);
+      align-items: baseline;
+    }
+  }
+
+  dt {
+    color: var(--color-site-text);
+    @include fs(13, 20, bold);
+  }
+
+  dd {
+    color: var(--color-site-text-muted);
+    @include fs(13, 20);
+  }
+}
+
+//  品質確認: 説明的な確認項目リスト
+.p-home-profile-skill__check {
+  display: grid;
+  gap: unit(8);
+  margin-top: unit(12);
+
+  li {
+    color: var(--color-site-text-muted);
+    @include fs(13, 20);
+
+    //  補足（具体項目）
+    span {
+      display: block;
+      color: var(--color-site-text-muted);
+      @include fs(12, 18);
+    }
+  }
+}
+
+
+//========================================
+//  見積もり・進行の流れ（price）
+//========================================
+//  確認事項｜流れ の2カラム
+.p-home-price-layout {
+  display: grid;
+  gap: unit(34);
+  align-items: start;
+
+  @include mq-up() {
+    grid-template-columns: 1fr 1fr;
+    gap: unit(88);
+  }
+}
+
+//  確認項目リスト（丸枠マーカー）
+.p-home-price-check__list {
+  display: grid;
+  gap: unit(22);
+  margin-top: unit(24);
+
+  > li {
+    row-gap: unit(6);
+  }
+}
+
+//---------------------------------------------
+//  右：相談後の流れ
+
+//  ステップ縦タイムライン（番号を縦線でつなぐ）
+.p-home-price-flow__list {
+  display: grid;
+  gap: unit(24);
+  margin-top: unit(24);
+
+  li {
+    position: relative;
+    display: grid;
+    grid-template-columns: unit(44) minmax(0, 1fr);
+    align-items: start;
+    gap: unit(10);
+    @include mq-up() {
+      gap: unit(18);
+    }
+
+    &::before {
+      position: absolute;
+      top: unit(38);
+      bottom: unit(-26);
+      left: unit(18);
+      width: unit(1);
+      background-color: var(--color-site-border);
+      content: "";
+    }
+
+    &:last-child::before {
+      content: none;
+    }
+  }
+}
+
+//  ステップ番号（丸囲み）
+.p-home-price-flow__number {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: unit(38);
+  height: unit(38);
+  border: unit(1) solid var(--color-site-accent);
+  border-radius: 50%;
+  background-color: var(--color-site-bg);
+  color: var(--color-site-accent);
+  @include fs(14, 18, 800);
+}
+
+//  ステップ本文（見出し＋説明）
+.p-home-price-flow__body {
+  display: grid;
+  gap: unit(5);
+  padding-block: unit(4);
+  @include mq-up() {
+    padding-block: unit(5) unit(4);
+  }
+}

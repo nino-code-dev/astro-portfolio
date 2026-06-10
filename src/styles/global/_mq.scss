@@ -1,0 +1,53 @@
+@use "sass:math";
+@use "sass:map";
+
+////////////////////
+// メディアクエリとブレークポイントの設定
+////////////////////
+$breakpoint-up: (
+  'xs': 'screen and (min-width: 375px)',
+  'm': 'print, screen and (min-width: 768px)',
+  'l': 'print, screen and (min-width: 1280px)',
+  'll': 'screen and (min-width: 1537px)',
+  'lll': 'screen and (min-width: 1920px)',
+  'c': 'screen and (min-width: 1920px)', //  デザインカンプ幅
+  'h': 'screen and (min-width: 1080px)'  //  ヘッダー用
+  ) !default;
+
+//  0.02px引く( 倍率100%以上で判定漏れを防ぐ )
+$breakpoint-down: (
+  'xs': 'screen and (max-width: 374.98px)',
+  'm': 'screen and (max-width: 767.98px)',
+  'l': 'screen and (max-width: 1279.98px)',
+  'll': 'screen and (max-width: 1536.98px)',
+  'lll': 'screen and (max-width: 1919.98px)',
+  'c': 'screen and (max-width: 1919.98px)',
+  'h': 'screen and (max-width: 1079.98px)'
+  ) !default;
+
+$breakpoint-range: (
+  'xs-m': 'screen and (min-width: 375px) and (max-width: 767.98px)',
+  'm-l': 'print, screen and (min-width: 768px) and (max-width: 1279.98px)',
+  'm-ll': 'print, screen and (min-width: 768px) and (max-width: 1536.98px)',
+  'l-ll': 'print, screen and (min-width: 1280px) and (max-width: 1536.98px)',
+  'l-c': 'print, screen and (min-width: 1280px) and (max-width: 1919.98px)',
+  'll-lll': 'print, screen and (min-width: 1537px) and (max-width: 1919.98px)'
+  ) !default;
+
+@mixin mq-up($breakpoint: m) {
+  @media #{map.get($breakpoint-up, $breakpoint)} {
+    @content;
+  }
+}
+
+@mixin mq-down($breakpoint: m) {
+  @media #{map.get($breakpoint-down, $breakpoint)} {
+    @content;
+  }
+}
+
+@mixin mq-range($breakpoint: m-l) {
+  @media #{map.get($breakpoint-range, $breakpoint)} {
+    @content;
+  }
+}

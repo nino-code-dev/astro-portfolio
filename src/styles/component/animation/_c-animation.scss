@@ -1,0 +1,187 @@
+@use "../../global" as *;
+//------------------------------------
+//
+//  アニメーション
+//
+//  jsを使用しない純粋なcssアニメーション
+//
+//------------------------------------
+.c-anim-arrow-re-enter-right {
+  overflow: clip;
+  //  矢印の移動距離（vunit）。PC/SPで調整する場合は下のmqで上書き
+  @include mq-down() {
+    --_anim-arrow-slide-x: calc(28 * var(--unit));
+  }
+  @include mq-up() {
+    --_anim-arrow-slide-x: calc(40 * var(--unit));
+  }
+}
+.c-anim-arrow-re-enter-right-s {
+  overflow: clip;
+  @include mq-down() {
+    --_anim-arrow-slide-x: calc(18 * var(--unit));
+  }
+  @include mq-up() {
+    --_anim-arrow-slide-x: calc(25 * var(--unit));
+  }
+}
+
+//  調整箇所: --_arrow-slide-x を変更すると距離を調整できる
+@keyframes anim-icon-arrow-re-enter-right {
+  //  開始: その場で表示
+  0% {
+    translate: 0;
+    opacity: 1;
+  }
+  //  右へスライドしながらフェードアウト（ボタンでクリップ）
+  45% {
+    translate: var(--_anim-arrow-slide-x);
+    opacity: 0.5;
+  }
+  //  左側の外から再配置（不可視のまま）
+  55% {
+    translate: calc(var(--_anim-arrow-slide-x) * -1);
+    opacity: 0;
+  }
+  //  元位置に戻りながらフェードイン
+  100% {
+    translate: 0;
+    opacity: 1;
+  }
+}
+
+//  軸のみ
+@keyframes anim-icon-arrow-re-enter-x {
+  0% {
+    translate: 0;
+    opacity: 1;
+  }
+  45% {
+    translate: var(--_anim-arrow-slide-x);
+    opacity: 0;
+  }
+  55% {
+    translate: calc(var(--_anim-arrow-slide-x) * -1);
+    opacity: 0;
+  }
+  100% {
+    translate: 0;
+    opacity: 1;
+  }
+}
+//  移動のみ、透過なし(move-only)
+@keyframes anim-icon-arrow-re-enter-x-mo {
+  0% { translate: 0; }
+  45% { translate: var(--_anim-arrow-slide-x); }
+  55% { translate: calc(var(--_anim-arrow-slide-x) * -1); }
+  100% { translate: 0; }
+}
+
+//  内部リンク矢印用（Y軸固定）
+@keyframes anim-icon-arrow-down {
+  0% {
+    translate: 0 0;
+    opacity: 1;
+  }
+  100% {
+    translate: 0 var(--_anim-arrow-slide-y);
+    opacity: 1;
+  }
+}
+
+//  動きに弱いユーザー配慮: アニメーションを無効化
+@media (prefers-reduced-motion: reduce) {
+  .c-anim-arrow-re-enter-right {
+    animation: none !important;
+  }
+}
+
+//====================================================================
+//  シンプルなアニメーションパターン
+//  フェードイン
+@keyframes opacity-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+//  拡大から通常へ
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    scale: 1.1;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+//====================================================================
+//  上にくるっと回る
+//  ( 上に移動して下から再度出現 )
+//  通常時：animation: anim-leave-down 0.3s ease-in-out both;
+//  ホバー時：animation: anim-re-enter-up 0.3s ease-in-out both;
+.c-anim-re-enter-up {
+  overflow: clip;
+  @include mq-down() {
+    --_anim-slide-y: calc(28 * var(--unit));
+  }
+  @include mq-up() {
+    --_anim-slide-y: calc(40 * var(--unit));
+  }
+}
+
+@keyframes anim-re-enter-up {
+  0% {
+    translate: 0;
+    opacity: 1;
+  }
+  //  上へスライドしながらフェードアウト（ボタンでクリップ）
+  45% {
+    translate: 0 calc(var(--_anim-slide-y) * -1);
+    opacity: 0.3;
+  }
+  50% {
+    translate: 0 calc(var(--_anim-slide-y) * -1);
+    opacity: 0;
+  }
+  //  上側の外から再配置（不可視のまま）
+  55% {
+    translate: 0 var(--_anim-slide-y);
+    opacity: 0.3;
+  }
+  //  元位置に戻りながらフェードイン
+  100% {
+    translate: 0;
+    opacity: 1;
+  }
+}
+
+// ----------------------------
+// 下にくるっと回る（退場）
+@keyframes anim-leave-down {
+  0% {
+    translate: 0;
+    opacity: 1;
+  }
+  45% {
+    translate: 0 var(--_anim-slide-y);
+    opacity: 0.3;
+  }
+  50% {
+    translate: 0 var(--_anim-slide-y);
+    opacity: 0;
+  }
+  55% {
+    translate: 0 calc(var(--_anim-slide-y) * -1);
+    opacity: 0.3;
+  }
+  100% {
+    translate: 0;
+    opacity: 1;
+  }
+}

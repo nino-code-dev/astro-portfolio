@@ -1,0 +1,72 @@
+@use "../../global" as *;
+
+//------------------------------------
+//  パンくず
+//------------------------------------
+.p-page-breadcrumbs {
+  --_item-gap: 3;
+
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: unit(var(--layout-inner));
+  margin-top: unit(20);
+  margin-inline: auto;
+  padding-inline: unit(20);
+  @include ls(15);
+  //  パディング0
+  &.p0 {
+    padding-inline: unset;
+  }
+}
+
+.p-page-breadcrumbs__list {
+  color: var(--color-site-text-muted);
+
+  @include mq-down() {
+    display: inline flex;
+    flex-wrap: wrap;
+    justify-content: start;
+  }
+
+  @include mq-up() {
+    display: inline;
+    text-align: start;
+  }
+
+  > li {
+    display: inline;
+    font-size: unit(15);
+
+    //  リンク
+    > .link {
+      @include ls(80);
+      color: var(--color-site-accent);
+      transition: opacity 0.3s ease;
+
+      @include hover {
+        opacity: var(--link-hover-opacity);
+      }
+    }
+
+    //  区切り（くの字）
+    > .separate {
+      display: inline flex;
+      position: relative;
+      align-self: center;
+      top: unit(-2);
+      margin-right: unit(4);
+      border-top: unit(1) solid var(--color-site-accent);
+      border-right: unit(1) solid var(--color-site-accent);
+      width: unit(6);
+      height: unit(6);
+      rotate: 45deg;
+    }
+
+    //  アイコン区切り
+    > .icon {
+      margin-left: unit(var(--_item-gap));
+      background-color: var(--color-site-accent);
+    }
+  }
+}

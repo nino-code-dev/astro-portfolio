@@ -1,0 +1,12 @@
+@use "../global" as *;
+//-------------------------------------------
+//
+//  フッター用
+//
+//-------------------------------------------
+.l-footer {
+  display: grid;
+  position: relative;
+  width: 100%;
+  height: fit-content;
+}

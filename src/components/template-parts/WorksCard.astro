@@ -1,0 +1,33 @@
+---
+import Img from '@components/common/Img.astro';
+
+//  見出しレベル：見出し階層の飛びを防ぐため文脈に応じて指定（一覧はh1直下なのでh2、トップはh2セクション下なのでh3）。デザインは.card__titleクラスで固定のためタグを変えても見た目は不変
+const { work, variant = 'grid', headingLevel = 3 } = Astro.props;
+const variantClass = variant === 'slider' ? 'p-works-card--slider' : 'p-works-card--grid';
+const Heading = `h${headingLevel}`;
+---
+
+<article class={`p-works-card ${variantClass}`}>
+  <a href={work.href} class="card__link-overlay">
+    <span class="u-sr-only">「{work.title}」の制作情報を見る</span>
+  </a>
+  <div class="card__image">
+    <Img src={work.image} alt={work.imageAlt ?? ''} width={variant === 'slider' ? 600 : undefined} height={variant === 'slider' ? 280 : undefined} />
+  </div>
+  <div class="card__body">
+    <Heading class="card__title">{work.title}</Heading>
+    <dl class="card__meta-list">
+      <div>
+        <dt>時期</dt>
+        <dd>{work.period}</dd>
+      </div>
+      <div>
+        <dt>条件</dt>
+        <dd>{work.condition}</dd>
+      </div>
+    </dl>
+    <ul class="card__tag-list">
+      {work.tags.map((tag) => <li class="card__tag">{tag}</li>)}
+    </ul>
+  </div>
+</article>

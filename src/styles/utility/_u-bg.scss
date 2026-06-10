@@ -1,0 +1,33 @@
+@use "../global" as *;
+//--------------------------------------------------------
+//
+//  背景色
+//  l-backgroundを使うまでもないセクション背景色変更など
+//
+//--------------------------------------------------------
+.u-bg-transparent {
+  background:transparent !important;
+}
+
+.u-bg-white {
+  background: var(--color-white) !important;
+}
+
+.u-bg-surface {
+  background: var(--color-site-surface) !important;
+}
+
+//  サイトアクセント濃色（contact枠など）
+.u-bg-accent-dark {
+  background: var(--color-site-accent-dark) !important;
+}
+
+.u-bg-water {
+  background: var(--color-site-bg-alt) !important;
+}
+
+.u-bg-grad-gray {
+  background: linear-gradient(135deg, 
+    color-mix(in srgb, var(--color-site-accent) 18%, var(--color-site-bg-alt)), 
+    color-mix(in srgb, var(--color-site-accent) 8%, var(--color-site-bg))) !important;
+}

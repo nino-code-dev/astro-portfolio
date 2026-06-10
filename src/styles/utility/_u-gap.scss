@@ -1,0 +1,285 @@
+@use "../global" as *;
+
+//--------------------------------------------------------
+//
+//  ギャップ関連
+//
+//  各機能のオプションで付けていたgap関連で
+//  集約可能なものをまとめる
+//
+//--------------------------------------------------------
+//  PC,SPも一括で作成してもよい
+@mixin _u-gap($i_pc, $i_sp) {
+  .u-gap#{$i_pc} {
+    @include mq-down() {
+      gap: unit(#{$i_sp}) !important;
+    }
+    @include mq-up() {
+      gap: unit(#{$i_pc}) !important;
+    }
+  }
+}
+@mixin _u-gap-pc($i_pc) {
+  .u-gap#{$i_pc}-pc {
+    @include mq-up() {
+      gap: unit(#{$i_pc}) !important;
+    }
+  }
+}
+@mixin _u-gap-sp($i_sp) {
+  .u-gap#{$i_sp}-sp {
+    @include mq-down() {
+      gap: unit(#{$i_sp}) !important;
+    }
+  }
+}
+
+//================================================
+// utility
+.u-gap0 {
+  gap: unset !important;
+}
+@include _u-gap(5, 5);
+@include _u-gap(10, 10);
+@include _u-gap(15, 15);
+@include _u-gap(20, 20);
+@include _u-gap(25, 15);
+@include _u-gap(30, 15);
+@include _u-gap(35, 22);
+@include _u-gap(40, 30);
+@include _u-gap(50, 40);
+@include _u-gap(60, 30);
+@include _u-gap(70, 35);
+@include _u-gap(75, 38);
+@include _u-gap(80, 40);
+@include _u-gap-pc(20);
+@include _u-gap-sp(0);
+@include _u-gap-sp(4);
+
+//----------------------------
+//  割合
+.u-gap4p {
+  gap: 2%;
+  @include mq-up() {
+    gap: 4%;
+  }
+}
+.u-gap6p {
+  gap: 4%;
+  @include mq-up() {
+    gap: 6%;
+  }
+}
+
+.u-gap8p {
+  gap: 6%;
+  @include mq-up() {
+    gap: 8%;
+  }
+}
+
+.u-gap10p {
+  gap: 8%;
+  @include mq-up() {
+    gap: 10%;
+  }
+}
+.u-gap10p-pc {
+  @include mq-up() {
+    gap: 10%;
+  }
+}
+
+//----------------------------
+//  横ギャップ
+.u-gap-col2p {
+  column-gap: 1%;
+  @include mq-up() {
+    column-gap: 2%;
+  }
+}
+.u-gap-col6p {
+  column-gap: 4%;
+  @include mq-up() {
+    column-gap: 6%;
+  }
+}
+.u-gap-col8p {
+  column-gap: 6%;
+  @include mq-up() {
+    column-gap: 8%;
+  }
+}
+.u-gap-col5 {
+  column-gap: unit(3) !important;
+  @include mq-up() {
+    column-gap: unit(5) !important;
+  }
+}
+.u-gap-col10 {
+  column-gap: unit(8) !important;
+  @include mq-up() {
+    column-gap: unit(10) !important;
+  }
+}
+.u-gap-col16 {
+  column-gap: unit(8);
+  @include mq-up() {
+    column-gap: unit(16);
+  }
+}
+.u-gap-col20 {
+  column-gap: unit(10);
+  @include mq-up() {
+    column-gap: unit(20);
+  }
+}
+.u-gap-col25 {
+  column-gap: unit(12);
+  @include mq-up() {
+    column-gap: unit(25);
+  }
+}
+.u-gap-col30 {
+  column-gap: unit(15);
+  @include mq-up() {
+    column-gap: unit(30);
+  }
+}
+.u-gap-col40 {
+  column-gap: unit(20);
+  @include mq-up() {
+    column-gap: unit(40);
+  }
+}
+.u-gap-col50 {
+  column-gap: unit(25);
+  @include mq-up() {
+    column-gap: unit(50);
+  }
+}
+.u-gap-col60 {
+  column-gap: unit(30);
+  @include mq-up() {
+    column-gap: unit(60);
+  }
+}
+.u-gap-col70 {
+  column-gap: unit(35);
+  @include mq-up() {
+    column-gap: unit(70);
+  }
+}
+.u-gap-col80 {
+  column-gap: unit(40);
+  @include mq-up() {
+    column-gap: unit(80);
+  }
+}
+.u-gap-col85 {
+  column-gap: unit(42);
+  @include mq-up() {
+    column-gap: unit(85);
+  }
+}
+.u-gap-col100 {
+  column-gap: unit(50);
+  @include mq-up() {
+    column-gap: unit(100);
+  }
+}
+
+//----------------------------
+//  縦ギャップ
+.u-gap-row3-pc {
+  @include mq-up() {
+    row-gap: unit(3);
+  }
+}
+.u-gap-row5,
+.u-gap-row5-sp {
+  @include mq-down() {
+    row-gap: unit(2);
+  }
+}
+.u-gap-row5,
+.u-gap-row5-pc {
+  @include mq-up() {
+    row-gap: unit(5);
+  }
+}
+.u-gap-row10 {
+  row-gap: unit(5);
+  @include mq-up() {
+    row-gap: unit(10);
+  }
+}
+.u-gap-row10-pc {
+  @include mq-up() {
+    row-gap: unit(10);
+  }
+}
+.u-gap-row15 {
+  row-gap: unit(8);
+  @include mq-up() {
+    row-gap: unit(15);
+  }
+}
+.u-gap-row20 {
+  row-gap: unit(10);
+  @include mq-up() {
+    row-gap: unit(20);
+  }
+}
+.u-gap-row20-sp {
+  @include mq-down() {
+    row-gap: unit(20) !important;
+  }
+}
+.u-gap-row30 {
+  row-gap: unit(15);
+  @include mq-up() {
+    row-gap: unit(30);
+  }
+}
+.u-gap-row40 {
+  row-gap: unit(20);
+  @include mq-up() {
+    row-gap: unit(40);
+  }
+}
+.u-gap-row40-sp {
+  @include mq-down() {
+    row-gap: unit(40) !important;
+  }
+}
+.u-gap-row45 {
+  row-gap: unit(22);
+  @include mq-up() {
+    row-gap: unit(45);
+  }
+}
+.u-gap-row50 {
+  row-gap: unit(25);
+  @include mq-up() {
+    row-gap: unit(50);
+  }
+}
+.u-gap-row60 {
+  row-gap: unit(30);
+  @include mq-up() {
+    row-gap: unit(60);
+  }
+}
+.u-gap-row70 {
+  row-gap: unit(35);
+  @include mq-up() {
+    row-gap: unit(70);
+  }
+}
+.u-gap-row100 {
+  row-gap: unit(50);
+  @include mq-up() {
+    row-gap: unit(100);
+  }
+}

@@ -1,0 +1,253 @@
+@use "sass:math";
+@use "mq" as *;
+
+//  変数
+
+//  base.scssでルートフォントサイズを10pxにしているので、0.1rem=1pxとなる
+$funit: 0.1rem !default;
+
+//  letter-spacing用、Figma tracking値をそのまま使えるようemベース
+$flsunit: 0.001em;
+
+//  ここでのみ使用
+@function _vw1($base) {
+  @return math.div(100, $base) * 1dvw;
+}
+
+$vws: _vw1(375); // SP基準
+$vwl: _vw1(1536); // ノートPC幅
+$vwc: _vw1(1920); // PC最大幅
+$spr: 0.75; //  汎用倍率
+
+//----------------------------------------
+//  フォント一般: ブラウザフォントサイズの影響あり, ズーム影響あり
+//  - ルートフォントが62.5%の場合は0.1(10px)
+//  - ルートフォントが100%の場合はこちらで62.5%分の影響を調整する
+
+:root {
+  --vpx: 1px;
+
+  //  単位
+  --unit: var(--vpx); //  ビジュアル
+
+  //--------------------
+  //  倍率
+  --spr: #{$spr}; //  汎用倍率(PC40:SP23=0.575 PC50:SP30=0.6)
+  --rrate: 1; //  現在のレスポンシブレート( PC/SP(+TAB等)レスポンシブ分岐に応じて倍率が入る )
+
+  //--------------------
+  //  画面幅に対しての1ピクセル
+  --vws: #{$vws}; // 375
+  --vwl: #{$vwl}; // (100/1536)
+  --vwc: #{$vwc}; //  1920
+
+  --vw: var(--vwc); //  現在の幅によって基準値入れ替え
+
+  --100dvw: 100dvw;
+
+  //  margin-inline-over インナー幅固定値からはみ出す処理
+  --margin-inline-over: calc((100cqi - var(--100dvw)) / 2);
+  --margin-over: calc(100cqi - var(--100dvw));
+  //  inner余白( ブラウザ幅からコンテナ幅を引いた残り幅 )
+  --gutter: calc((var(--100dvw) - 100cqi) / 2);
+  //  ハーフレディングの打消し(line-heightで発生する上下の余白の差分)
+  --reading-trim: calc((1em - 1lh) / 2);  //  引き算で使用(margin-block)
+  --half-reading: calc((1lh - 1em) / 2);  //  足し算で使用(top)
+  //  infinity値
+  --infinity: calc(infinity * 1px);
+
+  //----------------
+  //  デザインカンプ幅
+
+  //  インナー幅
+  --layout-inner-pc: 1280;
+  --layout-inner-sp: 100%;
+  //  インナーの基本余白(左右合計)
+  --layout-inner-margin-pc: 20;
+  --layout-inner-margin-sp: 20;
+  --layout-inner-margin: var(--layout-inner-margin-pc);
+
+  //----------------
+  //  ヘッダー高さ
+  --header-height-pc: 100; //  スクロール中の高さ
+  --header-height-sp: 68;
+
+  //----------------
+  //  オブジェクトのZ値管理
+  --obj-z-l-header: 500; //  ヘッダー
+  --obj-z-pagetopbtn: 450; //  トップに戻る
+
+  //----------------
+  //font weight
+  --fw-thin: 100;
+  --fw-extralight: 200;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: bold;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  // google font
+  --font-Lato: "Lato", serif;
+  --font-Roboto: "Roboto", var(--baseFont);
+  --font-NotoSerifJP: "Noto Serif JP";
+  --font-NotoSansJP: "Noto Sans JP";
+  --font-YuuMincho: "游明朝", "Yu Mincho", YuMincho, "Hiragino Mincho Pro", serif;
+
+  --baseFont:
+    var(--font-NotoSansJP), "Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Arial",
+    "Yu Gothic", "Meiryo", sans-serif;
+
+  //----------------
+  //  SVGの作成
+  //  矢印 22/22
+  --icon-img-arrow-right: url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAABoUlEQVQ4jWIUbLnHQCRwgqrbR1A9AwMDAAAA//9iItJQbwYGhi1QDLMAN2BgYAAAAAD//yLW4BAGBgZOKCZsOAMDAwAAAP//ItbgFAYGhmVQNmHDGRgYAAAAAP//ItbgvwwMDHFEG87AwAAAAAD//yLWYNIMZ2BgAAAAAP//IsVg4g1nYGAAAAAA//8i1WDiDGdgYAAAAAD//yLHYMKGMzAwAAAAAP//YoFy5Mi0AJRZ7BkYGKSRDPdhYGDYBwAAAP//Ahmcx8DA4E+mwegAYjgDgw8AAAD//yI3KPADBgYGAAAAAP//Arl4EgMDwwYy9TMzMDA0QoMCBL6Dg4KBYR8AAAD//wIZTFShgsPQRdgMZWBgYAAAAAD//yI3KGCGRmEzlIGBgQEAAAD//yLHYIKGMjAwMAAAAAD//yLVYKIMZWBgYAAAAAD//yLFYKINZWBgYAAAAAD//yLWYJIMZWBgYAAAAAD//yLW4DmkGMrAwMAAAAAA//8i1uDVUAOJMpSBgYEBAAAA//8CpWNiwDaogSBAON0zMDAAAAAA//8DAIFdOsO0kEzlAAAAAElFTkSuQmCC);
+  //  外部リンク:青16/17
+  --icon-img-external-b: url(data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAARCAYAAADUryzEAAABf0lEQVQ4jWIUbLnHQCRgYWBgEEJSy8HAwMANAAAA//8CCXIyMDCoEzDkFwMDgyADA8MiBgYGZiiWZGBg+A8AAAD//wIZsJKBgcGXgAEPGRgYFBgYGJQZGBhkGBgYDjAwMLxlYGD4AAAAAP//AhkAElzIwMCwAI8BP6A0TDMIdDAwMKQAAAAA//8CGQACD5AkcAFkzQ4MDAwuDAwMDAAAAAD//2IiMgDRNT9hYGC4w8DAcBUAAAD//yLGAGyaPRgYGNgYGBjCAAAAAP//gnmBFM0gUAEKQAYGhn0AAAAA///C5wJcmhGAgYEBAAAA///CZ8BaQpoZGBgYAAAAAP//wueFKgYGhisMDAwvcapgYGAAAAAA///CZ8BefBrBgIGBAQAAAP//IjYasQMGBgYAAAAA//+izAAGBgYAAAAA//+izAAGBgYAAAAA//8CGfCJgYGhHpSzSMD2DAwMHxkYGBgAAAAA//8CBaIjAwMDH4kWgwx5z8DAwAAAAAD//wMA6mQx0wJd8UgAAAAASUVORK5CYII=);
+
+  //  矢印右 24/24
+  --icon-arrow-right-b: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -960 960 960" fill="%231f1f1f"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>');
+  //  矢印左 24/24
+  --icon-arrow-left-b: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -960 960 960" fill="%231f1f1f"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/</svg>');
+
+  //  アングル矢印下 14/8
+  --icon-angle-arrow-down-b: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" fill="white"><path d="M1205.5,87.5h0l-7-7L1200,79l5.5,5.5L1211,79l1.5,1.5-7,7Z" transform="translate(-1198.496 -79)" fill="%231184de"/></svg>');
+  //  円アングル矢印右,青,小 30/30
+  --icon-img-circle-angle-arrow-right-b-s: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"><g transform="translate(-871 -5743)"><circle cx="15" cy="15" r="15" transform="translate(871 5743)" fill="%23c7e2f2"/><path d="M884,5765h0l-1.5-1.5,5.5-5.5-5.5-5.5,1.5-1.5,7,7-7,7Z" fill="%231184de"/></g></svg>');
+  //  円アングル矢印右,青,中 40/40
+  --icon-img-circle-angle-arrow-right-b-m: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"><g transform="translate(-860 -3639)"><circle cx="20" cy="20" r="20" transform="translate(860 3639)" fill="%23c7e2f2"/><path d="M878,3666h0l-1.5-1.5,5.5-5.5-5.5-5.5,1.5-1.5,7,7-7,7Z" fill="%231184de"/></g></svg>');
+
+  //  スライダーボタン:一時停止
+  --icon-control-pause: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="10" fill="white"><g transform="translate(-857 -880)"><rect width="2" height="10" transform="translate(857 880)" fill="%23fff"/><rect width="2" height="10" transform="translate(863 880)" fill="%23fff"/></g></svg>');
+  //  スライダーボタン:再生
+  --icon-control-play: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="white"><polygon points="2,1 2,9 8,5" fill="%23fff"/></svg>');
+  //  RSS
+  --icon-rss: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white"><clipPath id="a"><rect width="30" height="30" transform="translate(0 0)" fill="none"/></clipPath><g transform="translate(-870 -6495)"><g transform="translate(870 6495)"><path d="M30,24a6,6,0,0,1-6,6H6a6,6,0,0,1-6-6V6A6,6,0,0,1,6,0H24a6,6,0,0,1,6,6ZM9.177,19.236a2.647,2.647,0,1,0,2.647,2.647,2.648,2.648,0,0,0-2.647-2.647M6.529,12.354v3.175c5.468,0,9,3.534,9,9h3.175c0-7.283-4.894-12.177-12.177-12.177M6.529,6V9.174A15.193,15.193,0,0,1,21.884,24.53H25.06A18.333,18.333,0,0,0,6.529,6"/></g></g><path d="M875.9,6525a6,6,0,0,1-5.9-6v-18a6,6,0,0,1,6-6h18a6,6,0,0,1,6,6v18a6,6,0,0,1-5.9,6Zm.63-20.826a15.193,15.193,0,0,1,15.355,15.357h3.175A18.334,18.334,0,0,0,876.528,6501Zm0,6.355c5.469,0,9,3.534,9,9h3.174c0-7.284-4.893-12.177-12.177-12.177Zm0,6.354a2.648,2.648,0,1,0,2.648-2.646A2.648,2.648,0,0,0,876.528,6516.882Z" fill="%231184de"/></svg>');
+
+  //  検索:虫眼鏡
+  --icon-search: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -960 960 960" fill="white"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>');
+
+  //----------------
+  //  カード
+  --card-article-radius-pc: 2.4rem;
+  --card-article-radius-sp: 2rem;
+  --card-s-radius-pc: 0.8rem;
+  --card-s-radius-sp: 0.6rem;
+  --card-m-radius-pc: 1.0rem;
+  --card-m-radius-sp: var(--card-s-radius-pc);
+  --card-l-radius-pc: 1.6rem;
+  --card-l-radius-sp: var(--card-m-radius-pc);
+  --card-ll-radius-pc: 2.4rem;
+  --card-ll-radius-sp: var(--card-l-radius-pc);
+
+  --card-m-shadow: drop-shadow(0 0 3rem var(--color-card-shadow)); //  カードの影
+  --card-m-hover-shadow: drop-shadow(0 0 3.5rem var(--color-card-hover-shadow)); //  カードホバー時の影
+
+  //  10.21 影響距離調整( 他カードに被る問題の解消 )
+  --card-l-box-shadow: 0 0 2.5rem var(--color-card-shadow); //  カードの影：article
+  --card-l-box-strong-shadow: 0 0 2.5rem var(--color-card-strong-shadow); //  カードの影：outline等
+  --card-l-hover-box-shadow: 0 0 3.0rem var(--color-card-hover-shadow); //  カードホバー時の影：article
+  --card-l-shadow: drop-shadow(var(--card-l-box-shadow)); //  カードの影：article
+  --card-l-hover-shadow: drop-shadow(var(--card-l-hover-box-shadow)); //  カードホバー時の影：article
+  --card-m-hover-scale: 1.05; //  ホバー拡大率
+  --card-m-hover-thumb-scale: 1.1; //  ホバー時サムネ拡大率
+  --card-m-radius: 1.0rem; //  角丸
+  --card-m-border-shadow: 0 0 calc(1 * var(--unit)) rgba(25, 25, 25, 0.9); //  線っぽくして薄い境界をつける影
+
+  //  フォーム
+  --form-radius: 0.4rem; //  角丸
+
+  //  ボタン
+  --link-hover-opacity: 0.8; //  テキストのリンク透過率
+  --btn-hover-opacity: 0.8; //  ボタン・画像のリンク透過率
+
+  //  アニメーション
+  //  イージングには性格の「強さ」が6種類（Sine・Quad・Cubic・Quart・Quint・Expo）
+  //   Sine < Quad < Cubic < Quart < Quint < Expoの順で性格が強くなる
+  --ease-default: cubic-bezier(0.19, 1, 0.22, 1); //  一般的なアニメーション
+  --ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  //--ease-in: cubic-bezier(0.22, 0, 0.36, -0.56);
+  --ease-out: cubic-bezier(0.36, 0, 0.66, -0.56);
+  --ease-slow-start: cubic-bezier(0.8, 0.22, 0.11, 0.76); //  開始スロウ
+  --ease-fast-start: cubic-bezier(0.11, 0.76, 0.8, 0.22); // 開始が早くて終わりがゆっくり
+  --ease-text-slide: cubic-bezier(0.165, 0.84, 0.44, 1); //  ヘッダーのテキスト回転
+  --ease-icon: cubic-bezier(0.29, 0.65, 0.62, 1); // アイコンのアニメーション
+
+  //  Expo（強い）
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035); // easeInExpo
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+:root {
+  //------------------------
+  //  レスポンシブ対応
+  //  画面サイズに対して計算単位を切り替える
+
+  //  width < 768px : 768pxを基準に計算情報をSP用(375px基準)に変える
+  @include mq-down() {
+    --vw: var(--vws);
+    --unit: var(--vws);
+    --layout-inner: var(--layout-inner-sp);
+    --layout-inner-margin: var(--layout-inner-margin-sp);
+    --card-article-radius: var(--card-article-radius-sp);
+    --card-s-radius: var(--card-s-radius-sp);
+    --card-m-radius: var(--card-m-radius-sp);
+    --card-l-radius: var(--card-l-radius-sp);
+    --card-ll-radius: var(--card-ll-radius-sp);
+    --rrate: var(--spr); //  SP倍率
+
+  }
+  //  768px <= width : タブレット以上、計算情報をPC用に変える
+  @include mq-up() {
+    --layout-inner: var(--layout-inner-pc);
+    --layout-inner-margin: var(--layout-inner-margin-pc);
+    --card-article-radius: var(--card-article-radius-pc);
+    --card-s-radius: var(--card-s-radius-pc);
+    --card-m-radius: var(--card-m-radius-pc);
+    --card-l-radius: var(--card-l-radius-pc);
+    --card-ll-radius: var(--card-ll-radius-pc);
+    --rrate: 1; //  PC倍率
+  }
+
+  //  ノートPC区間でPCデザインの倍率に合わせて調整
+  //  768～1280 : vunitl
+  //  1536px基準のvw化
+  //  1280px x 150%で文字が小さすぎるという要望の対応
+  @include mq-range("m-l") {
+    --vw: var(--vwl);
+  }
+
+  //  1280～1536 : vunitll
+  //  1920px基準のvw化
+  //  1280px 125%で文字が大きすぎるという要望の対応
+  @include mq-range("l-ll") {
+    --vw: var(--vwc);
+  }
+  @include mq-range("m-ll") {
+    --unit: var(--vw);
+  }
+
+  //  1280～1920 : vunitw調整
+  @include mq-range("ll-lll") {
+    --vw: var(--vwc); //  カンプ(1920)基準の倍率
+  }
+
+  //  ～1280px : ヘッダーが広い場合に先行して分岐
+  @include mq-down("m") {
+    --header-height: var(--header-height-sp);
+  }
+  //  1280px～ : unitの通常rem化
+  @include mq-up("m") {
+    --header-height: var(--header-height-pc);
+  }
+
+
+  //  印刷
+  @media print {
+    --vw: var(--vwl);
+    --unit: var(--vwl);
+    --header-height: var(--header-height-pc);
+  }
+}

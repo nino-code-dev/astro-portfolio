@@ -1,0 +1,106 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/detail04 : 記事04
+//
+//----------------------------------------------------------------
+import { Layout, PageBreadCrumb, Img, works } from '@components/index';
+
+//  スラッグ
+const slug = 'works-detail04';
+const work = works.find((w) => w.id === 'work-lp')!;
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: '/works/' },
+  { title: 'LP制作', href: null },
+];
+---
+
+<Layout
+  slug={slug}
+  useSwiper={true}
+  title="LP制作 | 制作実績 | NINO-CODE"
+  description="LP制作の詳細"
+  breadcrumbItems={breadcrumbItems}
+>
+  <!-- page -->
+  <article class="p-page">
+    <div class="l-inner m0sp">
+      <div class="p-works-detail-mv">
+        <div class="visual__image">
+          <Img src="common/pf/work04_01.svg" alt="" class="js-anim-fade-on" data-delay="200" />
+        </div>
+      </div>
+
+      <PageBreadCrumb items={breadcrumbItems} />
+
+      <div class="p-works-detail__left-column">
+        <!-- header -->
+        <header class="p-works-detail-header">
+          <!-- title -->
+          <h1 class="p-works-detail-title">LP制作</h1>
+          <p class="c-text u-mt20">※リンク先ページの内容変化を確認したためURL削除</p>
+          <ul class="p-works-detail-category-list">
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <dl class="p-works-detail-summary">
+            <div>
+              <dt>時期</dt>
+              <dd>{work.period}</dd>
+            </div>
+            <div>
+              <dt>期間</dt>
+              <dd>2週間(コーディング、Elementor構築、やりとり含む)</dd>
+            </div>
+            <div>
+              <dt>規模</dt>
+              <dd>1ページ</dd>
+            </div>
+            <div>
+              <dt>担当範囲</dt>
+              <dd>コーディング・実装</dd>
+            </div>
+            <div>
+              <dt>技術</dt>
+              <dd>WordPress / Elementor</dd>
+            </div>
+          </dl>
+        </header>
+
+        <!-- 本文 -->
+        <section class="p-works-detail-container">
+          <h2 class="p-works-detail-item__title">案件概要</h2>
+          <div class="p-works-detail-body">
+            <p>デザイナー様のご依頼にて、ElementorをベースにしたLPです。</p>
+            <h3>工夫点 - Elementor使用+コーディング</h3>
+            <p>
+              ご依頼いただいたデザイナー様のご要望は「自分で画像や文を入れ替えたいので、Elementorで実装してほしい」との事でした。<br>
+              Elementorはコーディング不要にするためのプラグインですが、ご自身で管理できる形がよいため、対応いたしました。
+            </p>
+            <p>実際には、通常のElementorにない機能を取り入れたいというご要望で、カスタム投稿、動画の埋め込み、フォームの住所検索(zipaddr)、ポップアップ等を実装しました。</p>
+            <p>Elementorのhtmlに合わせてcssや機能を実装したため、工数は倍以上かかりましたが、ご満足いただけました。</p>
+            <p>
+              作業期間は、デザイナー様との連絡や後からの仕様追加変更を含みます。
+            </p>
+            <div class="l-grid--col2 u-gap40 u-mt40">
+              <div class="l-cell u-gap30">
+                <figure class="l-cell align-content-start">
+                  <Img src="common/pf/work04_03.svg" alt="" width="300" height="200" />
+                  <figcaption>MVにカスタム投稿で動画を埋め込んでいます。</figcaption>
+                </figure>
+                <figure>
+                  <Img src="common/pf/work04_04.svg" alt="" width="300" height="200" />
+                  <figcaption>カスタム投稿を作成し、Youtubeやメディアから動画を選択できるように作成しました。</figcaption>
+                </figure>
+              </div>
+              <figure>
+                <Img src="common/pf/work04_02.svg" alt="" width="300" height="200" />
+                <figcaption>動画紹介カード型の中に、Youtube動画と事例の紹介データを埋め込む実装。</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,79 @@
+@use "../global" as *;
+
+//-------------------------------------------
+//
+//  汎用section枠
+//
+//  l-block: 内容は同じ。hタグがない装飾目的のセクション
+//
+//-------------------------------------------
+:where(.l-section, .l-block ) {
+  position: relative;
+  display: grid;
+  width: 100%;
+}
+
+//----------------------------------------
+//  一つ上のインナー制限を無視して最大幅にする
+.l-section--fullwidth {
+  width: 100dvw;
+  justify-content: center;
+  margin-inline: calc(var(--gutter) * -1);
+}
+
+//----------------------------------------
+//  スタック化
+.l-section--stack {
+  grid-template: "stack" minmax( 0, auto) / 1fr;
+  > * {
+    grid-area: stack;
+    display: grid;
+  }
+}
+
+//================================================
+//  余白サイズ設定
+//  固有調整が必要な場合は全てu-pt系、u-pb系で行う
+
+//  小さい
+:where( .l-section--s, .l-block--s ) {
+  padding-block: unit(20);
+  @include mq-up(){
+    padding-block: unit(30);
+  }
+}
+//  普通
+:where( .l-section--m, .l-block--m ) {
+  padding-block: unit(60);
+  @include mq-up() {
+    padding-block: unit(90);
+  }
+}
+
+//  大きい
+:where(.l-section--l, .l-block--l ) {
+  padding-block: unit(80);
+  @include mq-up() {
+    padding-block: unit(120);
+  }
+}
+
+//  大きい
+:where( .l-section--ll, .l-block--ll ) {
+  padding-block: unit(100);
+  @include mq-up() {
+    padding-block: unit(150);
+  }
+}
+
+//----------------------------------------
+//  余白個別: 具体値
+:where( .l-section ) {
+  //  sectionのpaddingは基本上下のみ
+  &.p80 {
+    padding-block: unit(60);
+    @include mq-up() {
+      padding-block: unit(80);
+    }
+  }
+}

@@ -1,0 +1,54 @@
+@use "../../global" as *;
+//------------------------------------------------
+//  タグ／チップ（丸ピル）
+//------------------------------------------------
+
+//  並べる入れ物（折返し）
+.c-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: unit(8);
+}
+
+//  タグ本体
+.c-tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  //  デフォルト設定
+  min-height: unit(28);
+  padding: unit(4) unit(12);
+  border: unit(1) solid var(--_tag-border, var(--color-site-border));
+  border-radius: unit(999);
+  background-color: var(--color-site-surface-soft);
+  color: var(--_tag-text, var(--color-site-accent-dark));
+  @include fs(13, 18, bold);
+}
+
+
+//  リンクタグ：要素駆動でhover
+a.c-tag {
+  color: var(--_tag-text, var(--color-site-text));
+  transition: border-color 0.3s ease, color 0.3s ease;
+
+  @include hover {
+    border-color: var(--_tag-accent, var(--color-site-warm));
+    color: var(--_tag-accent, var(--color-site-warm));
+  }
+}
+
+
+//  フラグ
+:where( .c-tag-list, .c-tag ) {
+  //  color：listに付ければ配下のc-tagへ継承／個別はc-tagに付与
+  &.green {
+    --_tag-text: var(--color-site-accent);
+    --_tag-border: var(--color-site-accent);
+    --_tag-accent: var(--color-site-accent);
+  }
+  &.gold {
+    --_tag-text: var(--color-site-warm);
+    --_tag-border: var(--color-site-warm);
+    --_tag-accent: var(--color-site-warm);
+  }
+}

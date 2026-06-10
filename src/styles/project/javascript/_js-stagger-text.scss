@@ -1,0 +1,248 @@
+@use "../../global" as *;
+
+//-------------------------------------------
+//
+//  javascript関連アニメーションパーツ
+//
+//  テキストStaggerアニメーション
+//
+//  [特徴]
+//  - 1文字ずつ時間差で表示するアニメーション
+//  - アクセシビリティ対応済み（読み上げ・翻訳対応）
+//  - 親要素1つでスクロール判定(パフォーマンス最適化)
+//
+//  [使用例]
+//  <h1 class="js-anim-stagger-text js-anim-stagger-text--up" data-step-delay="50">
+//    タイトル
+//  </h1>
+//
+//  [パフォーマンス]
+//  - スクロール判定は親要素1つのみ
+//  - 20文字でも1回の判定で済む(旧実装は20回判定)
+//
+//-------------------------------------------
+
+//  印刷時は全て表示
+@media print {
+  [class*="js-anim-stagger-text"] span.js-stagger-char {
+    opacity: 1 !important;
+    translate: none !important;
+    transform: none !important;
+  }
+}
+
+//  アニメーション実行環境
+//  - prefers-reduced-motion: no-preference アニメーション削減を希望していない
+//  - scripting: enabled JavaScriptが有効
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+
+  //========================================
+  //  親要素の基本設定
+  //========================================
+  [class*="js-anim-stagger-text"] {
+    // 枠でクリップ（はみ出た部分を隠す）
+    overflow: hidden;
+    // inline-blockにして改行を防ぐ
+    //display: inline-block;
+    //  hgroupなどが崩れるので基本blockにして改行
+    display: block;
+    
+    // デフォルト値（data属性で上書き可能）
+    --start-delay: 0ms;    // 全体の開始遅延
+    --step-delay: 50ms;    // 文字間の遅延
+
+    opacity: 0;
+    &.is-active {
+      opacity: 1;
+    }
+  }
+
+  //========================================
+  //  各文字spanの共通設定
+  //  親要素のis-activeを見てアニメーション
+  //========================================
+  [class*="js-anim-stagger-text"] span.js-stagger-char {
+    // inline-blockで各文字を独立させる
+    display: inline-block;
+
+    // トランジション設定（カスタムプロパティで上書き可能）
+    --_property: opacity, translate, transform;
+    //--_easing: cubic-bezier(0.19, 1, 0.22, 1); // easeOutExpo風
+    --_easing: cubic-bezier(.47, .16, .24, 1);
+    --_duration: 0.6s;
+
+    transition-property: var(--_property);
+    transition-timing-function: var(--_easing);
+    transition-duration: var(--_duration);
+    // --_indexカスタムプロパティを使用してディレイ制御
+    // ローカルスコープのため --_ プレフィックス付き
+    // 親要素の--_start-delayと--_step-delayを継承して使用
+    transition-delay: calc(var(--_start-delay, 0ms) + var(--_index, 0) * var(--_step-delay, 50ms));
+
+    // 初期状態: 非表示・下に移動
+    // 親要素にis-activeが付くまでこの状態
+    opacity: 0;
+  }
+
+  // 親要素にis-activeが付いたら、全ての文字を表示
+  [class*="js-anim-stagger-text"].is-active span.js-stagger-char {
+    opacity: 1;
+  }
+
+  //========================================
+  //  Alternative要素（H2本体・SEO・アンカーリンク用）
+  //========================================
+  // ★構造: H2（視覚非表示） → span（演出用・視覚表示）
+  // H2は u-sr-only で縦幅0、アンカーリンク時に正しい位置にジャンプ
+  .js-stagger-alternative {
+    // u-sr-onlyで既に制御されているため、追加設定は不要
+    // u-sr-onlyがない場合のフォールバック
+    &:not(.u-sr-only) {
+      position: fixed !important;
+      inset: 0 !important;
+      display: block !important;
+      inline-size: 4px !important;
+      block-size: 4px !important;
+      contain: strict !important;
+      pointer-events: none !important;
+      opacity: 0 !important;
+    }
+  }
+
+  // 翻訳後の処理（html要素のlang属性が変更された場合のみ）
+  // Google翻訳は<html lang="...">を変更するため、html要素の:lang()で判定
+  html:not(:lang(ja)) {
+    // 演出用span（aria-hidden="true"が付いている要素）を非表示
+    [class*="js-anim-stagger-text"][aria-hidden="true"] {
+      display: none !important;
+    }
+
+    // H2本体（alternative要素）を表示（翻訳されたテキスト）
+    .js-stagger-alternative {
+      position: static !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 0 !important;
+      clip: auto !important;
+      overflow: visible !important;
+      padding: 0 !important;
+      white-space: normal !important;
+    }
+
+    // グループの元側（data-group-processed）を表示（翻訳されたテキスト）
+    // 翻訳時はu-sr-onlyの非表示を上書き
+    [data-group-processed] {
+      position: static !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 0 !important;
+      clip: auto !important;
+      overflow: visible !important;
+      padding: 0 !important;
+      white-space: normal !important;
+    }
+  }
+
+  //========================================
+  //  バリエーション: 方向指定
+  //  親要素のis-activeで子要素をアニメーション
+  //========================================
+
+  // デフォルト（下から上へ）は上記の基本設定のまま
+
+  // --up: 下から上へ
+  .js-anim-stagger-text--up {
+    span.js-stagger-char {
+      transform: perspective(1000px) translate3d(0, 70%, 0) rotateX(-90deg);
+    }
+    &.is-active span.js-stagger-char {
+      transform: perspective(1000px) translateZ(0);
+    }
+  }
+
+  // --down: 上から下へ
+  .js-anim-stagger-text--down {
+    span.js-stagger-char {
+      translate: 0 -1em;
+    }
+    &.is-active span.js-stagger-char {
+      translate: 0 0;
+    }
+  }
+
+  // --left: 右から左へ
+  .js-anim-stagger-text--left {
+    span.js-stagger-char {
+      translate: 1em 0;
+    }
+    &.is-active span.js-stagger-char {
+      translate: 0 0;
+    }
+  }
+
+  // --right: 左から右へ
+  .js-anim-stagger-text--right {
+    span.js-stagger-char {
+      translate: -1em 0;
+    }
+    &.is-active span.js-stagger-char {
+      translate: 0 0;
+    }
+  }
+
+  // --fade: その場でフェード（移動なし）
+  .js-anim-stagger-text--fade {
+    span.js-stagger-char {
+      --_property: opacity;
+      translate: 0 0;
+    }
+  }
+
+  // --scale: スケール + フェード
+  .js-anim-stagger-text--scale {
+    span.js-stagger-char {
+      --_property: opacity, scale;
+      opacity: 0;
+      scale: 0.5;
+    }
+    &.is-active span.js-stagger-char {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  //========================================
+  //  速度バリエーション
+  //========================================
+
+  // --fast: 速い（ディレイ短め）
+  .js-anim-stagger-text--fast span.js-stagger-char {
+    --_step-delay: 30ms;
+    --_duration: 0.4s;
+  }
+
+  // --slow: 遅い（ディレイ長め）
+  .js-anim-stagger-text--slow span.js-stagger-char {
+    --_step-delay: 80ms;
+    --_duration: 0.8s;
+  }
+}
+
+//========================================
+//  JavaScriptが無効な環境
+//========================================
+//  テキスト分割自体がJSで行われるため、元のテキストが表示される
+//  特別なスタイル指定は不要
+
+//========================================
+//  アニメーション削減設定時
+//========================================
+@media (prefers-reduced-motion: reduce) {
+  [class*="js-anim-stagger-text"] span.js-stagger-char {
+    // アニメーションを無効化
+    transition: none !important;
+    opacity: 1 !important;
+    translate: none !important;
+    scale: 1 !important;
+  }
+}

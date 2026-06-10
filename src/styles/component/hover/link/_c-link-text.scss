@@ -1,0 +1,87 @@
+@use "../../../global" as *;
+//------------------------------------------------
+//
+//  リンク テキスト
+//
+//  シンプルなリンク用の装飾
+//
+//------------------------------------------------
+//  デフォルト：ホバー時テキスト色変化
+.c-link-text-area {
+  a {
+    transition:
+      color 0.3s,
+      opacity 0.3s;
+    cursor: pointer;
+    @include mq-down() {
+      padding-block: unit(4); //  判定が小さいため広げる
+    }
+    @include hover {
+      color: var(--color-site-accent);
+    }
+  }
+  //  初期状態：青
+  &.default-blue {
+    a {
+      color: var(--color-site-accent);
+      @include hover {
+        opacity: 0.8
+      }
+      //  電話、メール
+      &[href*="tel"]
+      //&[href*="mail"]
+      {
+        @include mq-up() {
+          color: inherit;
+          text-decoration: unset;
+        }
+      }
+
+    }
+  }
+}
+
+//--------------------------------
+//  常時下線
+.c-link-text-underline,
+.c-link-text-underline-area a {
+  color: var(--color-site-accent);
+  transition:
+    color 0.3s,
+    opacity 0.3s;
+  text-underline-offset: unit(3);
+  text-decoration: underline;
+  width: fit-content;
+  cursor: pointer;
+  @include hover {
+    opacity: 0.7;
+  }
+  
+  //  電話、メール
+  &[href*="tel"]
+  //&[href*="mail"]
+  {
+    @include mq-up() {
+      color: inherit;
+      text-decoration: unset;
+    }
+  }
+  
+}
+
+//--------------------------------
+//  ホバー時：下線
+.c-link-text-hover-underline,
+.c-link-text-hover-underline-area a {
+  color: var(--color-site-accent);
+  transition:
+    color 0.3s,
+    opacity 0.3s;
+  text-underline-offset: unit(3);
+  width: fit-content;
+
+  @include hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

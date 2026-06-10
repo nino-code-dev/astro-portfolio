@@ -1,0 +1,62 @@
+@use "../global" as *;
+
+//-------------------------------------------
+//
+//  汎用インナー
+//
+//-------------------------------------------
+.l-inner {
+  --_inner-width: calc(var(--_layout-inner) + (var(--_layout-inner-margin) * 2));
+
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--_inner-width) * var(--unit));
+  padding-inline: calc(var(--_layout-inner-margin) * var(--unit));
+  margin-inline: auto;
+
+  @include mq-down() {
+    --_layout-inner: var(--layout-inner-sp);
+    --_layout-inner-margin: var(--layout-inner-margin-sp);
+  }
+  @include mq-up() {
+    --_layout-inner: var(--layout-inner-pc);
+    --_layout-inner-margin: var(--layout-inner-margin-pc);
+  }
+}
+
+
+//--------------------------------------------------
+//  余白(片側)
+.l-inner {
+  &.m0 {
+    --layout-inner-margin-pc: 0 !important;
+    --layout-inner-margin-sp: 0 !important;
+  }
+  &.mr0 {
+    padding-right: unset;
+  }
+  &.m0pc {
+    --layout-inner-margin-pc: 0;
+  }
+  &.m0sp {
+    --layout-inner-margin-sp: 0;
+  }
+  &.m10sp {
+    --layout-inner-margin-sp: 10;
+  }
+  &.m20sp {
+    --layout-inner-margin-sp: 20;
+  }
+  &.m30sp {
+    --layout-inner-margin-sp: 30;
+  }
+  &.m40sp {
+    --layout-inner-margin-sp: 40;
+  }
+  &.m60 {
+    --layout-inner-margin-pc: 60;
+  }
+  &.m80 {
+    --layout-inner-margin-pc: 80;
+  }
+}

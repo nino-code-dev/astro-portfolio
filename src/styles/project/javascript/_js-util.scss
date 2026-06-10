@@ -1,0 +1,19 @@
+@use "../../global" as *;
+
+//-------------------------------------------
+//
+//  jsの状態変化による補助クラス
+//
+//-------------------------------------------
+
+//  (scripting: enabled)
+//  JavaScriptが有効な場合
+@media (scripting: enabled) {
+  .is-hover {
+    cursor: pointer;
+  }
+}
+
+//  JavaScriptが無効な場合
+@media (scripting: none) {
+}

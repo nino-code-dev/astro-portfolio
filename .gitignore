@@ -1,0 +1,77 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist_astro/
+dist_gulp/
+dist_gulp_template/
+
+# Astro generated files
+.astro/
+
+# 非公開
+docs/
+script/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Temporary and local tool outputs
+_tmp/
+tmp_*
+build_log.txt
+HANDOVER*
+.serena/
+.agents/
+.claude/
+.codex/
+script/validation-reports/**/*.json
+script/validation-reports/**/*.txt
+script/validation-reports/**/*.html
+script/validation-reports/**/*REPORT*.md
+script/core-web-vitals/*.json
+script/core-web-vitals/*.html
+script/core-web-vitals/*.png
+script/core-web-vitals/PERFORMANCE_SUMMARY.md
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Unit test reports
+TEST*.xml
+
+# Compiled files
+*.class
+*.py[cod]
+*.jar
+
+# Java/Maven
+target/
+
+# Editors
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Applications
+*.app
+*.exe
+*.war
+
+# Large media files
+*.mp4
+*.tiff
+*.avi
+*.flv
+*.mov
+*.wmv

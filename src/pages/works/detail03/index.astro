@@ -1,0 +1,91 @@
+---
+//----------------------------------------------------------------
+//
+//  /works/detail03 : 記事03
+//
+//----------------------------------------------------------------
+import { Layout, PageBreadCrumb, Img, works } from '@components/index';
+
+//  スラッグ
+const slug = 'works-detail03';
+const work = works.find((w) => w.id === 'work-media')!;
+const breadcrumbItems = [
+  { title: 'HOME', href: '/' },
+  { title: '制作実績一覧', href: '/works/' },
+  { title: 'メディアサイト改修', href: null },
+];
+---
+
+<Layout
+  slug={slug}
+  useSwiper={true}
+  title="メディアサイト改修 | 制作実績 | NINO-CODE"
+  description="メディアサイト改修案件の詳細"
+  breadcrumbItems={breadcrumbItems}
+>
+  <!-- page -->
+  <article class="p-page">
+    <div class="l-inner m0sp">
+      <div class="p-works-detail-mv">
+        <div class="visual__image">
+          <Img src="common/pf/work03_01.svg" alt="" class="js-anim-fade-on" data-delay="200" />
+        </div>
+      </div>
+
+      <PageBreadCrumb items={breadcrumbItems} />
+
+      <div class="p-works-detail__left-column">
+        <!-- header -->
+        <header class="p-works-detail-header">
+          <!-- title -->
+          <h1 class="p-works-detail-title">メディアサイト改修</h1>
+          <p class="c-text u-mt20">公開URL：非公開</p>
+          <ul class="p-works-detail-category-list">
+            {work.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+          <dl class="p-works-detail-summary">
+            <div>
+              <dt>時期</dt>
+              <dd>{work.period}</dd>
+            </div>
+            <div>
+              <dt>期間</dt>
+              <dd>1週間</dd>
+            </div>
+            <div>
+              <dt>規模</dt>
+              <dd>トップ1P</dd>
+            </div>
+            <div>
+              <dt>担当範囲</dt>
+              <dd>コーディング／既存テーマの依存関係・影響調査</dd>
+            </div>
+            <div>
+              <dt>技術</dt>
+              <dd>WordPress</dd>
+            </div>
+          </dl>
+        </header>
+
+        <!-- 本文 -->
+        <section class="p-works-detail-container">
+          <h2 class="p-works-detail-item__title">案件概要</h2>
+          <div class="p-works-detail-body">
+            <p>
+              事業会社様のWordPressサイトのトップページをリニューアル対応。<br>
+            </p>
+            <h3>工夫点 - 作業環境が不透明な中でも、コードを解読して案件完了まで導く</h3>
+            <p>
+              ヒアリング時、実際のデザインや作業環境がどうなってるかといった事をお伺いしましたが、情報が不明確でした。<br>
+              「契約前に詳細を公開できない」とお見積もりが難しくなってしまいますが、事情もあるため「工数が増えた場合は相談・申請」という条件で承諾。
+            </p>
+            <p>契約後サーバー内を確認した所、ログイン制のメディアサイトとなっていました。</p>
+            <p>
+              複数のエンジニアが作業しておりファイル構成に統一感がなかったため、コード依存関係の把握から始まりました。<br>ログインプラグインによる情報切り替え部分のCSS対応、検索プラグイン周り、記事データやレビュー・インスタプラグイン周りを含めて実装をまとめました。
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </article>
+</Layout>

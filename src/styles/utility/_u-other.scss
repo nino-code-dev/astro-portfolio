@@ -1,0 +1,81 @@
+@use "../global" as *;
+//--------------------------------------------------------
+//
+//  - 役目が細かく分かれるユーティリティ
+//  - 分類が難しいユーテリティ
+//
+//--------------------------------------------------------
+
+//  幅: 内容に合わせる（fit-content）
+.u-w-fit {
+  width: fit-content !important;
+}
+
+//  幅: 親いっぱい（100%）
+.u-w100p {
+  width: 100% !important;
+}
+
+//--------------------------------------------------------
+//
+//  表示に関するユーティリティ
+//
+//--------------------------------------------------------
+.u-sp {
+  @include mq-up() {
+    display: none !important;
+  }
+}
+
+.u-pc {
+  @include mq-down() {
+    display: none !important;
+  }
+}
+
+//  スクリーンリーダー専用
+//  ※ 0px でも clip + overflow で完全非表示、タブフォーカス時の突起も防止
+.u-sr-only {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+}
+
+
+//--------------------------------------------------------
+//  印刷制御
+//--------------------------------------------------------
+//  Chrome: Ctrl+Shift+P → メディアタイプをエミュレート
+@media print {
+  //  枠と画像(コンテンツ)の分断をさせない
+  .u-print-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid; //  古いブラウザ対応
+  }
+}
+
+//--------------------------------------------------------
+//  スクロールバー制御
+//--------------------------------------------------------
+//  JSからclassList.add/removeで付与する（mobile_menu.js等）
+//  bodyに対して使用（通常のブラウザ用）
+.u-scrollbar-hidden {
+  touch-action: none;
+  -webkit-overflow-scrolling: none;
+  overscroll-behavior: none;
+}
+
+//  iOS Safari専用のクラス（touch-actionを使わない）
+.u-scrollbar-hidden-ios {
+  overscroll-behavior: none;
+}
+
+.u-scrollbar-hidden-ios::-webkit-scrollbar {
+  display: none;
+}

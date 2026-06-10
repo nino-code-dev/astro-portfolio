@@ -1,0 +1,108 @@
+---
+//------------------------------------------------------------------------
+//
+//  ヘッダーバー
+//
+//------------------------------------------------------------------------
+
+export interface Props {
+  slug?: string; // 現在のページ名 (オプション)
+}
+const { slug = 'home' } = Astro.props;
+
+let addHeaderClass = ' is-page';
+let LogoTagName = 'div';
+//  トップページのみ
+if (slug == 'home') {
+  //  ホームかそれ以外かのフラグ
+  addHeaderClass = ' is-home';
+  LogoTagName = 'h1'; //  ロゴのタグ分岐
+}
+---
+
+<!-- header bar -->
+<header class=`l-header l-header--fixed p-header${addHeaderClass}` id="header">
+  <!-- sp menu bg -->
+  {/* 装飾のオーバーレイ。操作対象ではないため支援技術から隠す */}
+  <div class="p-header__bg" id="sp-menu-background" aria-hidden="true"></div>
+  <!-- header bar menu -->
+  <nav class="p-header__nav" aria-label="グローバルナビゲーション">
+    {/* sp時バー部分 */}
+    <div class="p-header__sp-bar">
+      <div class="p-header__inner p-header__inner--row01">
+        {/* ロゴ(h1 or div) */}
+        {
+          LogoTagName === 'h1' ? (
+            <h1 class="p-header__logo">
+              <a href="/" class="logo-link">
+                <span>NINO-CODE</span>
+              </a>
+            </h1>
+          ) : (
+            <div class="p-header__logo">
+              <a href="/" class="logo-link">
+                <span>NINO-CODE</span>
+              </a>
+            </div>
+          )
+        }
+      </div>
+      {/* hamburger */}
+      <div class="p-header__hamburger">
+        <button
+          class="c-hamburger js-button-hamburger"
+          type="button"
+          aria-label="グローバルメニューを開閉する"
+          aria-haspopup="true"
+          aria-controls="sp-menu"
+          aria-expanded="false"
+        >
+          <span class="c-hamburger__inner">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    {/* sp時ハンガーバーメニュー部分 */}
+    <div class="p-header__sp-menu">
+      {/* content: 綺麗な開閉のためにインナーが必要 */}
+      {/* head sentinel 削除: 逆方向(Shift+Tab) ラップはJSで最初要素keydownをフックする方式へ変更 */}
+      <div class="p-header__sp-menu-content" id="sp-menu">
+        <!-- pc1列目 -->
+        {/* SP時cssのorderではなく、jsで物理的に順番入れ替える事でアクセシビリティを正常化させる */}
+        <!-- pc2列目 -->
+        <div class="p-header__menu-row02 js-menu-row01-sp">
+          <div class="p-header__inner">
+            {/* 外側クリックで閉じるようにするフラグ */}
+            <ul
+              class="p-header__menu-list gap--row2 js-details-wrap"
+              data-close-on-outside-click--pc
+              data-type="megamenu"
+            >
+              <li class="link">
+                <a href="/#solution" class="p-header__menu-title js-hover"><span class="slide">対応内容</span></a>
+              </li>
+
+              <li class="link">
+                <a href="/works/" class="p-header__menu-title js-hover"><span class="slide">制作実績</span></a>
+              </li>
+              <li class="link">
+                <a href="/#price" class="p-header__menu-title js-hover"><span class="slide">お見積り</span></a>
+              </li>
+              <li class="link">
+                <a href="/#contact" class="p-header__menu-title js-hover"><span class="slide">お問い合わせ</span></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {/* end sentinel 削除: 循環は最初/最後要素のkeydownのみで実装 */}
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- header bar: END -->
+
+{/* Header End */}

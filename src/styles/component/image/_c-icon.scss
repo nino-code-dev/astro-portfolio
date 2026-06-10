@@ -1,0 +1,322 @@
+@use '../../global' as *;
+
+//------------------------------------------------
+//
+//    アイコン
+//
+//  maskを使用し、transitionによる色変化に対応
+//
+//------------------------------------------------
+[class*='c-icon--'] {
+  //  safariバグ対策
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  display: inline grid;
+  position: relative;
+  transition:
+    opacity 0.3s,
+    rotate 0.3s,
+    background-color 0.3s,
+    transform 0.3s,
+    translate 0.3s;
+
+  //  icon-translate-x,y アニメーション移動量
+  //  単位計算後
+  --_u-itx: calc(var(--_itx, 0) * var(--unit));
+  --_u-ity: calc(var(--_ity, 0) * var(--unit));
+
+  width: fit-content;
+  height: fit-content;
+
+  min-width: calc(var(--_iw) * var(--unit));
+  min-height: calc(var(--_ih) * var(--unit));
+  aspect-ratio: var(--_iw) / var(--_ih);
+  background-color: var(--_icon-active-color, var(--_icon-default-color, currentColor));
+  //  var(--_icon-col, currentColor );
+  translate: var(--_u-itx) var(--_u-ity); //  数値が付与された場合アニメーション
+
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 100%;
+
+  @include mq-down() {
+    //  代替値を複数指定は構造化されているので解析負荷がかかるらしい
+    //  PCと同じ値をSPに指定する手間を省いているが、状況によっては簡略化したい
+    --_iw: var(--_iw-sp, var(--_iw-pc));
+    --_ih: var(--_ih-sp, var(--_ih-pc));
+  }
+
+  @include mq-up() {
+    --_iw: var(--_iw-pc);
+    --_ih: var(--_ih-pc);
+  }
+
+  //  safari崩れ対策
+  &::before,
+  &::after {
+    transition:
+      opacity 0.3s,
+      translate 0.3s,
+      scale 0.3s;
+    transform: translateZ(0);
+    z-index: 0;
+  }
+}
+
+//================================================
+// pattern
+//  absoluteして右
+.c-icon--absolute-right {
+  position: absolute;
+  right: 0;
+}
+
+.c-icon--absolute-right4 {
+  position: absolute;
+  right: unit(4);
+}
+
+.c-icon--absolute-right8 {
+  position: absolute;
+  right: unit(8);
+}
+
+.c-icon--absolute-right14 {
+  position: absolute;
+  right: unit(14);
+}
+
+//----------------------------------------
+//  一般カーソル ←→↑↓
+:where(.c-icon--arrow-right, .c-icon--arrow-left, .c-icon--arrow-up, .c-icon--arrow-down) {
+  --_iw-pc: 22;
+  --_ih-pc: 22;
+  --_iw-sp: 16;
+  --_ih-sp: 16;
+  --_icon-default-color: var(--color-site-accent, currentColor);
+  mask-image: var(--icon-arrow-right-b);
+
+  &.size--s {
+    --_iw-sp: 12;
+    --_ih-sp: 12;
+  }
+  //  swiper-controller
+  &.size--sc {
+    --_iw-pc: 22;
+    --_ih-pc: 22;
+    --_iw-sp: 22;
+    --_ih-sp: 22;
+  }
+
+  &.size--m {
+    --_iw-pc: 30;
+    --_ih-pc: 30;
+    --_iw-sp: 20;
+    --_ih-sp: 20;
+  }
+
+  &.size--l {
+    --_iw-pc: 40;
+    --_ih-pc: 40;
+    --_iw-sp: 30;
+    --_ih-sp: 30;
+  }
+}
+
+.c-icon--arrow-left {
+  rotate: -180deg;
+}
+
+.c-icon--arrow-up {
+  rotate: -90deg;
+}
+
+.c-icon--arrow-down {
+  rotate: 90deg;
+}
+
+//----------------------------------------
+//  RSS
+.c-icon--rss {
+  --_iw-pc: 30;
+  --_ih-pc: 30;
+  --_iw-sp: 20;
+  --_ih-sp: 20;
+  mask-image: var(--icon-rss);
+}
+
+//----------------------------------------
+//  □↗ 外部リンク
+.c-icon--external {
+  --_iw-pc: 16;
+  --_ih-pc: 17;
+  --_icon-default-color: var(--color-site-accent, currentColor);
+  //  svg書き出し版は矢印の塗りつぶしに穴が開いてしまうためpngで対応
+  mask-image: url('/assets/img/common/icon/icon-external@2x.png');
+}
+
+
+//----------------------------------------
+//  検索
+.c-icon--search {
+  --_iw-pc: 24;
+  --_ih-pc: 24;
+  --_icon-default-color: var(--color-white, currentColor);
+  mask-image: var(--icon-search);
+}
+
+//----------------------------------------
+//  >
+.c-icon--angle-arrow-right,
+.c-icon--angle-arrow-left,
+.c-icon--angle-arrow-down {
+  --_iw-pc: 13;
+  --_ih-pc: 13;
+  --_icon-default-color: var(--color-site-accent, currentColor);
+  mask-image: var(--icon-angle-arrow-down-b);
+
+  &.white {
+    --_icon-default-color: var(--color-white, currentColor);
+  }
+
+  &.blue {
+    --_icon-default-color: var(--color-site-accent, currentColor);
+  }
+
+  &.size--13 {
+    --_iw-pc: 13;
+    --_ih-pc: 13;
+    --_iw-sp: 13;
+    --_ih-sp: 13;
+  }
+
+  &.size--7-11 {
+    --_iw-pc: 11;
+    --_ih-pc: 7;
+    --_iw-sp: 11;
+    --_ih-sp: 7;
+  }
+
+  &.size--sss {
+    --_iw-pc: 8;
+    --_ih-pc: 7;
+    --_iw-sp: 8;
+    --_ih-sp: 7;
+  }
+
+  &.size--ss {
+    --_iw-pc: 10;
+    --_ih-pc: 8;
+    --_iw-sp: 8;
+    --_ih-sp: 8;
+  }
+
+  &.size--ss-pc {
+    --_iw-pc: 10;
+    --_ih-pc: 8;
+  }
+
+  &.size--ss-sp {
+    --_iw-sp: 8;
+    --_ih-sp: 8;
+  }
+
+  &.size--w10 {
+    --_iw-pc: 10;
+    --_ih-pc: 10;
+  }
+
+  &.size--w12 {
+    --_iw-pc: 12;
+    --_ih-pc: 10;
+  }
+
+  &.size--w10-sp {
+    --_iw-sp: 10;
+    --_ih-sp: 10;
+  }
+
+  &.size--w12-sp {
+    --_iw-sp: 12;
+    --_ih-sp: 10;
+  }
+
+  &.size--s {
+    --_iw-pc: 14;
+    --_ih-pc: 9;
+    --_iw-sp: 14;
+    --_ih-sp: 9;
+  }
+
+  &.size--s-sp {
+    --_iw-sp: 14;
+    --_ih-sp: 9;
+  }
+
+  &.size--s-pc {
+    --_iw-pc: 14;
+    --_ih-pc: 9;
+  }
+
+  &.size--m {
+    --_iw-pc: 18;
+    --_ih-pc: 18;
+    --_iw-sp: 18;
+    --_ih-sp: 18;
+  }
+
+  &.size--m-pc {
+    --_iw-pc: 14;
+    --_ih-pc: 17;
+  }
+}
+
+.c-icon--angle-arrow-right {
+  rotate: -90deg;
+}
+
+.c-icon--angle-arrow-left {
+  rotate: -135deg;
+}
+
+.c-icon--angle-arrow-down {
+  rotate: 0deg;
+}
+
+//----------------------------------------
+//  再生ボタン: 一時停止
+.c-icon--control-pause {
+  --_iw-pc: 8;
+  --_ih-pc: 8;
+  mask-image: var(--icon-control-pause);
+
+  &.size--s {
+    --_iw-pc: 7;
+    --_ih-pc: 8;
+  }
+  &.size--sc {
+    --_iw-pc: 8;
+    --_ih-pc: 10;
+  }
+}
+
+//----------------------------------------
+//  再生ボタン: 再生
+.c-icon--control-play {
+  --_iw-pc: 14;
+  --_ih-pc: 14;
+  left: unit(1);
+  mask-image: var(--icon-control-play);
+
+  &.size--s {
+    --_iw-pc: 9;
+    --_ih-pc: 10;
+  }
+  &.size--sc {
+    --_iw-pc: 14;
+    --_ih-pc: 14;
+  }
+}

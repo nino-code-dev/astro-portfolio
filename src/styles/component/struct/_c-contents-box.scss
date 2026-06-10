@@ -1,0 +1,96 @@
+@use "../../global" as *;
+//------------------------------------------------
+//
+//  簡易コンテンツ枠
+//
+//  提供
+//  - padding余白
+//  - 角丸
+//  - 線
+//  - 簡易背景
+//
+//  外部
+//  - 固定背景: u-bg
+//
+//------------------------------------------------
+.c-contents-box {
+  display: grid;
+  align-content: start;
+
+  //  デフォルト設定( サイトによって調整 )
+  border: unit(1) solid var(--color-site-border);
+  background: var(--color-site-surface);
+
+  //  余白
+  &.p20 {
+    padding: unit(20);
+  }
+  &.p40 {
+    @include mq-down() {
+      padding: unit(30) unit(20);
+    }
+    @include mq-up() {
+      padding: unit(40);
+    }
+  }
+  //  余白: 左右
+  &.pil20 {
+    padding-inline: unit(20);
+  }
+  &.pil30 {
+    padding-inline: unit(20);
+    @include mq-up() {
+      padding-inline: unit(30);
+    }
+  }
+  &.pil40 {
+    padding-inline: unit(20);
+    @include mq-up() {
+      padding-inline: unit(40);
+    }
+  }
+  //  余白: 上下
+  &.pbl20 {
+    padding-block: unit(20);
+  }
+  &.pbl40 {
+    padding-block: unit(30);
+    @include mq-up() {
+      padding-block: unit(40);
+    }
+  }
+  &.pbl60 {
+    padding-block: unit(40);
+    @include mq-up() {
+      padding-block: unit(60);
+    }
+  }
+  &.pbl80 {
+    padding-block: unit(60);
+    @include mq-up() {
+      padding-block: unit(80);
+    }
+  }
+  &.pbl100 {
+    padding-block: unit(80);
+    @include mq-up() {
+      padding-block: unit(100);
+    }
+  }
+  //  余白: 単方向
+  &.pb60 {
+    padding-bottom: unit(60);
+  }
+  //  線
+  &.bd-water-l {
+    border-left: unit(6) solid var(--color-site-accent);
+  }
+  &.bd-water-l4 {
+    border-left: unit(4) solid var(--color-site-accent);
+  }
+  //  線: 全周
+  //  デフォルト線
+  &.bd {
+    border: unit(1) solid var(--color-site-border);
+  }
+}

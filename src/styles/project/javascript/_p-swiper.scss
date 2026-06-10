@@ -1,0 +1,784 @@
+@use '../../global' as *;
+
+//-------------------------------------------
+//
+//  swiper
+//
+//-------------------------------------------
+
+@media print {
+  //  全体
+  .swiper-slide-duplicate, // loop複製を非表示
+  .swiper-slide--clone {
+    display: none !important;
+  }
+  //----------------------------------------
+  //  ホーム - メインビジュアル
+  .p-swiper-mv-fade,
+  .p-swiper-mv-page,
+  .p-swiper-default {
+    //  スライド：768px以上と同じにする
+    .swiper-slide {
+      .l-inner {
+        scale: 1 !important;
+      }
+      .l-background {
+        scale: 1 !important;
+      }
+      .slide-bg {
+        scale: 1 !important;
+      }
+      //  演出は強制表示
+      .cell-title {
+        opacity: 1 !important;
+        translate: 0 !important;
+      }
+      .cell-read {
+        opacity: 1 !important;
+        translate: 0 !important;
+      }
+    }
+    //  ページネーション：強制的に1つ目に見せかける
+    .swiper-pagination {
+      //  アクティブでも非アクティブに見せる
+      .swiper-pagination-bullet.swiper-pagination-bullet-active {
+        background-color: transparent;
+        &:after {
+          background-color: var(--color-site-border);
+        }
+      }
+      .swiper-pagination-bullet:nth-child(1) {
+        transform: unset;
+        background-color: var(--color-site-border);
+        &:after {
+          background-color: var(--color-site-accent);
+        }
+      }
+    }
+  } // p-swiper-mv
+
+  .p-swiper-mv-fade {
+    //  MVは1枚しか表示されないので指定した初期表示スライドを前面表示
+    .swiper-slide-print-active {
+      z-index: 1 !important;
+    }
+    //  強制的に初期位置にする
+    .swiper-slide {
+      width: 100% !important;
+    }
+    .swiper-slide {
+      opacity: 0;
+    }
+    //  最初の1枚のみ表示
+    .swiper-slide:nth-child(1) {
+      opacity: 1 !important;
+    }
+  }
+
+  .p-swiper-mv-page {
+    //  強制的に初期位置にする
+    .swiper-wrapper {
+      transform: translate(unit(-16 + ((-800 - 32) * 2))) !important;
+    }
+    .swiper-slide {
+      margin-left: unit(16) !important;
+      margin-right: unit(16) !important;
+      width: unit(800) !important;
+    }
+    .swiper-button-next {
+      right: unit(-40);
+    }
+    .swiper-button-prev {
+      left: unit(-40);
+    }
+  }
+
+  //----------------------------------------
+  //  デフォルト(case記事等)
+  .p-swiper-default {
+    //  強制的に初期位置にする
+    .swiper-wrapper {
+      transform: translate(unit(82)) !important;
+    }
+    //  スライド：必ず本体を全て表示とは限らないので全体デフォルト化は様子見
+    .swiper-slide {
+      opacity: 0;
+    }
+    //  最初の3枚のみ表示
+    .swiper-slide:nth-child(1),
+    .swiper-slide:nth-child(2),
+    .swiper-slide:nth-child(3) {
+      opacity: 1 !important;
+    }
+  } // p-swiper-default
+
+  .p-swiper-default--shadow {
+    //  強制的に初期位置にする
+    .swiper-wrapper {
+      transform: translate(unit(292 + (-410 * 5))) !important;
+    }
+    //  スライド：768px以上と同じにする
+    .swiper-slide {
+      margin-right: unit(27) !important;
+      width: unit(410) !important;
+    }
+  }
+} // @media print
+
+//----------------------------------------
+//  本体
+.swiper {
+  width: 100%;
+  overflow: visible;
+  //  演出用
+  &.first-delay-10 {
+    --_first-delay: 1s;
+  }
+  &.first-delay-08 {
+    --_first-delay: 0.8s;
+  }
+  &.first-delay-07 {
+    --_first-delay: 0.7s;
+  }
+  &.first-delay-06 {
+    --_first-delay: 0.6s;
+  }
+  &.first-delay-05 {
+    --_first-delay: 0.5s;
+  }
+}
+
+//-----------------------------------------
+//  左右ボタンの枠
+//  arrows：独立
+.swiper-arrows {
+  @include mq-down() {
+    --_btn-arrow-size: 60;
+    --_btn-arrow-w: 80;
+    --_btn-arrow-h: 60;
+  }
+  @include mq-up() {
+    --_btn-arrow-size: 80;
+    --_btn-arrow-w: 100;
+    --_btn-arrow-h: 80;
+  }
+  &:has(.size--s) {
+    --_btn-arrow-size: 50;
+    --_btn-arrow-x: -60;
+  }
+  &:has(.size--ss) {
+    --_btn-arrow-size: 30;
+    --_btn-arrow-x: 0;
+  }
+  :is(.swiper-button-prev, .swiper-button-next) {
+    position: absolute;
+    @include mq-down() {
+      top: 14%;
+    }
+    @include mq-up() {
+      //  デザインごとに要調整：ページネーション分調整
+      --swiper-navigation-top-offset: calc(50% - (82 - 24) * var(--unit));
+      margin: auto;
+    }
+    &.size--s {
+      @include mq-down() {
+        top: 23%;
+      }
+    }
+  }
+}
+//  controller：他と合わせる
+.swiper-controller {
+  @include mq-down() {
+    --_btn-arrow-size: 50;
+    margin-top: unit(0);
+  }
+  @include mq-up() {
+    --_btn-arrow-size: 50;
+    margin-top: unit(40);
+  }
+  :is(.swiper-button-prev, .swiper-button-next) {
+    position: relative;
+    margin-top: unset;
+    left: unset;
+    right: unset;
+    top: unit(-1);
+  }
+  .swiper-btn-pause {
+    @include mq-down() {
+      order: 3;
+    }
+  }
+  .swiper-button-prev {
+    margin-right: unit(8);
+    @include mq-down() {
+      order: 2;
+    }
+  }
+  .swiper-button-next {
+    margin-left: unit(8);
+    @include mq-down() {
+      order: 4;
+    }
+  }
+}
+
+//  左右ボタン
+.swiper-button-prev,
+.swiper-button-next {
+  display: grid;
+  place-content: center;
+  z-index: 1;
+  bottom: 0;
+  width: fit-content;
+  height: fit-content;
+  min-width: unit(var(--_btn-arrow-w));
+  min-height: unit(var(--_btn-arrow-h));
+  background-color: var(--_swiper-button-bg-color, var(--color-site-accent));
+  border: unit(2) solid var(--_swiper-button-border-color, var(--color-site-accent));
+  cursor: pointer;
+  transition:
+    opacity 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+  will-change: transform; // safari対策
+  @include hover {
+    --_swiper-button-bg-color: var(--color-site-accent);
+    --_swiper-button-border-color: var(--color-site-accent);
+    .icon {
+      --_icon-active-color: var(--color-white);
+    }
+  }
+  .icon {
+    --_icon-active-color: var(--color-white);
+  }
+
+  //  デフォルトのアイコンを消す
+  svg {
+    display: none;
+  }
+}
+.swiper-button-prev {
+  @include mq-down() {
+    left: unit(var(--_btn-arrow-x, -20));
+  }
+  @include mq-up() {
+    left: unit(var(--_btn-arrow-x, -50));
+  }
+}
+.swiper-button-next {
+  @include mq-down() {
+    right: unit(var(--_btn-arrow-x, -20));
+  }
+  @include mq-up() {
+    right: unit(var(--_btn-arrow-x, -50));
+  }
+}
+
+//-----------------------------------------
+//  コントローラー
+.swiper-controller {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content; //100%;
+  gap: unit(16);
+  @include mq-down() {
+    flex-wrap: wrap;
+  }
+}
+//  ページネーション・停止ボタンなどをまとめる枠
+.swiper-buttons {
+  display: flex;
+  align-items: center;
+  @include mq-down() {
+    display: contents;
+  }
+  @include mq-up() {
+    gap: unit(11);
+    padding-block: unit(50) unit(20);
+  }
+}
+
+//  再生ボタン
+.swiper-btn-pause {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  min-width: unit(30);
+
+  background-color: var(--color-white);
+  transition: opacity 0.3s ease;
+  //  線のみ：白
+  &.border-white {
+    background-color: var(--color-white-01);
+    color: var(--color-font-w);
+    .icon {
+      background-color: var(--color-white);
+    }
+    @include hover {
+      opacity: 0.8;
+    }
+  }
+  &.border-blue {
+    background-color: var(--color-site-accent-dark);
+    color: var(--color-site-accent);
+    transition: background-color 0.3s ease;
+    .pause__icon {
+      --_icon-default-color: var(--color-site-accent);
+    }
+    @include hover {
+      --_icon-active-color: var(--color-white);
+      background-color: var(--color-site-accent);
+    }
+  }
+  &.size--s {
+    min-width: unit(25);
+  }
+  //  MV
+  &.size--l {
+    min-height: unit(45);
+    padding-inline: unit(12);
+    @include mq-down() {
+      min-height: unit(40);
+      padding-inline: unit(10);
+    }
+    .pause__text {
+      padding-left: unit(5);
+      @include fsv(14, 30);
+      @include mq-down() {
+        @include fsv(12, 28);
+      }
+    }
+    .pause__icon {
+      @include mq-up() {
+        top: unit(1);
+      }
+    }
+  }
+  //  swiper-controller
+  //  カード型カルーセルで使用
+  &.size--sc {
+    place-content: center;
+    min-height: unit(40);
+    min-width: unit(40);
+    .pause__text {
+      padding-left: unit(5);
+      @include fsv(14, 28);
+    }
+    .pause__icon {
+      @include mq-down() {
+        top: unit(1);
+      }
+    }
+  }
+  &.is-paused {
+    .pause__label--pause {
+      display: none;
+    }
+  }
+  &:not(.is-paused) {
+    .pause__label--play {
+      display: none;
+    }
+  }
+  //  ラベル枠
+  [class*='pause__label'] {
+    display: flex;
+    align-items: center;
+    gap: unit(5);
+    margin: auto;
+    @include mq-down() {
+      gap: unit(6);
+    }
+  }
+
+  //  テキスト
+  .pause__text {
+    display: flex;
+  }
+  //  アイコン
+  .pause__icon {
+    display: grid;
+    place-content: center;
+    position: relative;
+    min-width: unit(24);
+    min-height: unit(24);
+  }
+}
+
+//  ページネーション
+.swiper-pagination {
+  display: flex;
+  justify-content: center;
+  position: relative; // 実態を持たせる
+  bottom: 0;
+  top: 0 !important; //  パターン必要なら各戸別に移動
+  pointer-events: auto;
+  @include mq-down() {
+    order: 1;
+    gap: unit(4);
+    padding-block: unit(30) unit(10);
+    width: 100%;
+  }
+  @include mq-up() {
+    gap: unit(2);
+    width: 100%;
+  }
+  li {
+    display: grid;
+  }
+
+  //  バレット
+  .swiper-pagination-bullet {
+    margin: unset;
+    border-radius: unset;
+    position: relative;
+    pointer-events: auto;
+    margin: unset !important;
+    outline: unit(2) solid transparent;
+    outline-offset: unit(2);
+    opacity: 1;
+    background: unset;
+    transition: width 0.3s ease, scale 0.3s ease;
+    @include mq-down() {
+      width: fit-content;//unit(40);
+      height: unit(6);
+    }
+    @include mq-up() {
+      width: fit-content;//unit(120);
+      height: unit(20); //  判定大き目
+    }
+    //  キーボードフォーカス時の outline を強制表示
+    &:focus-visible {
+      outline: unit(2) solid var(--color-site-accent);
+      outline-offset: unit(3);
+    }
+  }
+  .swiper-pagination-bullet span {
+    display: flex;
+    position: relative;
+    pointer-events: none;
+    transition: width 0.3s ease, scale 0.3s ease;
+    @include mq-down() {
+      width: unit(40);
+      height: unit(6);
+    }
+    @include mq-up() {
+      width: unit(200);
+      height: unit(4);
+    }
+    //  球
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      align-self: center;
+      background-color: var(--color-site-accent-dark);
+      transition: background-color 0.3s ease;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  //  アクティブではない球
+  .swiper-pagination-bullet:not(.swiper-pagination-bullet-active) span {
+    background-color: transparent;
+    cursor: pointer;
+    @include mq-down() {
+      width: unit(20);
+    }
+    @include mq-up() {
+      width: unit(120);
+    }
+    &:after {
+      background-color: var(--color-site-accent-05);
+    }
+  }
+  //  アクティブな球
+  .swiper-pagination-bullet-active span {
+    @include mq-up() {
+      height: unit(4);
+    }
+    @include hover {
+      outline: auto;
+      opacity: 0.5;
+    }
+    &:after {
+      background-color: var(--color-site-accent);
+    }
+  }
+}
+
+//----------------------------------------
+//  swiper囲う枠
+//  ※splide同一
+//  paddingがないinnerのPC/SP限定版
+
+//  PC/SP
+.p-swiper-card-list,
+.p-swiper-card-list-pc {
+  margin-inline: auto;
+}
+//  PC時のみの枠
+.p-swiper-card-list-pc {
+  @include mq-down() {
+    display: contents;
+  }
+  //  slider状態でなければクローンは非表示
+  @include mq-up() {
+    .swiper-slide--clone {
+      display: none;
+    }
+  }
+}
+//  幅100%
+.p-swiper-card-list-w100p-pc {
+  margin-inline: auto;
+  @include mq-down() {
+    display: contents;
+  }
+}
+//  SP時のみの枠
+.p-swiper-card-list-sp {
+  margin-inline: auto;
+  //  slider状態でなければクローンは非表示
+  @include mq-down() {
+    .swiper-slide--clone {
+      display: none;
+    }
+  }
+  @include mq-up() {
+    display: contents;
+  }
+}
+
+//----------------------------------------
+//  トラック
+.swiper-wrapper {
+  height: fit-content;
+}
+
+//========================================
+//  個別
+//----------------------------------------
+//  MV
+.p-swiper-mv,
+.p-swiper-mv-page {
+  //  スライド
+  .swiper-slide {
+    .l-background {
+      transition:
+        opacity 0.5s ease-in-out,
+        filter 0.5s ease-out,
+        scale 0.3s;
+    }
+    //  PC時のみ
+    .l-inner {
+      @include mq-up() {
+        transition:
+          opacity 0.5s ease-in-out,
+          filter 0.5s ease-out,
+          scale 0.3s; // ease-out;
+      }
+    }
+    &:not(.swiper-slide-visible) {
+      .l-background {
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+.p-swiper-mv-fade {
+  .swiper-controller {
+    z-index: 10;
+    position: absolute;
+    right: unit(40);
+    bottom: unit(40);
+    @include mq-down() {
+      right: unit(20);
+      bottom: unit(20);
+    }
+  }
+}
+
+//----------------------------------------
+//  MV
+.p-swiper-mv {
+  .swiper-slide {
+    @include mq-down() {
+      width: unit(375) !important;
+      margin-left: unit(5) !important;
+      margin-right: unit(5) !important;
+    }
+    @include mq-up() {
+      width: unit(1280) !important;
+      margin-left: unit(16) !important;
+      margin-right: unit(16) !important;
+    }
+  }
+}
+.p-swiper-mv-page {
+  .swiper-slide {
+    @include mq-down() {
+      width: unit(375) !important;
+      margin-left: unit(5) !important;
+      margin-right: unit(5) !important;
+    }
+    @include mq-up() {
+      width: unit(800) !important;
+      margin-left: unit(16) !important;
+      margin-right: unit(16) !important;
+    }
+  }
+}
+
+//------------------------------------
+//  SP版 ( PCの非表示処理 )
+.p-swiper-sp {
+  @include mq-up() {
+    display: contents;
+    .swiper-wrapper {
+      display: contents;
+    }
+    .swiper-controller {
+      display: none;
+    }
+  }
+}
+
+//----------------------------------------
+//  MV
+//  デフォルト・影付き対応
+.p-swiper-default {
+  // スライダーが有効（初期化済み）の時のみ適用
+  &.swiper-initialized {
+    //  スライド幅の指定
+    &.slide-w410 {
+      .swiper-slide {
+        @include mq-up() {
+          max-width: unit(410);
+        }
+      }
+    }
+    .swiper-wrapper {
+      @include mq-up() {
+        padding-left: unit(0);
+      }
+    }
+    .swiper-slide {
+      height: unset; //  bundleにデフォルトで付いている100%を打ち消す
+      pointer-events: auto;
+      transition: opacity 0.3s ease;
+      @include mq-down() {
+        margin-right: unit(10) !important;
+      }
+      @include mq-up() {
+        margin-right: unit(26) !important;
+        width: fit-content;
+      }
+      //  中央３枚以外の隠れているスライド
+//      &:not(.swiper-slide-next, .swiper-slide-active, .swiper-slide-prev) {
+//      }
+    }
+  }
+  // スライダーが無効（通常リスト表示）の時
+  &.is-card-list {
+    .swiper-button-prev,
+    .swiper-button-next {
+      display: none; // 矢印を非表示
+    }
+    .swiper-wrapper {
+      display: contents;
+    }
+    .swiper-slide {
+      display: contents;
+    }
+  }
+}
+
+//  SP版
+.p-swiper-default-sp--shadow {
+  @include mq-down() {
+    .swiper-slide {
+      //        width: unit(320) !important;
+      margin-left: unit(5) !important;
+      margin-right: unit(5) !important;
+      transition: opacity 0.3s ease;
+      //  中央３枚以外の隠れているスライド
+      &:not(.swiper-slide-next, .swiper-slide-active, .swiper-slide-prev) {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+//----------------------------------------
+//
+//  フラグ
+//
+//----------------------------------------
+//  矢印の枠
+.swiper-arrows {
+  @include mq-down() {
+    display: contents;
+  }
+  //  PC時は消す
+  @include mq-up() {
+    position: absolute;
+    display: flex;
+    right: 0;
+    bottom: unit(0);
+    width: fit-content;
+    justify-content: end;
+    margin-left: auto;
+    gap: unit(20);
+    .swiper-button-prev,
+    .swiper-button-next {
+      margin: unset;
+    }
+  }
+  //  SP時矢印を下に移動
+  &.bottom-sp {
+    @include mq-down() {
+      margin-block: unit(10);
+      gap: unit(20);
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+      @include mq-down() {
+        position: relative;
+        top: unset;
+        left: unset;
+        right: unset;
+        margin: unset;
+      }
+    }
+  }
+  //  内側へ
+  &.arrows-inner {
+    --_btn-arrow-x: 0;
+  }
+}
+
+//----------------------------------------
+//  ラッパー
+.swiper-wrapper {
+  //  PC/SPクリップ
+  &.p-swiper--clip {
+    overflow: clip;
+    border-radius: unit(8);
+  }
+  //  SP時のみクリップ
+  &.p-swiper--clip-sp {
+    @include mq-down() {
+      overflow: clip visible;
+      border-radius: unit(8);
+    }
+  }
+}

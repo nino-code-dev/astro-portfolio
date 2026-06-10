@@ -1,0 +1,82 @@
+@use "../../../global" as *;
+//------------------------------------------------
+//
+//  ハンバーガーボタン
+//
+//------------------------------------------------
+
+.c-hamburger {
+  background-color: var(--_hamburger-color-bg, var(--color-site-accent));
+  transition: opacity 0.3s, background-color 0.3s ease;
+  @include mq-down("h") {
+    display: grid;
+    width: unit(68);
+    aspect-ratio: 1/1;
+    height: fit-content;
+  }
+  @include mq-up("h") {
+    display: none;
+  }
+  @include hover() {
+    opacity: 0.8;
+  }
+}
+
+//  インナー
+.c-hamburger__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-auto-flow: row;
+  gap: unit(4);
+  place-self: center;
+  justify-items: center;
+  align-items: center;
+  width: unit(32);
+  height: fit-content;
+  @include mq-down("h") {
+    gap: unit(7);
+  }
+}
+
+//  バー
+.c-hamburger__inner > span {
+  background-color: var(--_hamburger-color-bar,var(--color-white));
+
+  height: unit(3);
+  justify-self: end;
+  border-radius: var(--infinity);
+  transition:
+    rotate 0.3s,
+    opacity 0.3s,
+    translate 0.3s,
+    width 0.3s,
+    background-color 0.3s ease;
+  &:nth-child(1) {
+    width: calc(100%);
+  }
+  &:nth-child(2) {
+    width: calc(100%);
+  }
+  &:nth-child(3) {
+    width: calc(100%);
+  }
+}
+
+//  開いてる時の挙動
+.c-hamburger.is-open {
+  .c-hamburger__inner > span {
+    width: 100%;
+    &:nth-child(1) {
+      rotate: calc(-45deg + 180deg);
+      translate: 0 unit(10);
+    }
+    &:nth-child(2) {
+      opacity: 0;
+    }
+    &:nth-child(3) {
+      rotate: calc(45deg);
+      translate: 0 unit(-10);
+    }
+  }
+}
