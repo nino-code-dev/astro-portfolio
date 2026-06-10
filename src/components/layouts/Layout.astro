@@ -31,7 +31,7 @@ const swiperPath = import.meta.env.PUBLIC_LIB_PATH+'swiper/';
 //  ページ情報の取得
 const og_type = slug == "home" ? 'website' : 'article';
 
-const siteName = title; //  サイト名
+const siteName = 'NINO-CODE'; //  サイト名
 let lang_ogp = "ja_JP"; //  言語
 
 //  head の OGP / canonical 等で使用
@@ -42,6 +42,9 @@ const pageUrl = siteUrl + pagePath;
 const canonicalUrl = pagePath === '/'
   ? siteUrl                      // 'https://example.com'
   : pageUrl;                     // それ以外は末尾/を維持
+const ogpImageUrl = siteUrl
+  ? `${siteUrl}/assets/img/common/ogp/ogp.jpg`
+  : '/assets/img/common/ogp/ogp.jpg';
 
   // URLの階層に基づいて正しいSrcパスを取得する関数
 const getSrcPath = (relativePath) => {
@@ -78,16 +81,14 @@ const getSrcPath = (relativePath) => {
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:url" content={canonicalUrl}>
-    <meta property="og:image" content={'/assets/img/common/ogp/ogp.jpg'} />
-    {/* <meta property="og:image" content={import.meta.env.SITE + '/assets/img/common/ogp/ogp.jpg'} /> */}
+    <meta property="og:image" content={ogpImageUrl} />
 
     <!-- Twitter共通設定 -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:url" content={canonicalUrl} />
-    <meta name="twitter:image" content={ '/assets/img/common/ogp/ogp.jpg'} />
-    {/* <meta name="twitter:image" content={import.meta.env.SITE + '/assets/img/common/ogp/ogp.jpg'} /> */}
+    <meta name="twitter:image" content={ogpImageUrl} />
     <meta name="twitter:image:alt" content={title} />
 
     {/* フォント    */}

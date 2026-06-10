@@ -40,9 +40,9 @@
     cursor: pointer;
   }
 
-  //  サムネイル画像枠（16:10・はみ出しクリップ）
+  //  サムネイル画像枠（はみ出しクリップ）
   .card__image {
-    aspect-ratio: 16 / 10;
+  //  aspect-ratio: 16 / 10;  // safari崩れのため退避
     overflow: clip;
 
     :where(picture, img) {

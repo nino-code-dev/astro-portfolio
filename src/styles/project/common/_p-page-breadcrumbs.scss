@@ -18,6 +18,11 @@
   &.p0 {
     padding-inline: unset;
   }
+  &.p0pc {
+    @include mq-up() {
+      padding-inline: unset;
+    }
+  }
 }
 
 .p-page-breadcrumbs__list {
