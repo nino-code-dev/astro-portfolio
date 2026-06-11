@@ -1,7 +1,7 @@
 ---
 //----------------------------------------------------------------
 //
-//  /404/ エラーページ
+//  /404/ error page
 //
 //----------------------------------------------------------------
 import {
@@ -12,19 +12,21 @@ import {
 
 const slug = '404';
 const css_slug = '404';
+const pageTitle = 'ページが見つかりません';
 const breadcrumbItems = [
   { title: 'HOME', href: '/' },
-  { title: 'ページが見つかりません', href: null },
+  { title: pageTitle, href: null },
 ];
 ---
 <Layout
   slug={slug}
-  title="ページが見つかりません | NINO-CODE"
+  title={`${pageTitle} | NINO-CODE`}
   description="指定されたページが見つかりませんでした。URLが正しいかご確認ください。"
   breadcrumbItems={breadcrumbItems}
+  useBaseHref={true}
 >
   <div class={`p-page p-page-${css_slug}`}>
-    <MVPageFullVisual slug={slug} title="ページが見つかりません" useImage={false} />
+    <MVPageFullVisual slug={slug} title={pageTitle} useImage={false} />
 
     <PageBreadCrumb items={breadcrumbItems} />
 

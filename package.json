@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run astro build && prettier --write ./dist/**/*.html && js-beautify --html --indent-size 2 -r ./dist/**/*.html",
+    "build": "npm run astro build && prettier --write ./dist/**/*.html && js-beautify --html --indent-size 2 -r ./dist/**/*.html && node tools/postbuild/normalize-404-html.js",
     "preview": "astro preview",
     "astro": "astro"
   },

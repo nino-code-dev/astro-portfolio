@@ -13,6 +13,7 @@ dist_gulp_template/
 # 非公開
 docs/
 script/
+scratch/
 
 # Environment variables
 .env
@@ -28,14 +29,6 @@ HANDOVER*
 .agents/
 .claude/
 .codex/
-script/validation-reports/**/*.json
-script/validation-reports/**/*.txt
-script/validation-reports/**/*.html
-script/validation-reports/**/*REPORT*.md
-script/core-web-vitals/*.json
-script/core-web-vitals/*.html
-script/core-web-vitals/*.png
-script/core-web-vitals/PERFORMANCE_SUMMARY.md
 
 # Logs
 *.log

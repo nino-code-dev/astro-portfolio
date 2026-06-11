@@ -23,9 +23,10 @@ export interface Props {
   mainClassName?: string; //  mainに付けるクラス名
   useSwiper?: boolean;  //  ライブラリ：swiper使用
   breadcrumbItems?: Array<{ title: string; href?: string | null }>;
+  useBaseHref?: boolean;
 }
 
-const { slug, lang="ja", title, description, mainClassName=null, useSwiper=false, breadcrumbItems = undefined } = Astro.props;
+const { slug, lang="ja", title, description, mainClassName=null, useSwiper=false, breadcrumbItems = undefined, useBaseHref = false } = Astro.props;
 const swiperPath = import.meta.env.PUBLIC_LIB_PATH+'swiper/';
 
 //  ページ情報の取得
@@ -57,6 +58,7 @@ const getSrcPath = (relativePath) => {
 <html lang={lang} prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
+    {useBaseHref && <base href="/" />}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
