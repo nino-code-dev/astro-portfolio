@@ -1,4 +1,4 @@
-# Portfolio Code Sample
+# ポートフォリオのコードサンプル
 
 旧ポートフォリオをベースに、公開可能な範囲へ再構成したフロントエンドのコードサンプルです。
 実案件の社名・URL・非公開情報は含めていません。
@@ -6,7 +6,7 @@
 現行ポートフォリオ：
 https://nino-code-portfolio.pages.dev/
 
-## Repository status
+## リポジトリの状態
 
 このリポジトリは旧構成を保持しており、現在のポートフォリオ本体とはAstroのバージョン、依存関係、コンテンツ、実装内容が異なります。
 
@@ -17,13 +17,13 @@ https://nino-code-portfolio.pages.dev/
 
 このリポジトリはフロントエンド実装の確認用です。WordPress / PHP / バックエンドの実務範囲は、ポートフォリオおよびスキルシートに掲載しています。
 
-## Stack
+## 使用技術
 
 - Astro
 - SCSS
 - JavaScript
 
-## Source structure
+## ソース構成
 
 ```text
 src/
@@ -35,7 +35,7 @@ src/
 
 ページ、UIコンポーネント、JavaScript、スタイルを役割ごとに分離しています。
 
-## CSS architecture
+## CSS設計
 
 SCSSは以下のレイヤーで構成しています。
 
@@ -55,20 +55,20 @@ SCSSは以下のレイヤーで構成しています。
 
 色、余白、font-size、breakpointなどの共通値は `global` のvariables / mixinsで管理しています。余白やgapなどのutility classはSCSSから生成しています。
 
-## Local setup
+## ローカル実行
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build:
+ビルド:
 
 ```bash
 npm run build
 ```
 
-## Public scope
+## 公開範囲
 
 制作実績は公開用に匿名化しています。
 案件固有の情報、実URL、非公開スクリーンショットは公開対象から除外し、必要な箇所は汎用表現またはダミー素材へ置き換えています。
